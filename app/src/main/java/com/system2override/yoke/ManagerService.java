@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.app.usage.UsageEvents;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
@@ -75,20 +76,12 @@ public class ManagerService extends Service {
 
             try {
                 GetManagerThread getter = new GetManagerThread();
-                getter.run();
-                getter.join();
-                usageStats = getter.getStats();
-
-            for (int i = 0; i < usageStats.size(); i++) {
-                UsageStats stat = usageStats.get(i);
-                Log.d(TAG, "onStartCommand: a usage stat " + stat.getPackageName());
-                Log.d(TAG, "onStartCommand: a usage stat " + Long.toString(stat.getTotalTimeInForeground()));
-            }
-
+                getter.start();
 
             } catch (Exception e) {
                 Log.d(TAG, "onStartCommand: stats not gottten");
             }
+        Log.d(TAG, "onStartCommand: returning out of startcommand");
 
         return START_STICKY;
     }
@@ -96,6 +89,7 @@ public class ManagerService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "onDestroy: i got called");
     }
 
     @Override
@@ -138,6 +132,8 @@ public class ManagerService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
+    
+    
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public UsageStatsManager getUsageStatsManager() {
@@ -184,12 +180,47 @@ public class ManagerService extends Service {
             Log.d(TAG, "run: foo");
             Calendar start = getStart();
             Calendar end = getEnd();
-            stats = manager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, start.getTimeInMillis(), end.getTimeInMillis());
             while(true) {
                 try {
+                    /*
+                    stats = manager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, start.getTimeInMillis(), end.getTimeInMillis());
+
                     Thread.sleep(5000);
+
+                    for (int i = 0; i < stats.size(); i++) {
+                        UsageStats stat = stats.get(i);
+                        Log.d(TAG, "onStartCommand: a usage stat " + stat.getPackageName());
+                        Log.d(TAG, "onStartCommand: a usage stat " + Long.toString(stat.getTotalTimeInForeground()));
+                    }
+                    */
+                    Thread.sleep(200);
+                    long curTime = System.currentTimeMillis();
+                    UsageEvents events = manager.queryEvents(curTime - 5000, curTime);
+                    while(events.hasNextEvent()) {
+                        UsageEvents.Event event = new UsageEvents.Event();
+                        events.getNextEvent(event);
+                        Log.d(TAG, "run: running packagename "+ event.getPackageName());
+                        Log.d(TAG, "run: running event type "+ Integer.toString(event.getEventType()));
+
+//                        /*
+                        if (event.getPackageName() == "com.android.contacts") {
+                            Log.d(TAG, "run: packagename on point");
+                        }
+                        
+                        if (event.getEventType() == UsageEvents.Event.MOVE_TO_FOREGROUND) {
+                            Log.d(TAG, "run: foreground number es correcto");
+                        }
+                        if ((event.getPackageName().equals("com.android.contacts")) && (event.getEventType() == UsageEvents.Event.MOVE_TO_FOREGROUND)) {
+                            Log.d(TAG, "run: contacts moved to foreground");
+
+                            Intent startMain = new Intent(Intent.ACTION_MAIN);
+                            startMain.addCategory(Intent.CATEGORY_HOME);
+                            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(startMain);
+                        }
+//                        */
+                    }
                 } catch (InterruptedException e) { }
-                Log.d(TAG, "run: " + stats.toString());
                 /*
                 Intent startMain = new Intent(Intent.ACTION_MAIN);
                 startMain.addCategory(Intent.CATEGORY_HOME);

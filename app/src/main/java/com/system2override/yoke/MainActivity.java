@@ -43,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: i was called");
+    }
+
     private void checkForAccessFineLocation(Context context) {
         int hasAccessFineLocationPermission = ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION);
 
