@@ -1,6 +1,7 @@
 package com.system2override.yoke;
 
 import android.app.AppOpsManager;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -12,6 +13,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.PACKAGE_USAGE_STATS;
@@ -41,6 +45,34 @@ public class MainActivity extends AppCompatActivity {
             android.util.Log.d(TAG, "subscribeToSensor: about to start service " + Long.toString(System.currentTimeMillis()));
             startService(intent);
         }
+
+
+        HarnessDatabase db = Room.databaseBuilder(getApplicationContext(),
+                HarnessDatabase.class, "db").allowMainThreadQueries().build();
+        /*
+        TodoApp app = new TodoApp();
+
+        app.setTodoAppName("gtasks");
+        db.todoAppDao().insert(app);
+
+        app = db.todoAppDao().getTodoAppFromName(app.getTodoAppName());
+
+        TodoRule rule = new TodoRule();
+        rule.setTodoappId(app.getId());
+        rule.setTime(30);
+        rule.setPackageName("com.android.contacts");
+        db.todoRuleDao().insert(rule);
+//        */
+
+        GeneralDebugging.printDb(db);
+/*        ArrayList<TodoRule> rules = new ArrayList<>(Arrays.asList(db.todoRuleDao().loadAllTodoRules()));
+        for (int i = 0; i < rules.size(); i++) {
+            Log.d(TAG, "onStart: " + rules.get(i).toString());
+        }
+        */
+        db.close();
+        RulesManager.foo();
+
     }
 
     @Override

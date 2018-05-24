@@ -17,6 +17,11 @@ android {
                 }
             }
         }
+    // for testing migrations
+    sourceSets {
+        androidTest.assets.srcDirs +=
+                files("$projectDir/schemas".toString())
+    }
     buildTypes {
         release {
             minifyEnabled false

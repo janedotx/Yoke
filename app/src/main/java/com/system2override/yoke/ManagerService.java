@@ -75,8 +75,8 @@ public class ManagerService extends Service {
         // update with startForegroundService for Oreo services
 
             try {
-                GetManagerThread getter = new GetManagerThread();
-                getter.start();
+                RulesManagerThread rulesManagerThread = new RulesManagerThread(this);
+                rulesManagerThread.start();
 
             } catch (Exception e) {
                 Log.d(TAG, "onStartCommand: stats not gottten");
@@ -170,8 +170,18 @@ public class ManagerService extends Service {
             date.set(Calendar.SECOND, 0);
             date.set(Calendar.MILLISECOND, 0);
             date.add(Calendar.DAY_OF_MONTH, 1);
-            Log.d(TAG, "getStart: date start " + date.toString());
             return date;
+        }
+
+        private Calendar getHourPlus() {
+            Calendar date = new GregorianCalendar();
+// reset hour, minutes, seconds and millis
+            date.set(Calendar.HOUR_OF_DAY, 1);
+            date.set(Calendar.MINUTE, 0);
+            date.set(Calendar.SECOND, 0);
+            date.set(Calendar.MILLISECOND, 0);
+            return date;
+
         }
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -182,17 +192,19 @@ public class ManagerService extends Service {
             Calendar end = getEnd();
             while(true) {
                 try {
-                    /*
+                    ///*
                     stats = manager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, start.getTimeInMillis(), end.getTimeInMillis());
 
-                    Thread.sleep(5000);
+                    Thread.sleep(1000);
 
+                    /*
                     for (int i = 0; i < stats.size(); i++) {
                         UsageStats stat = stats.get(i);
                         Log.d(TAG, "onStartCommand: a usage stat " + stat.getPackageName());
-                        Log.d(TAG, "onStartCommand: a usage stat " + Long.toString(stat.getTotalTimeInForeground()));
+                        double timeInForeground = ((double) stat.getTotalTimeInForeground()) / 60000.0;
+                        Log.d(TAG, "onStartCommand: a usage stat " + Double.toString(timeInForeground));
                     }
-                    */
+                    //*/
                     Thread.sleep(200);
                     long curTime = System.currentTimeMillis();
                     UsageEvents events = manager.queryEvents(curTime - 5000, curTime);
@@ -208,15 +220,17 @@ public class ManagerService extends Service {
                         }
                         
                         if (event.getEventType() == UsageEvents.Event.MOVE_TO_FOREGROUND) {
-                            Log.d(TAG, "run: foreground number es correcto");
+                            Log.d(TAG, "run: " + event.getPackageName() + " moved to foreground");
                         }
                         if ((event.getPackageName().equals("com.android.contacts")) && (event.getEventType() == UsageEvents.Event.MOVE_TO_FOREGROUND)) {
                             Log.d(TAG, "run: contacts moved to foreground");
 
+                            /*
                             Intent startMain = new Intent(Intent.ACTION_MAIN);
                             startMain.addCategory(Intent.CATEGORY_HOME);
                             startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(startMain);
+                            */
                         }
 //                        */
                     }
