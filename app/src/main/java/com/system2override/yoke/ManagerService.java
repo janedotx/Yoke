@@ -41,46 +41,60 @@ public class ManagerService extends Service {
     }
 
     @Override
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void onCreate() {
         super.onCreate();
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             android.util.Log.d(TAG, "onCreate: about to make this notification");
             //           /*
-            String CHANNEL_ID = "StepSensorService";
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                    "StepSensorServiceNotificationChannel",
-                    NotificationManager.IMPORTANCE_DEFAULT);
 
-            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
-
-
-            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.placeholder)
-                    .setContentTitle("StepSensor Service in the house")
-                    .setTicker("StepSensorService ticker")
-                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                    .setWhen(System.currentTimeMillis())
-                    .setContentText("here i yam").build();
-
-
-            startForeground(MANAGER_SERVICE_ID, notification);
+            if (Build.VERSION.SDK_INT >= 26) {
+                foregroundForOreoAndUp();
+            }
+            launchManagerThread();
 //            */
         }
     }
 
+    @RequiresApi(api = 26)
+    private void foregroundForOreoAndUp() {
+        String CHANNEL_ID = getString(R.string.manager_service_name);
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+                getString(R.string.manager_service_notification_channel),
+                NotificationManager.IMPORTANCE_DEFAULT);
 
+        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
+
+
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.placeholder)
+                .setContentTitle("Manager Service in the house")
+                .setTicker("Yoke is watching you")
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setWhen(System.currentTimeMillis())
+                .setContentText("here i yam").build();
+
+        startForeground(MANAGER_SERVICE_ID, notification);
+
+    }
+
+    //todo add threadgroup and other thread checking code...
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void launchManagerThread() {
+        try {
+            RulesManagerThread rulesManagerThread = new RulesManagerThread(this);
+            rulesManagerThread.start();
+
+        } catch (Exception e) {
+            Log.d(TAG, "onStartCommand: stats not gottten");
+            Log.d(TAG, "onStartCommand: " + Log.getStackTraceString(e));
+        }
+    }
+
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // update with startForegroundService for Oreo services
-
-            try {
-                RulesManagerThread rulesManagerThread = new RulesManagerThread(this);
-                rulesManagerThread.start();
-
-            } catch (Exception e) {
-                Log.d(TAG, "onStartCommand: stats not gottten");
-            }
+        Log.d(TAG, "onStartCommand: start");
         Log.d(TAG, "onStartCommand: returning out of startcommand");
 
         return START_STICKY;
@@ -147,108 +161,6 @@ public class ManagerService extends Service {
 
     }
 
-    class GetManagerThread extends Thread {
-        private volatile List<UsageStats> stats;
-
-        private Calendar getStart() {
-
-            Calendar date = new GregorianCalendar();
-// reset hour, minutes, seconds and millis
-            date.set(Calendar.HOUR_OF_DAY, 0);
-            date.set(Calendar.MINUTE, 0);
-            date.set(Calendar.SECOND, 0);
-            date.set(Calendar.MILLISECOND, 0);
-            Log.d(TAG, "getStart: date start " + date.toString());
-            return date;
-        }
-
-        private Calendar getEnd() {
-            Calendar date = new GregorianCalendar();
-// reset hour, minutes, seconds and millis
-            date.set(Calendar.HOUR_OF_DAY, 0);
-            date.set(Calendar.MINUTE, 0);
-            date.set(Calendar.SECOND, 0);
-            date.set(Calendar.MILLISECOND, 0);
-            date.add(Calendar.DAY_OF_MONTH, 1);
-            return date;
-        }
-
-        private Calendar getHourPlus() {
-            Calendar date = new GregorianCalendar();
-// reset hour, minutes, seconds and millis
-            date.set(Calendar.HOUR_OF_DAY, 1);
-            date.set(Calendar.MINUTE, 0);
-            date.set(Calendar.SECOND, 0);
-            date.set(Calendar.MILLISECOND, 0);
-            return date;
-
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-        public void run()  {
-            UsageStatsManager manager = getUsageStatsManager();
-            Log.d(TAG, "run: foo");
-            Calendar start = getStart();
-            Calendar end = getEnd();
-            while(true) {
-                try {
-                    ///*
-                    stats = manager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, start.getTimeInMillis(), end.getTimeInMillis());
-
-                    Thread.sleep(1000);
-
-                    /*
-                    for (int i = 0; i < stats.size(); i++) {
-                        UsageStats stat = stats.get(i);
-                        Log.d(TAG, "onStartCommand: a usage stat " + stat.getPackageName());
-                        double timeInForeground = ((double) stat.getTotalTimeInForeground()) / 60000.0;
-                        Log.d(TAG, "onStartCommand: a usage stat " + Double.toString(timeInForeground));
-                    }
-                    //*/
-                    Thread.sleep(200);
-                    long curTime = System.currentTimeMillis();
-                    UsageEvents events = manager.queryEvents(curTime - 5000, curTime);
-                    while(events.hasNextEvent()) {
-                        UsageEvents.Event event = new UsageEvents.Event();
-                        events.getNextEvent(event);
-                        Log.d(TAG, "run: running packagename "+ event.getPackageName());
-                        Log.d(TAG, "run: running event type "+ Integer.toString(event.getEventType()));
-
-//                        /*
-                        if (event.getPackageName() == "com.android.contacts") {
-                            Log.d(TAG, "run: packagename on point");
-                        }
-                        
-                        if (event.getEventType() == UsageEvents.Event.MOVE_TO_FOREGROUND) {
-                            Log.d(TAG, "run: " + event.getPackageName() + " moved to foreground");
-                        }
-                        if ((event.getPackageName().equals("com.android.contacts")) && (event.getEventType() == UsageEvents.Event.MOVE_TO_FOREGROUND)) {
-                            Log.d(TAG, "run: contacts moved to foreground");
-
-                            /*
-                            Intent startMain = new Intent(Intent.ACTION_MAIN);
-                            startMain.addCategory(Intent.CATEGORY_HOME);
-                            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(startMain);
-                            */
-                        }
-//                        */
-                    }
-                } catch (InterruptedException e) { }
-                /*
-                Intent startMain = new Intent(Intent.ACTION_MAIN);
-                startMain.addCategory(Intent.CATEGORY_HOME);
-                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(startMain);
-                */
-
-            }
-        }
-
-        public List<UsageStats> getStats() {
-            return stats;
-        }
-    }
     class Killmonger extends Thread {
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

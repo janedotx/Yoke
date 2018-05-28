@@ -18,10 +18,7 @@ import android.support.annotation.NonNull;
         indices = {@Index(name = "todoApp_index", value = "todoappId"),
                     @Index(value = "packageName")}
         )
-public class TodoRule {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-
+public class TodoRule extends Rule {
     @android.support.annotation.NonNull
     @ColumnInfo(name="packageName")
     private String packageName;
@@ -58,7 +55,7 @@ public class TodoRule {
 
     @NonNull
     public String getPackageName() {
-        return packageName;
+        return this.packageName;
     }
 
     public void setPackageName(@NonNull String packageName) {
@@ -68,7 +65,7 @@ public class TodoRule {
     @Override
     public String toString() {
         return "TodoRule{" +
-                "id=" + id +
+                "id=" + this.id +
                 ", packageName='" + packageName + '\'' +
                 ", time=" + time +
                 ", todoappId=" + todoappId +

@@ -50,13 +50,14 @@ public class MainActivity extends AppCompatActivity {
         HarnessDatabase db = Room.databaseBuilder(getApplicationContext(),
                 HarnessDatabase.class, "db").allowMainThreadQueries().build();
         /*
-        TodoApp app = new TodoApp();
 
+        TodoApp app = new TodoApp();
         app.setTodoAppName("gtasks");
         db.todoAppDao().insert(app);
 
-        app = db.todoAppDao().getTodoAppFromName(app.getTodoAppName());
 
+
+        app = db.todoAppDao().getTodoAppFromName(app.getTodoAppName());
         TodoRule rule = new TodoRule();
         rule.setTodoappId(app.getId());
         rule.setTime(30);
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
 //        */
 
         GeneralDebugging.printDb(db);
+//        rule = db.todoRuleDao().getRuleFromId(1);
+//        Log.d(TAG, "onStart: counter name" + rule.getCounterName());
 /*        ArrayList<TodoRule> rules = new ArrayList<>(Arrays.asList(db.todoRuleDao().loadAllTodoRules()));
         for (int i = 0; i < rules.size(); i++) {
             Log.d(TAG, "onStart: " + rules.get(i).toString());

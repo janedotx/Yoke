@@ -17,4 +17,7 @@ public interface TodoRuleDao {
     @Query("SELECT * from TodoRules WHERE :name = packageName")
     public List<TodoRule> getRulesForPackageName(String name);
 
+    @Query("SELECT * from TodoRules where :id = id")
+    public TodoRule getRuleFromId(int id);
+
 }
