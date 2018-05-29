@@ -1,6 +1,7 @@
 package com.system2override.yoke;
 
 import android.app.usage.UsageEvents;
+import android.app.usage.UsageEvents.Event;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.arch.persistence.room.Room;
@@ -10,6 +11,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import com.google.android.gms.common.wrappers.InstantApps;
 import com.squareup.otto.Bus;
 
 import java.util.ArrayList;
@@ -107,23 +109,23 @@ public class RulesManagerThread extends Thread {
 //            Log.d(TAG, "run: ");
             try {
 
-                /*
-                stats = manager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, start.getTimeInMillis(), System.currentTimeMillis());
-
-
-                for (int i = 0; i < stats.size(); i++) {
-                    UsageStats stat = stats.get(i);
-                    Log.d(TAG, "onStartCommand: a usage stat " + stat.getPackageName() + Long.toString(stat.getTotalTimeInForeground()));
-                }
-                */
-                ////
-                ///*
-                // default value is time.now
                 long curTime = System.currentTimeMillis();
-                long lastEventCheck = sharedPrefs.getLong("lastEventCheck", curTime);
-
+                Event lastEvent = InProcessAppDataCache.getLastEvent();
+                if (lastEvent != null) {
+//                    Log.d(TAG, "run: inprocessappdatacache last event " + lastEvent.toString());
+                } else {
+ //                   Log.d(TAG, "run: the most recently recorded event is null");
+                }
+                long lastEventCheck;
+                if (lastEvent == null) {
+                    Log.d(TAG, "run: lastevent is null");
+                    lastEventCheck = curTime - 5000;
+                } else {
+                    lastEventCheck = lastEvent.getTimeStamp();
+                }
                 // + 1, otherwise we'll double count the last seen event
-                UsageEvents events = manager.queryEvents(lastEventCheck + 1, curTime);
+                UsageEvents events = manager.queryEvents(lastEventCheck + 1, System.currentTimeMillis());
+                /*
                 while(events.hasNextEvent()) {
                     UsageEvents.Event event = new UsageEvents.Event();
                     events.getNextEvent(event);
@@ -134,8 +136,24 @@ public class RulesManagerThread extends Thread {
                    Log.d(TAG, "run: " + event.getPackageName() + " " + Integer.toString(event.getEventType()));
                     Log.d(TAG, "run: " + Long.toString(event.getTimeStamp()));
                 }
+                */
+                List<UsageEvents.Event> eventsList = processAndFilterEventsList(events);
+                if (eventsList.size() == 0) {
+//                    Log.d(TAG, "run: eventslist size 0");
+                    continue;
+                }
+                if (eventsList.get(eventsList.size() -1).equals(InProcessAppDataCache.getLastEvent())) {
+                    Log.d(TAG, "run: event is the same as last recorded");
+                    continue;
+                }
+                Log.d(TAG, "run: before tallytime");
+                for (int i = 0; i < eventsList.size(); i++) {
+                    Event event = eventsList.get(i);
+                    Log.d(TAG, "tallytime: " + event.getPackageName() + " " + Integer.toString(event.getEventType()) + " " + Long.toString(event.getTimeStamp()));
+                }
+                InProcessAppDataCache.setLastEvent(eventsList.get(eventsList.size() - 1));
+                Log.d(TAG, "run: after tallytime");
 
-                storeEventCheck(editor, lastEventCheck);
 
                 Thread.sleep(2000);
 
@@ -153,12 +171,57 @@ public class RulesManagerThread extends Thread {
         }
     }
 
-    private void storeEventCheck(SharedPreferences.Editor editor, long lastEventCheck) {
-        editor.putLong("lastEventCheck", lastEventCheck);
+    private void storeEventCheck(SharedPreferences.Editor editor, long lastEventTime) {
+        editor.putLong("lastEventTime", lastEventTime);
         editor.apply();
     }
 
     public List<UsageStats> getStats() {
         return stats;
+    }
+
+    private void processEventInterval(UsageEvents.Event start, UsageEvents.Event end) {
+        long time = end.getTimeStamp() - start.getTimeStamp();
+
+    }
+
+    private List<UsageEvents.Event> processAndFilterEventsList(UsageEvents events) {
+        List<UsageEvents.Event> eventsList = new ArrayList<UsageEvents.Event>();
+//        Log.d(TAG, "processAndFilterEventsList: ");
+        while(events.hasNextEvent()) {
+            // make sure we always make a fresh new Event to copy into
+            UsageEvents.Event curEvent = new UsageEvents.Event();
+            events.getNextEvent(curEvent);
+ //           Log.d(TAG, "processAndFilterEventsList: in the while loop");
+            int type = curEvent.getEventType();
+//            Log.d(TAG, "processAndFilterEventsList: event type " + Integer.toString(type));
+            if ((type == UsageEvents.Event.MOVE_TO_FOREGROUND || type == UsageEvents.Event.MOVE_TO_BACKGROUND)) {
+                eventsList.add(curEvent);
+            } else {
+                continue;
+            }
+        }
+        return eventsList;
+    }
+
+    private void tallyTimeFromEventsList(UsageEvents events) {
+        UsageEvents.Event firstEventInInterval = new UsageEvents.Event();
+        UsageEvents.Event lastEventChecked = InProcessAppDataCache.getLastEvent();
+        if (lastEventChecked.getEventType() == UsageEvents.Event.MOVE_TO_FOREGROUND) {
+            firstEventInInterval = InProcessAppDataCache.getLastEvent();
+        } else {
+            events.getNextEvent(firstEventInInterval);
+        }
+        UsageEvents.Event curEvent = new UsageEvents.Event();
+        while(events.hasNextEvent()) {
+            events.getNextEvent(curEvent);
+//            if (curEvent.getEventType() != )
+            if (firstEventInInterval != null) {
+
+            }
+           Log.d(TAG, "tallytime: " + curEvent.getPackageName() + " " + Integer.toString(curEvent.getEventType()) + Long.toString(curEvent.getTimeStamp()));
+        }
+
+        InProcessAppDataCache.setLastEvent(curEvent);
     }
 }
