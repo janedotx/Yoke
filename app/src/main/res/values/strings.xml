@@ -3,4 +3,5 @@
     <string name="rules_manager_file">rules_manager_file</string>
     <string name="manager_service_name">ManagerService</string>
     <string name="manager_service_notification_channel">ManagerServiceNotificationChannel</string>
+    <string name="time_tracking_file">time_tracking_file</string>
 </resources>

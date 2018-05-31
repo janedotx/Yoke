@@ -20,9 +20,15 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
+// i am going to keep not worrying about this being restarted halfway through
+// so going on the assumption that this is only ever called in the case of the app successfully starting either onboot
+// or when triggered by the user...
+// not interested in events that last only half a second
+
 public class RulesManagerThread extends Thread {
     private static final String TAG = "RulesManagerThread";
     private volatile List<UsageStats> stats;
+    private final long SLEEP_LENGTH = 2000;
     Context context;
     UsageStatsManager manager;
     SharedPreferences sharedPrefs;
@@ -137,25 +143,27 @@ public class RulesManagerThread extends Thread {
                     Log.d(TAG, "run: " + Long.toString(event.getTimeStamp()));
                 }
                 */
+
                 List<UsageEvents.Event> eventsList = processAndFilterEventsList(events);
-                if (eventsList.size() == 0) {
-//                    Log.d(TAG, "run: eventslist size 0");
+                // if no new events have happened, then whatever app last came into the foreground
+                // is racking up time
+                if (eventsList.size() == 0 && InProcessAppDataCache.hasLastEvent()) {
+                    InProcessAppDataCache.addTime(InProcessAppDataCache.getLastEventPackageName(), SLEEP_LENGTH);
                     continue;
+
+                } else if (eventsList.size() > 0){
+                    Log.d(TAG, "run: before tallytime");
+                    for (int i = 0; i < eventsList.size(); i++) {
+                        Event event = eventsList.get(i);
+                        Log.d(TAG, "tallytime: " + event.getPackageName() + " " + Integer.toString(event.getEventType()) + " " + Long.toString(event.getTimeStamp()));
+                    }
+                    Log.d(TAG, "run: new lastEvent " + events.toString());
+                    InProcessAppDataCache.setLastEvent(eventsList.get(eventsList.size() - 1));
+                    Log.d(TAG, "run: after tallytime");
                 }
-                if (eventsList.get(eventsList.size() -1).equals(InProcessAppDataCache.getLastEvent())) {
-                    Log.d(TAG, "run: event is the same as last recorded");
-                    continue;
-                }
-                Log.d(TAG, "run: before tallytime");
-                for (int i = 0; i < eventsList.size(); i++) {
-                    Event event = eventsList.get(i);
-                    Log.d(TAG, "tallytime: " + event.getPackageName() + " " + Integer.toString(event.getEventType()) + " " + Long.toString(event.getTimeStamp()));
-                }
-                InProcessAppDataCache.setLastEvent(eventsList.get(eventsList.size() - 1));
-                Log.d(TAG, "run: after tallytime");
 
 
-                Thread.sleep(2000);
+                Thread.sleep(SLEEP_LENGTH);
 
             } catch (InterruptedException e) {
                 Log.d(TAG, "run: this shouldn't happen since i have not written any other threads to interrupt this thread yet");
@@ -180,11 +188,6 @@ public class RulesManagerThread extends Thread {
         return stats;
     }
 
-    private void processEventInterval(UsageEvents.Event start, UsageEvents.Event end) {
-        long time = end.getTimeStamp() - start.getTimeStamp();
-
-    }
-
     private List<UsageEvents.Event> processAndFilterEventsList(UsageEvents events) {
         List<UsageEvents.Event> eventsList = new ArrayList<UsageEvents.Event>();
 //        Log.d(TAG, "processAndFilterEventsList: ");
@@ -194,19 +197,25 @@ public class RulesManagerThread extends Thread {
             events.getNextEvent(curEvent);
  //           Log.d(TAG, "processAndFilterEventsList: in the while loop");
             int type = curEvent.getEventType();
-//            Log.d(TAG, "processAndFilterEventsList: event type " + Integer.toString(type));
+            Log.d(TAG, "processAndFilterEventsList: event type " + Integer.toString(type) + " "  + curEvent.getPackageName());
             if ((type == UsageEvents.Event.MOVE_TO_FOREGROUND || type == UsageEvents.Event.MOVE_TO_BACKGROUND)) {
                 eventsList.add(curEvent);
             } else {
                 continue;
             }
         }
-        return eventsList;
+        List<Event> filteredlist = filterOutShortLivedIntervals(eventsList);
+        for (int i = 0; i < filteredlist.size(); i++) {
+            Event e = filteredlist.get(i);
+            Log.d(TAG, "elements in filtered list: " + Integer.toString(e.getEventType()) + " " + e.getPackageName());
+        }
+        return filterOutShortLivedIntervals(eventsList);
     }
 
     private void tallyTimeFromEventsList(UsageEvents events) {
         UsageEvents.Event firstEventInInterval = new UsageEvents.Event();
         UsageEvents.Event lastEventChecked = InProcessAppDataCache.getLastEvent();
+        //null?
         if (lastEventChecked.getEventType() == UsageEvents.Event.MOVE_TO_FOREGROUND) {
             firstEventInInterval = InProcessAppDataCache.getLastEvent();
         } else {
@@ -223,5 +232,22 @@ public class RulesManagerThread extends Thread {
         }
 
         InProcessAppDataCache.setLastEvent(curEvent);
+    }
+
+    private List<Event> filterOutShortLivedIntervals(List<Event> eventList) {
+        int size = eventList.size();
+        if (eventList.size() == 0 || eventList.size() == 1) {
+            return eventList;
+        }
+
+        List<Event> filteredList = new ArrayList<Event>();
+        if (eventList.get(0).getEventType() == Event.MOVE_TO_BACKGROUND) {
+            filteredList.add(eventList.get(0));
+        }
+        if ((eventList.get(size - 1).getEventType() == Event.MOVE_TO_FOREGROUND)) {
+            filteredList.add(eventList.get(size - 1));
+        }
+
+        return filteredList;
     }
 }
