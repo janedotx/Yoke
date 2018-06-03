@@ -1,11 +1,13 @@
 package com.system2override.yoke;
 
 import android.app.usage.UsageEvents;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class InProcessAppDataCache {
+    private static final String TAG = "InProcessAppDataCache";
     private static UsageEvents.Event lastEvent = null;
     private static long lastLoopEventTime;
     // key: package name
@@ -35,9 +37,11 @@ public class InProcessAppDataCache {
         Long newTime = Long.valueOf(time);
         if (val == null || val == Long.valueOf(0)) {
             counters.put(key, newTime);
+            Log.d(TAG, "addTime: adding time for the first time to " + key);
         } else {
             counters.put(key, val + newTime);
         }
+        Log.d(TAG, "addTime: " + key + " " + Long.toString(counters.get(key)));
     }
 
     public long getTime(String key) {

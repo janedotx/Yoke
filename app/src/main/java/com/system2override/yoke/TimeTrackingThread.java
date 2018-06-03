@@ -48,7 +48,9 @@ public class TimeTrackingThread extends Thread {
         }
     }
 
+    // sadly this doesn't work on android 8.0
     private RunningAppProcessInfo getForegroundApp() {
+
         List<ActivityManager.RunningAppProcessInfo> list = this.activityManager.getRunningAppProcesses();
         if (list == null) {
             Log.d(TAG, "getForegroundApp: twas null");

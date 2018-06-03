@@ -1,5 +1,6 @@
 package com.system2override.yoke;
 
+import android.app.ActivityManager;
 import android.app.usage.UsageEvents;
 import android.app.usage.UsageEvents.Event;
 import android.app.usage.UsageStats;
@@ -8,6 +9,7 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.PowerManager;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
@@ -19,6 +21,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 // i am going to keep not worrying about this being restarted halfway through
 // so going on the assumption that this is only ever called in the case of the app successfully starting either onboot
@@ -28,13 +32,14 @@ import java.util.List;
 public class RulesManagerThread extends Thread {
     private static final String TAG = "RulesManagerThread";
     private volatile List<UsageStats> stats;
-    private final long SLEEP_LENGTH = 2000;
+    private final long SLEEP_LENGTH = 4000;
     Context context;
     UsageStatsManager manager;
     SharedPreferences sharedPrefs;
     SharedPreferences.Editor editor;
     List<TodoRule> rules;
     HashMap<String, List<TodoRule>> packageNameToRulesMap;
+    PowerManager powerManager;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public RulesManagerThread(Context context) {
@@ -43,6 +48,7 @@ public class RulesManagerThread extends Thread {
         this.sharedPrefs = context.getSharedPreferences(context.getString(R.string.rules_manager_file), Context.MODE_PRIVATE);
         this.editor = sharedPrefs.edit();
         this.packageNameToRulesMap = new HashMap<String, List<TodoRule>>();
+        this.powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 
         HarnessDatabase db = Room.databaseBuilder(context,
                 HarnessDatabase.class, "db").allowMainThreadQueries().build();
@@ -106,15 +112,52 @@ public class RulesManagerThread extends Thread {
 
     }
 
+    // this works...
+    //
+    private String printForegroundTask() {
+        String currentApp = "NULL";
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            UsageStatsManager usm = (UsageStatsManager) context.getSystemService("usagestats");
+            long time = System.currentTimeMillis();
+            List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,  time - 1000*1000, time);
+            if (appList != null && appList.size() > 0) {
+                SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>();
+                for (UsageStats usageStats : appList) {
+                    mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
+                }
+                if (mySortedMap != null && !mySortedMap.isEmpty()) {
+                    currentApp = mySortedMap.get(mySortedMap.lastKey()).getPackageName();
+                }
+            }
+        } else {
+            ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            List<ActivityManager.RunningAppProcessInfo> tasks = am.getRunningAppProcesses();
+            currentApp = tasks.get(0).processName;
+        }
+
+        Log.e("adapter", "Current App in foreground is: " + currentApp);
+        return currentApp;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void run()  {
         Log.d(TAG, "run: foo");
         Calendar start = getStart();
         Calendar end = getEnd();
         while(true) {
+
+            printForegroundTask();
 //            Log.d(TAG, "run: ");
+            /*
+            this just kills Yoke faster and OxygenOS won't even restart it
+            if (!powerManager.isInteractive()) {
+                continue;
+            }
+            */
+//            /*
             try {
 
+//                /*
                 long curTime = System.currentTimeMillis();
                 Event lastEvent = InProcessAppDataCache.getLastEvent();
                 if (lastEvent != null) {
@@ -130,37 +173,23 @@ public class RulesManagerThread extends Thread {
                     lastEventCheck = lastEvent.getTimeStamp();
                 }
                 // + 1, otherwise we'll double count the last seen event
+//        /*
                 UsageEvents events = manager.queryEvents(lastEventCheck + 1, System.currentTimeMillis());
-                /*
-                while(events.hasNextEvent()) {
-                    UsageEvents.Event event = new UsageEvents.Event();
-                    events.getNextEvent(event);
-                    long eventTime = event.getTimeStamp();
-                    if (eventTime >= lastEventCheck) {
-                        lastEventCheck = eventTime;
-                    }
-                   Log.d(TAG, "run: " + event.getPackageName() + " " + Integer.toString(event.getEventType()));
-                    Log.d(TAG, "run: " + Long.toString(event.getTimeStamp()));
-                }
-                */
-
+//                /*
                 List<UsageEvents.Event> eventsList = processAndFilterEventsList(events);
                 // if no new events have happened, then whatever app last came into the foreground
+                // is still in the foreground, and therefore
                 // is racking up time
-                if (eventsList.size() == 0 && InProcessAppDataCache.hasLastEvent()) {
+                if (eventsList.size() == 0 && InProcessAppDataCache.hasLastEvent() && InProcessAppDataCache.getLastEvent().getEventType() == Event.MOVE_TO_FOREGROUND) {
                     InProcessAppDataCache.addTime(InProcessAppDataCache.getLastEventPackageName(), SLEEP_LENGTH);
-                    continue;
 
                 } else if (eventsList.size() > 0){
-                    Log.d(TAG, "run: before tallytime");
-                    for (int i = 0; i < eventsList.size(); i++) {
-                        Event event = eventsList.get(i);
-                        Log.d(TAG, "tallytime: " + event.getPackageName() + " " + Integer.toString(event.getEventType()) + " " + Long.toString(event.getTimeStamp()));
-                    }
-                    Log.d(TAG, "run: new lastEvent " + events.toString());
-                    InProcessAppDataCache.setLastEvent(eventsList.get(eventsList.size() - 1));
-                    Log.d(TAG, "run: after tallytime");
+                    Event newLast = eventsList.get(eventsList.size() -1);
+                    Log.d(TAG, "run: new lastEvent " + newLast.getPackageName() + " " + Integer.toString(newLast.getEventType()));
+                    InProcessAppDataCache.setLastEvent(newLast);
+
                 }
+//                */
 
 
                 Thread.sleep(SLEEP_LENGTH);
@@ -190,48 +219,31 @@ public class RulesManagerThread extends Thread {
 
     private List<UsageEvents.Event> processAndFilterEventsList(UsageEvents events) {
         List<UsageEvents.Event> eventsList = new ArrayList<UsageEvents.Event>();
-//        Log.d(TAG, "processAndFilterEventsList: ");
+        Log.d(TAG, "processAndFilterEventsList: *****");
         while(events.hasNextEvent()) {
             // make sure we always make a fresh new Event to copy into
             UsageEvents.Event curEvent = new UsageEvents.Event();
             events.getNextEvent(curEvent);
  //           Log.d(TAG, "processAndFilterEventsList: in the while loop");
             int type = curEvent.getEventType();
-            Log.d(TAG, "processAndFilterEventsList: event type " + Integer.toString(type) + " "  + curEvent.getPackageName());
             if ((type == UsageEvents.Event.MOVE_TO_FOREGROUND || type == UsageEvents.Event.MOVE_TO_BACKGROUND)) {
                 eventsList.add(curEvent);
             } else {
                 continue;
             }
         }
-        List<Event> filteredlist = filterOutShortLivedIntervals(eventsList);
-        for (int i = 0; i < filteredlist.size(); i++) {
-            Event e = filteredlist.get(i);
-            Log.d(TAG, "elements in filtered list: " + Integer.toString(e.getEventType()) + " " + e.getPackageName());
-        }
-        return filterOutShortLivedIntervals(eventsList);
-    }
-
-    private void tallyTimeFromEventsList(UsageEvents events) {
-        UsageEvents.Event firstEventInInterval = new UsageEvents.Event();
-        UsageEvents.Event lastEventChecked = InProcessAppDataCache.getLastEvent();
-        //null?
-        if (lastEventChecked.getEventType() == UsageEvents.Event.MOVE_TO_FOREGROUND) {
-            firstEventInInterval = InProcessAppDataCache.getLastEvent();
-        } else {
-            events.getNextEvent(firstEventInInterval);
-        }
-        UsageEvents.Event curEvent = new UsageEvents.Event();
-        while(events.hasNextEvent()) {
-            events.getNextEvent(curEvent);
-//            if (curEvent.getEventType() != )
-            if (firstEventInInterval != null) {
-
+        if (eventsList.size() > 0) {
+            for (int i = 0; i < eventsList.size(); i++) {
+                Event e = eventsList.get(i);
+                Log.d(TAG, "processAndFilterEventsList: " + Integer.toString(e.getEventType()) + " " + e.getPackageName());
             }
-           Log.d(TAG, "tallytime: " + curEvent.getPackageName() + " " + Integer.toString(curEvent.getEventType()) + Long.toString(curEvent.getTimeStamp()));
+            List<Event> filteredlist = filterOutShortLivedIntervals(eventsList);
+            for (int i = 0; i < filteredlist.size(); i++) {
+                Event e = filteredlist.get(i);
+            }
+            return filterOutShortLivedIntervals(eventsList);
         }
-
-        InProcessAppDataCache.setLastEvent(curEvent);
+        return eventsList;
     }
 
     private List<Event> filterOutShortLivedIntervals(List<Event> eventList) {
