@@ -1,5 +1,6 @@
 package com.system2override.yoke;
 
+import android.accounts.AccountManager;
 import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -10,6 +11,7 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,17 +22,28 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.util.ExponentialBackOff;
+
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+
+import static com.system2override.yoke.TodoAppConstants.GTASKS_ACCCOUNT_NAME;
+import static com.system2override.yoke.TodoAppConstants.GTASKS_SCOPES;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
 
 public class ManagerService extends Service {
     private static final String TAG = "ManagerService";
@@ -52,9 +65,9 @@ public class ManagerService extends Service {
             if (Build.VERSION.SDK_INT >= 26) {
                 foregroundForOreoAndUp();
             }
-            launchManagerThread();
 //            */
         }
+        launchManagerThread();
     }
 
     @RequiresApi(api = 26)
@@ -83,7 +96,28 @@ public class ManagerService extends Service {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void launchManagerThread() {
         try {
+            Log.d(TAG, "launchManagerThread: trying to launch this fucking threads");
+
+            SharedPreferences settings =
+                    this.getApplicationContext().getSharedPreferences(TodoAppConstants.ACCOUNTS_FILE, Context.MODE_PRIVATE);
+            String accountName = settings.getString(TodoAppConstants.GTASKS_ACCCOUNT_NAME, null);
+
+            GoogleAccountCredential mCredential = GoogleAccountCredential.usingOAuth2(
+                    getApplicationContext(), Arrays.asList(GTASKS_SCOPES))
+                    .setBackOff(new ExponentialBackOff());
+
+            // should ask for authentication somehow...
+            mCredential.setSelectedAccountName(accountName);
+
+            HttpTransport transport = AndroidHttp.newCompatibleTransport();
+            JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+            com.google.api.services.tasks.Tasks mService = new com.google.api.services.tasks.Tasks.Builder(
+                    transport, jsonFactory, mCredential)
+                    .setApplicationName("Google Tasks API Android Quickstart")
+                    .build();
+
             RulesManagerThread rulesManagerThread = new RulesManagerThread(this);
+            rulesManagerThread.setGoogleService(mService);
             rulesManagerThread.start();
 
         } catch (Exception e) {

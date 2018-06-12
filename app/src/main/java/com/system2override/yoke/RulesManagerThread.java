@@ -1,21 +1,22 @@
 package com.system2override.yoke;
 
 import android.app.ActivityManager;
-import android.app.usage.UsageEvents;
-import android.app.usage.UsageEvents.Event;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.PowerManager;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import com.google.api.client.util.DateTime;
 
-import com.google.android.gms.common.wrappers.InstantApps;
-import com.squareup.otto.Bus;
+import com.system2override.yoke.integrations.GoogleSnapshot;
+import com.system2override.yoke.models.TodoRule;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -30,9 +31,11 @@ import java.util.TreeMap;
 // not interested in events that last only half a second
 
 public class RulesManagerThread extends Thread {
+    private com.google.api.services.tasks.Tasks mService;
     private static final String TAG = "RulesManagerThread";
     private volatile List<UsageStats> stats;
     private final long SLEEP_LENGTH = 4000;
+    private long MAX_LOOKBACK = 14400 * 1000;
     Context context;
     UsageStatsManager manager;
     SharedPreferences sharedPrefs;
@@ -40,6 +43,7 @@ public class RulesManagerThread extends Thread {
     List<TodoRule> rules;
     HashMap<String, List<TodoRule>> packageNameToRulesMap;
     PowerManager powerManager;
+    HarnessDatabase db;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public RulesManagerThread(Context context) {
@@ -50,10 +54,9 @@ public class RulesManagerThread extends Thread {
         this.packageNameToRulesMap = new HashMap<String, List<TodoRule>>();
         this.powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 
-        HarnessDatabase db = Room.databaseBuilder(context,
-                HarnessDatabase.class, "db").allowMainThreadQueries().build();
-        this.rules = db.todoRuleDao().loadAllTodoRules();
-        db.close();
+        this.db = Room.databaseBuilder(context,
+                HarnessDatabase.class, "db").fallbackToDestructiveMigration().allowMainThreadQueries().build();
+        this.rules = this.db.todoRuleDao().loadAllTodoRules();
         for (int i = 0; i < rules.size(); i++) {
             TodoRule rule = rules.get(i);
             Log.d(TAG, "RulesManagerThread: rule " + rule.toString());
@@ -64,6 +67,7 @@ public class RulesManagerThread extends Thread {
             packageNameToRulesMap.get(rule.getPackageName()).add(rule);
         }
         Log.d(TAG, "RulesManagerThread: hashmap " + packageNameToRulesMap.toString());
+
     }
 
     private Calendar getStart() {
@@ -114,15 +118,17 @@ public class RulesManagerThread extends Thread {
 
     // this works...
     //
-    private String printForegroundTask() {
+    private String getForegroundTask() {
         String currentApp = "NULL";
         if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             UsageStatsManager usm = (UsageStatsManager) context.getSystemService("usagestats");
             long time = System.currentTimeMillis();
-            List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,  time - 1000*1000, time);
+            List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,  time - MAX_LOOKBACK, time);
             if (appList != null && appList.size() > 0) {
+//                Log.d(TAG, "getForegroundTask: applist not null");
                 SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>();
                 for (UsageStats usageStats : appList) {
+//                    Log.d(TAG, "getForegroundTask: usagestat " + usageStats.getPackageName());
                     mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
                 }
                 if (mySortedMap != null && !mySortedMap.isEmpty()) {
@@ -135,8 +141,31 @@ public class RulesManagerThread extends Thread {
             currentApp = tasks.get(0).processName;
         }
 
-        Log.e("adapter", "Current App in foreground is: " + currentApp);
+        Log.d("adapter", "Current App in foreground is: " + currentApp);
         return currentApp;
+    }
+
+    private void addTime(String packageName, long time) {
+        long val = this.sharedPrefs.getLong(packageName, 0);
+        this.editor.putLong(packageName, val + time);
+        this.editor.apply();
+        Log.d(TAG, "addTime: " + packageName + " " + Long.toString(this.sharedPrefs.getLong(packageName, 0)));
+    }
+
+    private void resetTime(String packageName) {
+        this.editor.putLong(packageName, 0);
+        this.editor.apply();
+    }
+
+    private void killApp() {
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.context.startActivity(startMain);
+    }
+
+    public void setGoogleService(com.google.api.services.tasks.Tasks service) {
+        this.mService = service;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -146,51 +175,48 @@ public class RulesManagerThread extends Thread {
         Calendar end = getEnd();
         while(true) {
 
-            printForegroundTask();
-//            Log.d(TAG, "run: ");
-            /*
-            this just kills Yoke faster and OxygenOS won't even restart it
-            if (!powerManager.isInteractive()) {
-                continue;
+            String packageName = getForegroundTask();
+           TodoRule rule = db.todoRuleDao().getStrictestRuleForPackageName(packageName);
+/*
+            for (TodoRule rule: rules) {
+                Log.d(TAG, "run: rule " + rule.toString());
             }
             */
-//            /*
+            // don't bother time tracking for apps that we have no rules for
+            // save the expense of hitting SharedPreferences
+
+            if (rule != null) {
+                if (rule.getTime() <= this.sharedPrefs.getLong(packageName, 0)) {
+                    // TODO if integration with relevant app shows a failure, boot them!
+                    // otherwise, reset counter
+                    // TODO what's a good way to go from the rule to the snapshot class...
+                    DateTime date = new DateTime(0);
+                    try {
+                        GoogleSnapshot.getTasks(mService, date.toStringRfc3339());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    killApp();
+                } else {
+                    addTime(packageName, SLEEP_LENGTH);
+                }
+            }
+
+            /*
+                get foreground task
+                if rule has been broken for this task?
+                  see if todo list item has been crossed off
+                    if it has not, kill foreground task
+                    if it has, reset timer
+
+                else
+                    add timer for foreground task
+
+                put counters into SharedPrefs
+             */
+
+
             try {
-
-//                /*
-                long curTime = System.currentTimeMillis();
-                Event lastEvent = InProcessAppDataCache.getLastEvent();
-                if (lastEvent != null) {
-//                    Log.d(TAG, "run: inprocessappdatacache last event " + lastEvent.toString());
-                } else {
- //                   Log.d(TAG, "run: the most recently recorded event is null");
-                }
-                long lastEventCheck;
-                if (lastEvent == null) {
-                    Log.d(TAG, "run: lastevent is null");
-                    lastEventCheck = curTime - 5000;
-                } else {
-                    lastEventCheck = lastEvent.getTimeStamp();
-                }
-                // + 1, otherwise we'll double count the last seen event
-//        /*
-                UsageEvents events = manager.queryEvents(lastEventCheck + 1, System.currentTimeMillis());
-//                /*
-                List<UsageEvents.Event> eventsList = processAndFilterEventsList(events);
-                // if no new events have happened, then whatever app last came into the foreground
-                // is still in the foreground, and therefore
-                // is racking up time
-                if (eventsList.size() == 0 && InProcessAppDataCache.hasLastEvent() && InProcessAppDataCache.getLastEvent().getEventType() == Event.MOVE_TO_FOREGROUND) {
-                    InProcessAppDataCache.addTime(InProcessAppDataCache.getLastEventPackageName(), SLEEP_LENGTH);
-
-                } else if (eventsList.size() > 0){
-                    Event newLast = eventsList.get(eventsList.size() -1);
-                    Log.d(TAG, "run: new lastEvent " + newLast.getPackageName() + " " + Integer.toString(newLast.getEventType()));
-                    InProcessAppDataCache.setLastEvent(newLast);
-
-                }
-//                */
-
 
                 Thread.sleep(SLEEP_LENGTH);
 
@@ -199,67 +225,9 @@ public class RulesManagerThread extends Thread {
                 Log.d(TAG, "run: " + e.getStackTrace());
             }
                 /*
-                Intent startMain = new Intent(Intent.ACTION_MAIN);
-                startMain.addCategory(Intent.CATEGORY_HOME);
-                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(startMain);
                 */
 
         }
     }
 
-    private void storeEventCheck(SharedPreferences.Editor editor, long lastEventTime) {
-        editor.putLong("lastEventTime", lastEventTime);
-        editor.apply();
-    }
-
-    public List<UsageStats> getStats() {
-        return stats;
-    }
-
-    private List<UsageEvents.Event> processAndFilterEventsList(UsageEvents events) {
-        List<UsageEvents.Event> eventsList = new ArrayList<UsageEvents.Event>();
-        Log.d(TAG, "processAndFilterEventsList: *****");
-        while(events.hasNextEvent()) {
-            // make sure we always make a fresh new Event to copy into
-            UsageEvents.Event curEvent = new UsageEvents.Event();
-            events.getNextEvent(curEvent);
- //           Log.d(TAG, "processAndFilterEventsList: in the while loop");
-            int type = curEvent.getEventType();
-            if ((type == UsageEvents.Event.MOVE_TO_FOREGROUND || type == UsageEvents.Event.MOVE_TO_BACKGROUND)) {
-                eventsList.add(curEvent);
-            } else {
-                continue;
-            }
-        }
-        if (eventsList.size() > 0) {
-            for (int i = 0; i < eventsList.size(); i++) {
-                Event e = eventsList.get(i);
-                Log.d(TAG, "processAndFilterEventsList: " + Integer.toString(e.getEventType()) + " " + e.getPackageName());
-            }
-            List<Event> filteredlist = filterOutShortLivedIntervals(eventsList);
-            for (int i = 0; i < filteredlist.size(); i++) {
-                Event e = filteredlist.get(i);
-            }
-            return filterOutShortLivedIntervals(eventsList);
-        }
-        return eventsList;
-    }
-
-    private List<Event> filterOutShortLivedIntervals(List<Event> eventList) {
-        int size = eventList.size();
-        if (eventList.size() == 0 || eventList.size() == 1) {
-            return eventList;
-        }
-
-        List<Event> filteredList = new ArrayList<Event>();
-        if (eventList.get(0).getEventType() == Event.MOVE_TO_BACKGROUND) {
-            filteredList.add(eventList.get(0));
-        }
-        if ((eventList.get(size - 1).getEventType() == Event.MOVE_TO_FOREGROUND)) {
-            filteredList.add(eventList.get(size - 1));
-        }
-
-        return filteredList;
-    }
 }

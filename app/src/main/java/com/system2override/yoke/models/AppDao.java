@@ -1,4 +1,4 @@
-package com.system2override.yoke;
+package com.system2override.yoke.models;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;

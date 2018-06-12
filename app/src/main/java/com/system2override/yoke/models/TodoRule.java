@@ -1,13 +1,15 @@
-package com.system2override.yoke;
+package com.system2override.yoke.models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
-import android.arch.persistence.room.PrimaryKey;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 import android.arch.persistence.room.ForeignKey;
 import android.support.annotation.NonNull;
+
+import com.system2override.yoke.models.Rule;
+import com.system2override.yoke.models.TodoApp;
 
 // though i dont need indices, as i anticipate there being like five todo apps max
 @Entity(tableName="TodoRules",
@@ -19,15 +21,25 @@ import android.support.annotation.NonNull;
                     @Index(value = "packageName")}
         )
 public class TodoRule extends Rule {
+    // bad app
     @android.support.annotation.NonNull
     @ColumnInfo(name="packageName")
     private String packageName;
 
+    // this is in milliseconds
     @ColumnInfo(name="time")
     private int time;
 
     @ColumnInfo(name = "todoappId")
-    private int todoappId;
+    private int todoAppId;
+
+    public int getTodoAppId() {
+        return todoAppId;
+    }
+
+    public void setTodoAppId(int todoAppId) {
+        this.todoAppId = todoAppId;
+    }
 
     public int getId() {
         return id;
@@ -46,11 +58,11 @@ public class TodoRule extends Rule {
     }
 
     public int getTodoappId() {
-        return todoappId;
+        return todoAppId;
     }
 
     public void setTodoappId(int todoappId) {
-        this.todoappId = todoappId;
+        this.todoAppId = todoappId;
     }
 
     @NonNull
@@ -68,7 +80,7 @@ public class TodoRule extends Rule {
                 "id=" + this.id +
                 ", packageName='" + packageName + '\'' +
                 ", time=" + time +
-                ", todoappId=" + todoappId +
+                ", todoAppId=" + todoAppId +
                 '}';
     }
 }

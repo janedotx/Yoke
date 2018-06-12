@@ -1,0 +1,121 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "54fe5351252421164ae9d64ecc3c8ec6",
+    "entities": [
+      {
+        "tableName": "TodoRules",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `packageName` TEXT NOT NULL, `time` INTEGER NOT NULL, `todoappId` INTEGER NOT NULL, FOREIGN KEY(`todoappId`) REFERENCES `TodoApps`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "time",
+            "columnName": "time",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "todoAppId",
+            "columnName": "todoappId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "todoApp_index",
+            "unique": false,
+            "columnNames": [
+              "todoappId"
+            ],
+            "createSql": "CREATE  INDEX `todoApp_index` ON `${TABLE_NAME}` (`todoappId`)"
+          },
+          {
+            "name": "index_TodoRules_packageName",
+            "unique": false,
+            "columnNames": [
+              "packageName"
+            ],
+            "createSql": "CREATE  INDEX `index_TodoRules_packageName` ON `${TABLE_NAME}` (`packageName`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "TodoApps",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "todoappId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "TodoApps",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `oauth2_token` TEXT, `todoapp_name` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "oauth2Token",
+            "columnName": "oauth2_token",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "todoAppName",
+            "columnName": "todoapp_name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_TodoApps_todoapp_name",
+            "unique": true,
+            "columnNames": [
+              "todoapp_name"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_TodoApps_todoapp_name` ON `${TABLE_NAME}` (`todoapp_name`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"54fe5351252421164ae9d64ecc3c8ec6\")"
+    ]
+  }
+}

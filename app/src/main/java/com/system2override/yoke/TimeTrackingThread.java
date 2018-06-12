@@ -3,14 +3,14 @@ package com.system2override.yoke;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.usage.UsageStatsManager;
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
-import java.util.ArrayList;
+import com.system2override.yoke.models.TodoRule;
+
 import java.util.HashMap;
 import java.util.List;
 
