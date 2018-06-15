@@ -118,6 +118,11 @@ public class ManagerService extends Service {
 
             RulesManagerThread rulesManagerThread = new RulesManagerThread(this);
             rulesManagerThread.setGoogleService(mService);
+            Thread.UncaughtExceptionHandler handler = rulesManagerThread.getUncaughtExceptionHandler();
+            if (!(handler instanceof DefaultUncaughtExceptionHandler)) {
+                rulesManagerThread.setUncaughtExceptionHandler(
+                        new DefaultUncaughtExceptionHandler(handler, this));
+            }
             rulesManagerThread.start();
 
         } catch (Exception e) {

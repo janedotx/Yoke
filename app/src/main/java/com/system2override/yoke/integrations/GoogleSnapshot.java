@@ -52,15 +52,12 @@ public class GoogleSnapshot {
             for (TaskList taskList : tasklists) {
                 List<Task> resultingTasks = mService.tasks()
                         .list(taskList.getId())
-                        .setShowCompleted(false)
+                        .setShowCompleted(true)
                         .setUpdatedMin(updatedMin)
                         .execute()
                         .getItems();
                 for (int i = 0; i < resultingTasks.size(); i++) {
-                    Log.d(TAG, "getTasks: about to convert items");
                     Task resultingTask = resultingTasks.get(i);
-                    Log.d(TAG, "getTasks: " + resultingTask.getTitle());
-                    Log.d(TAG, "getTasks: " + resultingTask.getStatus());
                     allTasks.add(convertToLocalTask(resultingTask));
                 }
             }
@@ -77,7 +74,7 @@ public class GoogleSnapshot {
             localTask.setDateCompleted(task.getCompleted().toStringRfc3339());
         }
         localTask.setUpdatedAt(task.getUpdated().toStringRfc3339());
-        localTask.setTodoApp(TodoAppConstants.GTASKS);
+        localTask.setTodoAppName(TodoAppConstants.GTASKS);
 
         return localTask;
     }

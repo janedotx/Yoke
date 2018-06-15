@@ -13,10 +13,9 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 @Entity(tableName = "LocalTasks",
         foreignKeys = {@ForeignKey(entity = TodoApp.class,
                                             parentColumns = "id",
-                                            childColumns="todoappId",
+                                            childColumns="todoAppId",
                                             onDelete = CASCADE)},
-        indices = {@Index(name = "todoApp_index", value = "todoappId"),
-                    @Index(value = "packageName")}
+        indices = {@Index(value = "todoAppId")}
         )
 public class LocalTask {
     @PrimaryKey(autoGenerate = true)
@@ -32,12 +31,19 @@ public class LocalTask {
     @ColumnInfo(name = "todoAppId")
     public int todoAppId;
 
-    @ColumnInfo(name="todoApp")
-    public String todoApp;
+    @ColumnInfo(name = "description")
+    public String description;
+
+    @ColumnInfo(name = "todoAppName")
+    public String todoAppName;
 
     // RFC 3339 (which is in UTC)
     @ColumnInfo(name="updatedAt")
     public String updatedAt;
+
+    // this is the id of the task back in its home app
+    @ColumnInfo(name="todoAppIdString")
+    public String todoAppIdString;
 
     public int getId() {
         return id;
@@ -75,11 +81,49 @@ public class LocalTask {
         this.updatedAt = updatedAt;
     }
 
-    public String getTodoApp() {
-        return todoApp;
+    public void setTodoAppId(Integer todoAppId) {
+        this.todoAppId = todoAppId;
     }
 
-    public void setTodoApp(String todoApp) {
-        this.todoApp = todoApp;
+    public String getTodoAppName() {
+        return todoAppName;
+    }
+
+    public void setTodoAppName(String todoAppName) {
+        this.todoAppName = todoAppName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTodoAppIdString() {
+        return todoAppIdString;
+    }
+
+    public void setTodoAppIdString(String todoAppIdString) {
+        this.todoAppIdString = todoAppIdString;
+    }
+
+    @Override
+    public String toString() {
+        return "LocalTask{" +
+                "id=" + id +
+                ", completed=" + completed +
+                ", dateCompleted='" + dateCompleted + '\'' +
+                ", todoAppId=" + todoAppId +
+                ", description='" + description + '\'' +
+                ", todoApp='" + todoAppName + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
+                ", todoAppIdString='" + todoAppIdString + '\'' +
+                '}';
+    }
+
+    public boolean hasSameId(LocalTask otherTask) {
+        return this.todoAppIdString.equals(otherTask.getTodoAppIdString());
     }
 }

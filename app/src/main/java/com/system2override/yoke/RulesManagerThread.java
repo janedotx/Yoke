@@ -185,6 +185,8 @@ public class RulesManagerThread extends Thread {
             // don't bother time tracking for apps that we have no rules for
             // save the expense of hitting SharedPreferences
 
+//            List<String> str = new ArrayList<>();
+//            str.get(1);
             if (rule != null) {
                 if (rule.getTime() <= this.sharedPrefs.getLong(packageName, 0)) {
                     // TODO if integration with relevant app shows a failure, boot them!

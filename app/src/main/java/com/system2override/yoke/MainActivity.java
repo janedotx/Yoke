@@ -14,6 +14,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -76,10 +83,34 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private static final String BUTTON_TEXT = "Call Google Tasks API";
     private static final String PREF_ACCOUNT_NAME = "accountName";
 
+    private String readFile(String file) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String         line = null;
+        StringBuilder  stringBuilder = new StringBuilder();
+        String         ls = System.getProperty("line.separator");
+
+        try {
+            while((line = reader.readLine()) != null) {
+                stringBuilder.append(line);
+                stringBuilder.append(ls);
+            }
+
+            return stringBuilder.toString();
+        } finally {
+            reader.close();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        String path = this.getFilesDir() + "/error.log";
+        try {
+            Log.d(TAG, "onCreate: log contents" + readFile(path));
+        } catch (IOException e) {
+            Log.d(TAG, "onCreate: io exception");
+        }
         /*
 
         LinearLayout activityLayout = new LinearLayout(this);
@@ -161,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
             app = db.todoAppDao().getTodoAppFromName(app.getTodoAppName());
             TodoRule rule = new TodoRule();
-            rule.setTodoappId(app.getId());
+            rule.setTodoAppId(app.getId());
             rule.setTime(45000);
             rule.setPackageName("com.android.contacts");
             db.todoRuleDao().insert(rule);

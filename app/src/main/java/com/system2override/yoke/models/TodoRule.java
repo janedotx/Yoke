@@ -15,9 +15,9 @@ import com.system2override.yoke.models.TodoApp;
 @Entity(tableName="TodoRules",
         foreignKeys = {@ForeignKey(entity = TodoApp.class,
                                             parentColumns = "id",
-                                            childColumns="todoappId",
+                                            childColumns="todoAppId",
                                             onDelete = CASCADE)},
-        indices = {@Index(name = "todoApp_index", value = "todoappId"),
+        indices = {@Index(name = "todoApp_index", value = "todoAppId"),
                     @Index(value = "packageName")}
         )
 public class TodoRule extends Rule {
@@ -30,7 +30,7 @@ public class TodoRule extends Rule {
     @ColumnInfo(name="time")
     private int time;
 
-    @ColumnInfo(name = "todoappId")
+    @ColumnInfo(name = "todoAppId")
     private int todoAppId;
 
     public int getTodoAppId() {
@@ -55,14 +55,6 @@ public class TodoRule extends Rule {
 
     public void setTime(int time) {
         this.time = time;
-    }
-
-    public int getTodoappId() {
-        return todoAppId;
-    }
-
-    public void setTodoappId(int todoappId) {
-        this.todoAppId = todoappId;
     }
 
     @NonNull
