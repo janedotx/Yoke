@@ -28,6 +28,7 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
     private static final String TAG = "ExampleInstrumentedTest";
+    TestDbWrapper mTestDbWrapper;
 
     @Test
     public void useAppContext() {
@@ -36,7 +37,6 @@ public class ExampleInstrumentedTest {
 
         assertEquals("com.system2override.yoke", appContext.getPackageName());
     }
-    TestDbWrapper mTestDbWrapper;
 
     @Before
     public void setUpDb() {
@@ -47,29 +47,6 @@ public class ExampleInstrumentedTest {
     @After
     public void closeDb() throws IOException {
                mTestDbWrapper.close();
-    }
-
-    @Test
-    public void insertsWorkProperly() {
-        assertEquals(3, mTestDbWrapper.getDb().localTaskDao().loadAllLocalTasks().size());
-        List<LocalTask> tasks = mTestDbWrapper.getDb().localTaskDao().loadAllLocalTasks();
-        Log.d(TAG, "insertsWorkProperly: " + tasks.get(0).toString());
-        assertEquals(1, mTestDbWrapper.getDb()
-                .localTaskDao()
-                .getLocalTasksForAppSince("test_gtasks", new DateTime(11000).toStringRfc3339()).size());
-        assertEquals(3, mTestDbWrapper.getDb()
-                .localTaskDao()
-                .getIncompleteLocalTasksForApp("test_gtasks").size());
-    }
-
-    @Test public void completeTypeConverterWorks() {
-        LocalTask t = mTestDbWrapper.getDb().localTaskDao().getLocalTasksByID(1);
-        assertEquals(false, t.isCompleted());
-        t.completed = true;
-        mTestDbWrapper.getDb().localTaskDao().update(t);
-        LocalTask t1 = mTestDbWrapper.getDb().localTaskDao().getLocalTasksByID(1);
-        assertEquals(true, t1.isCompleted());
-
     }
 
     @Test

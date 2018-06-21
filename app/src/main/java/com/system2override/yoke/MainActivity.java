@@ -16,6 +16,8 @@ import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.nio.charset.Charset;
@@ -208,6 +210,18 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         }
         */
         db.close();
+        try {
+            FileInputStream stream = this.openFileInput("error.log");
+            byte[] buffer = new byte[100000];
+            stream.read(buffer);
+            String str = new String(buffer);
+            Log.d(TAG, "onStart: error.log contents " + str);
+
+        } catch (FileNotFoundException e) {
+            Log.d(TAG, "onStart: error.log not found");
+        } catch (IOException e) {
+            Log.d(TAG, "onStart: ioexception");
+        }
         RulesManager.foo();
 
     }

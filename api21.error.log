@@ -1,0 +1,55 @@
+api 21 error lgo
+
+06-20 23:57:10.301 3059-3059/com.system2override.yoke E/DialogRedirect: Failed to start resolution intent
+    android.content.ActivityNotFoundException: No Activity found to handle Intent { act=android.intent.action.VIEW dat=market://details?id=com.google.android.gms&pcampaignid=gcore_12451000-d-com.system2override.yoke-1 flg=0x80000 pkg=com.android.vending }
+        at android.app.Instrumentation.checkStartActivityResult(Instrumentation.java:1765)
+        at android.app.Instrumentation.execStartActivity(Instrumentation.java:1485)
+        at android.app.Activity.startActivityForResult(Activity.java:3736)
+        at android.support.v4.app.BaseFragmentActivityApi16.startActivityForResult(BaseFragmentActivityApi16.java:54)
+        at android.support.v4.app.FragmentActivity.startActivityForResult(FragmentActivity.java:68)
+        at android.app.Activity.startActivityForResult(Activity.java:3697)
+        at android.support.v4.app.FragmentActivity.startActivityForResult(FragmentActivity.java:751)
+        at com.google.android.gms.common.internal.zzb.redirect(Unknown Source)
+        at com.google.android.gms.common.internal.DialogRedirect.onClick(Unknown Source)
+        at com.android.internal.app.AlertController$ButtonHandler.handleMessage(AlertController.java:160)
+        at android.os.Handler.dispatchMessage(Handler.java:102)
+        at android.os.Looper.loop(Looper.java:135)
+        at android.app.ActivityThread.main(ActivityThread.java:5221)
+        at java.lang.reflect.Method.invoke(Native Method)
+        at java.lang.reflect.Method.invoke(Method.java:372)
+        at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:899)
+        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:694)
+06-20 23:57:10.306 3059-3092/com.system2override.yoke D/OpenGLRenderer: endAllStagingAnimators on 0xac7e0680 (RippleDrawable) with handle 0xaf00ba10
+06-20 23:57:10.315 3059-3059/com.system2override.yoke D/MainActivity: onPause: i was called
+06-20 23:57:10.316 3059-3059/com.system2override.yoke D/AndroidRuntime: Shutting down VM
+06-20 23:57:10.316 3059-3059/com.system2override.yoke E/AndroidRuntime: FATAL EXCEPTION: main
+    Process: com.system2override.yoke, PID: 3059
+    java.lang.RuntimeException: Failure delivering result ResultInfo{who=null, request=1002, result=0, data=null} to activity {com.system2override.yoke/com.system2override.yoke.MainActivity}: java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.TextView.setText(java.lang.CharSequence)' on a null object reference
+        at android.app.ActivityThread.deliverResults(ActivityThread.java:3539)
+        at android.app.ActivityThread.handleSendResult(ActivityThread.java:3582)
+        at android.app.ActivityThread.access$1300(ActivityThread.java:144)
+        at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1327)
+        at android.os.Handler.dispatchMessage(Handler.java:102)
+        at android.os.Looper.loop(Looper.java:135)
+        at android.app.ActivityThread.main(ActivityThread.java:5221)
+        at java.lang.reflect.Method.invoke(Native Method)
+        at java.lang.reflect.Method.invoke(Method.java:372)
+        at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:899)
+        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:694)
+     Caused by: java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.TextView.setText(java.lang.CharSequence)' on a null object reference
+        at com.system2override.yoke.MainActivity.onActivityResult(MainActivity.java:348)
+        at android.app.Activity.dispatchActivityResult(Activity.java:6139)
+        at android.app.ActivityThread.deliverResults(ActivityThread.java:3535)
+        at android.app.ActivityThread.handleSendResult(ActivityThread.java:3582) 
+        at android.app.ActivityThread.access$1300(ActivityThread.java:144) 
+        at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1327) 
+        at android.os.Handler.dispatchMessage(Handler.java:102) 
+        at android.os.Looper.loop(Looper.java:135) 
+        at android.app.ActivityThread.main(ActivityThread.java:5221) 
+        at java.lang.reflect.Method.invoke(Native Method) 
+        at java.lang.reflect.Method.invoke(Method.java:372) 
+        at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:899) 
+        at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:694) 
+
+
+06-20 23:57:06.881 3059-3059/com.system2override.yoke D/MainActivity: onStart: error.log not found

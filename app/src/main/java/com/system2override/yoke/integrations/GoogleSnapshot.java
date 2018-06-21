@@ -65,7 +65,6 @@ public class GoogleSnapshot {
         return allTasks;
     }
 
-
     private static LocalTask convertToLocalTask(Task task) {
         LocalTask localTask = new LocalTask();
 

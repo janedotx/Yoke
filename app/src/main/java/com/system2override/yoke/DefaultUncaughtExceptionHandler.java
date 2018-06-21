@@ -10,6 +10,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.file.Paths;
+import java.time.ZonedDateTime;
+import java.util.Date;
 
 public class DefaultUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
     private static final String TAG = "DefaultUncaughtExceptio";
@@ -29,6 +31,8 @@ public class DefaultUncaughtExceptionHandler implements Thread.UncaughtException
         e.printStackTrace(printWriter);
         try {
             FileOutputStream stream = context.openFileOutput("error.log", Context.MODE_APPEND);
+            stream.write(new Date().toString().getBytes());
+            stream.write("\n".getBytes());
             stream.write(result.toString().getBytes());
             stream.flush();
             stream.close();
