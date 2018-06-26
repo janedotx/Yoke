@@ -11,10 +11,13 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
+
 import com.google.api.client.util.DateTime;
 
 import com.system2override.yoke.integrations.GoogleSnapshot;
-import com.system2override.yoke.models.TodoRule;
+import com.system2override.yoke.models.PerAppTodoRule;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,10 +43,11 @@ public class RulesManagerThread extends Thread {
     UsageStatsManager manager;
     SharedPreferences sharedPrefs;
     SharedPreferences.Editor editor;
-    List<TodoRule> rules;
-    HashMap<String, List<TodoRule>> packageNameToRulesMap;
+    List<PerAppTodoRule> rules;
+    HashMap<String, List<PerAppTodoRule>> packageNameToRulesMap;
     PowerManager powerManager;
     HarnessDatabase db;
+    Display display;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public RulesManagerThread(Context context) {
@@ -51,18 +55,20 @@ public class RulesManagerThread extends Thread {
         this.manager = getUsageStatsManager();
         this.sharedPrefs = context.getSharedPreferences(context.getString(R.string.rules_manager_file), Context.MODE_PRIVATE);
         this.editor = sharedPrefs.edit();
-        this.packageNameToRulesMap = new HashMap<String, List<TodoRule>>();
+        this.packageNameToRulesMap = new HashMap<String, List<PerAppTodoRule>>();
         this.powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 
         this.db = Room.databaseBuilder(context,
                 HarnessDatabase.class, "db").fallbackToDestructiveMigration().allowMainThreadQueries().build();
-        this.rules = this.db.todoRuleDao().loadAllTodoRules();
+        this.rules = this.db.perAppTodoRuleDao().loadAllPerAppTodoRules();
+
+        this.display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         for (int i = 0; i < rules.size(); i++) {
-            TodoRule rule = rules.get(i);
+            PerAppTodoRule rule = rules.get(i);
             Log.d(TAG, "RulesManagerThread: rule " + rule.toString());
             Log.d(TAG, "RulesManagerThread: rule " + rule.getPackageName());
             if (packageNameToRulesMap.get(rule.getPackageName()) == null) {
-                packageNameToRulesMap.put(rule.getPackageName(), new ArrayList<TodoRule>());
+                packageNameToRulesMap.put(rule.getPackageName(), new ArrayList<PerAppTodoRule>());
             }
             packageNameToRulesMap.get(rule.getPackageName()).add(rule);
         }
@@ -123,7 +129,7 @@ public class RulesManagerThread extends Thread {
         if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             UsageStatsManager usm = (UsageStatsManager) context.getSystemService("usagestats");
             long time = System.currentTimeMillis();
-            List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,  time - MAX_LOOKBACK, time);
+            List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_BEST,  time - 5000, time);
             if (appList != null && appList.size() > 0) {
 //                Log.d(TAG, "getForegroundTask: applist not null");
                 SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>();
@@ -174,11 +180,15 @@ public class RulesManagerThread extends Thread {
         Calendar start = getStart();
         Calendar end = getEnd();
         while(true) {
+//            if (display.getState() != Display.STATE_ON) {
+ //               Log.d(TAG, "run: display state was not on");
+  //              continue;
+   //         }
 
             String packageName = getForegroundTask();
-           TodoRule rule = db.todoRuleDao().getStrictestRuleForPackageName(packageName);
+           PerAppTodoRule rule = db.perAppTodoRuleDao().getStrictestRuleForPackageName(packageName);
 /*
-            for (TodoRule rule: rules) {
+            for (PerAppTodoRule rule: rules) {
                 Log.d(TAG, "run: rule " + rule.toString());
             }
             */

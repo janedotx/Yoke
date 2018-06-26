@@ -10,8 +10,8 @@ import android.util.Log;
 import com.google.api.client.util.DateTime;
 import com.system2override.yoke.models.LocalTaskDao;
 import com.system2override.yoke.models.LocalTask;
+import com.system2override.yoke.models.PerAppTodoRule;
 import com.system2override.yoke.models.TodoApp;
-import com.system2override.yoke.models.TodoRule;
 
 import org.junit.After;
 import org.junit.Before;
@@ -45,11 +45,11 @@ public class TestDbWrapper extends AndroidTestCase {
         mDb.todoAppDao().insert(app);
         TodoApp app1 = mDb.todoAppDao().getTodoAppFromName("test_gtasks");
 
-        TodoRule rule = new TodoRule();
+        PerAppTodoRule rule = new PerAppTodoRule();
         rule.setTodoAppId(app1.getId());
         rule.setTime(30000);
         rule.setPackageName("com.android.contacts");
-        mDb.todoRuleDao().insert(rule);
+        mDb.perAppTodoRuleDao().insert(rule);
 
         List<LocalTask> localTaskList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {

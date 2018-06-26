@@ -4,18 +4,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import com.system2override.yoke.ManagerService;
 
-public class ManagerServiceBootReceiver extends BroadcastReceiver {
-    private static final String TAG = "ManagerServiceBootRecei";
-
+public class ManagerServicePhoneScreenOnReceiver extends BroadcastReceiver {
+    private static final String TAG = "ManagerServicePhoneScre";
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+        if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
             Intent i = new Intent(context, ManagerService.class);
-            Log.d(TAG, "onReceive: about to start service on boot");
+            android.util.Log.d(TAG, "about to start service cause phone screen on");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(i);
             } else {

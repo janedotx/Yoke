@@ -9,7 +9,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
-import com.system2override.yoke.models.TodoRule;
+import com.system2override.yoke.models.PerAppTodoRule;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,8 +21,8 @@ public class TimeTrackingThread extends Thread {
     UsageStatsManager manager;
     SharedPreferences sharedPrefs;
     SharedPreferences.Editor editor;
-    List<TodoRule> rules;
-    HashMap<String, List<TodoRule>> packageNameToRulesMap;
+    List<PerAppTodoRule> rules;
+    HashMap<String, List<PerAppTodoRule>> packageNameToRulesMap;
     ActivityManager activityManager;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -30,7 +30,7 @@ public class TimeTrackingThread extends Thread {
         this.context = context;
         this.sharedPrefs = context.getSharedPreferences(context.getString(R.string.time_tracking_file), Context.MODE_PRIVATE);
         this.editor = sharedPrefs.edit();
-        this.packageNameToRulesMap = new HashMap<String, List<TodoRule>>();
+        this.packageNameToRulesMap = new HashMap<String, List<PerAppTodoRule>>();
 
     }
 

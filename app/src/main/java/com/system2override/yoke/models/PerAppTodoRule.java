@@ -12,15 +12,15 @@ import com.system2override.yoke.models.Rule;
 import com.system2override.yoke.models.TodoApp;
 
 // though i dont need indices, as i anticipate there being like five todo apps max
-@Entity(tableName="TodoRules",
+@Entity(tableName="PerAppTodoRules",
         foreignKeys = {@ForeignKey(entity = TodoApp.class,
                                             parentColumns = "id",
                                             childColumns="todoAppId",
                                             onDelete = CASCADE)},
-        indices = {@Index(name = "todoApp_index", value = "todoAppId"),
+        indices = {@Index(name = "todoAppIndex", value = "todoAppId"),
                     @Index(value = "packageName")}
         )
-public class TodoRule extends Rule {
+public class PerAppTodoRule extends Rule {
     // bad app
     @android.support.annotation.NonNull
     @ColumnInfo(name="packageName")
@@ -68,7 +68,7 @@ public class TodoRule extends Rule {
 
     @Override
     public String toString() {
-        return "TodoRule{" +
+        return "PerAppTodoRule{" +
                 "id=" + this.id +
                 ", packageName='" + packageName + '\'' +
                 ", time=" + time +

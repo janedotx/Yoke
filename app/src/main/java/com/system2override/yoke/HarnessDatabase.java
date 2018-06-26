@@ -9,14 +9,14 @@ import com.system2override.yoke.models.LocalTaskDao;
 import com.system2override.yoke.models.MyTypeConverters;
 import com.system2override.yoke.models.TodoApp;
 import com.system2override.yoke.models.TodoAppDao;
-import com.system2override.yoke.models.TodoRule;
-import com.system2override.yoke.models.TodoRuleDao;
+import com.system2override.yoke.models.PerAppTodoRule;
+import com.system2override.yoke.models.PerAppTodoRuleDao;
 
-@Database(version = 3, entities = {TodoRule.class, TodoApp.class, LocalTask.class})
+@Database(version = 4, entities = {PerAppTodoRule.class, TodoApp.class, LocalTask.class})
 @TypeConverters({MyTypeConverters.class})
 public abstract class HarnessDatabase extends RoomDatabase {
     public abstract TodoAppDao todoAppDao();
-    public abstract TodoRuleDao todoRuleDao();
+    public abstract PerAppTodoRuleDao perAppTodoRuleDao();
 
     public abstract LocalTaskDao localTaskDao();
 

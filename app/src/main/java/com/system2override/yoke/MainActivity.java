@@ -47,7 +47,7 @@ import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.tasks.TasksScopes;
 import com.google.api.services.tasks.model.*;
 import com.system2override.yoke.models.TodoApp;
-import com.system2override.yoke.models.TodoRule;
+import com.system2override.yoke.models.PerAppTodoRule;
 
 import android.Manifest;
 import android.accounts.AccountManager;
@@ -182,6 +182,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         }
 
 
+        boolean success = this.deleteDatabase("db");
+        Log.d(TAG, "onStart: database successfully deleted " + Boolean.toString(success));
+
         HarnessDatabase db = Room.databaseBuilder(getApplicationContext(),
                 HarnessDatabase.class, "db").fallbackToDestructiveMigration().allowMainThreadQueries().build();
 //  /*
@@ -193,11 +196,11 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
 
             app = db.todoAppDao().getTodoAppFromName(app.getTodoAppName());
-            TodoRule rule = new TodoRule();
+            PerAppTodoRule rule = new PerAppTodoRule();
             rule.setTodoAppId(app.getId());
             rule.setTime(45000);
             rule.setPackageName("com.android.contacts");
-            db.todoRuleDao().insert(rule);
+            db.perAppTodoRuleDao().insert(rule);
         }
 //        */
 

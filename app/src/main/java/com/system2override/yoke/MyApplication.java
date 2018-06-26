@@ -19,8 +19,6 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        File path = new File(this.getExternalFilesDir(null), "logcat.log");
-        Log.d(TAG, "onCreate: path " + path.toString());
 //        writeLogCat();
     }
 
