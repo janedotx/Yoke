@@ -4,6 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,10 +19,18 @@ import java.util.Date;
 
 public class MyApplication extends Application {
     private static final String TAG = "MyApplication";
+    public static Bus bus;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        bus = new Bus(ThreadEnforcer.ANY);
+
 //        writeLogCat();
+    }
+
+    public static Bus getBus() {
+        return bus;
     }
 
     @Override

@@ -280,7 +280,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         } else if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
         } else if (! isDeviceOnline()) {
-            mOutputText.setText("No network connection available.");
+       //     mOutputText.setText("No network connection available.");
+            Log.d(TAG, "getResultsFromApi: No network connection available");
         } else {
             new MakeRequestTask(mCredential).execute();
         }

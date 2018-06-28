@@ -62,7 +62,6 @@ public class RulesManagerThread extends Thread {
                 HarnessDatabase.class, "db").fallbackToDestructiveMigration().allowMainThreadQueries().build();
         this.rules = this.db.perAppTodoRuleDao().loadAllPerAppTodoRules();
 
-        this.display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         for (int i = 0; i < rules.size(); i++) {
             PerAppTodoRule rule = rules.get(i);
             Log.d(TAG, "RulesManagerThread: rule " + rule.toString());

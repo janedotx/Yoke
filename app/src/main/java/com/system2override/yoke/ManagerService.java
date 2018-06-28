@@ -13,12 +13,15 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -32,26 +35,23 @@ import com.google.api.client.util.ExponentialBackOff;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Locale;
 
-import static com.system2override.yoke.TodoAppConstants.GTASKS_ACCCOUNT_NAME;
 import static com.system2override.yoke.TodoAppConstants.GTASKS_SCOPES;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.squareup.otto.Subscribe;
+import com.system2override.yoke.BroadcastReceivers.PhoneScreenOffReceiver;
+import com.system2override.yoke.BroadcastReceivers.PhoneScreenOnReceiver;
 
 public class ManagerService extends Service {
     private static final String TAG = "ManagerService";
-    private List<UsageStats> usageStats;
     private final int MANAGER_SERVICE_ID = 1;
+    private long APP_TICK_INTERVAL = 1000;
+
+    private ForegroundAppObserverThread appObserverThread;
+    private PhoneScreenOffReceiver screenOffReceiver;
+    private PhoneScreenOnReceiver screenOnReceiver;
 
     public ManagerService() {
         super();
@@ -60,18 +60,41 @@ public class ManagerService extends Service {
     @Override
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void onCreate() {
+        Log.d(TAG, "onCreate: ");
         super.onCreate();
+        MyApplication.getBus().register(this);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             android.util.Log.d(TAG, "onCreate: about to make this notification");
-            //           /*
-
             if (Build.VERSION.SDK_INT >= 26) {
                 foregroundForOreoAndUp();
             }
 //            */
         }
-        launchManagerThread();
+        IntentFilter filterOn = new IntentFilter("android.intent.action.SCREEN_ON");
+        screenOnReceiver = new PhoneScreenOnReceiver();
+        IntentFilter filterOff = new IntentFilter("android.intent.action.SCREEN_OFF");
+        screenOffReceiver = new PhoneScreenOffReceiver();
+
+        this.registerReceiver(screenOnReceiver, filterOn);
+        this.registerReceiver(screenOffReceiver, filterOff);
+        Log.d(TAG, "onCreate: these fucking receivers were registered");
+
+
+//        launchManagerThread();
+        appObserverThread = new ForegroundAppObserverThread(this);
+        appObserverThread.start();
+        appObserverThread.getHandler().sendEmptyMessage(ForegroundAppObserverThread.OBSERVE);
+
     }
+
+    @com.squareup.otto.Subscribe
+    public void processPhoneEvent(String phoneEvent) {
+        boolean shouldObserve = true;
+        Log.d(TAG, "processEvent: " + phoneEvent);
+        Log.d(TAG, "processPhoneEvent: " + Boolean.toString(shouldObserve));
+   //     */
+    }
+
 
     @RequiresApi(api = 26)
     private void foregroundForOreoAndUp() {
@@ -138,16 +161,19 @@ public class ManagerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand: start");
-        Log.d(TAG, "onStartCommand: returning out of startcommand");
-
+        MyApplication.getBus().post(1);
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "onDestroy: start");
+        appObserverThread.getHandler().getLooper().quit();
+        this.unregisterReceiver(screenOffReceiver);
+        this.unregisterReceiver(screenOnReceiver);
         super.onDestroy();
-        Log.d(TAG, "onDestroy: i got called");
     }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -184,26 +210,12 @@ public class ManagerService extends Service {
         return null;
     }
     
-    
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public UsageStatsManager getUsageStatsManager() {
-
-        if (android.os.Build.VERSION.SDK_INT == 21) {
-            return (UsageStatsManager) this.getSystemService("usagestats");
-
-        } else {
-            return (UsageStatsManager) this.getSystemService(Context.USAGE_STATS_SERVICE);
-        }
-
-    }
 
     @Override
     public void onTaskRemoved(Intent rootIntent){
         ///*
         Intent restartServiceIntent = new Intent(getApplicationContext(), this.getClass());
         restartServiceIntent.setPackage(getPackageName());
-
 
         PendingIntent restartServicePendingIntent = PendingIntent.getService(getApplicationContext(), 1, restartServiceIntent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmService = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
@@ -215,14 +227,4 @@ public class ManagerService extends Service {
         super.onTaskRemoved(rootIntent);
     }
 
-    class Killmonger extends Thread {
-
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-        public void run() {
-            while(true) {
-
-            }
-        }
-
-    }
 }
