@@ -19,17 +19,6 @@ public class PhoneScreenOnReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
-            /*
-            Intent i = new Intent(context, ManagerService.class);
-            android.util.Log.d(TAG, "about to start service cause phone screen on");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(i);
-            } else {
-                context.startService(i);
-            }
-            */
-        }
         Log.d(TAG, "onReceive: phone went on");
         MyApplication.getBus().post(Integer.toString(ForegroundAppObserverThread.OBSERVE));
     }

@@ -15,6 +15,7 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.squareup.otto.Subscribe;
+import com.system2override.yoke.OttoMessages.ForegroundMessage;
 import com.system2override.yoke.models.PerAppTodoRule;
 
 import java.util.HashMap;
@@ -26,11 +27,15 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ForegroundAppObserverThread extends Thread {
     private static final String TAG = "ForegroundAppObserverTh";
     private final long SLEEP_LENGTH = 2000;
-    private final long LOOK_BACK_INTERVAL = 60 * 60 * 1000;
+//    private final long LOOK_BACK_INTERVAL = 60 * 60 * 1000;
+    private final long LOOK_BACK_INTERVAL = 3 * 1000;
+
+    public final String NULL = "NULL";
     Context context;
     UsageStatsManager usageStatsManager;
     ActivityManager activityManager;
     Handler handler;
+    String lastEvent;
 
 
     public static final int OBSERVE = 1;
@@ -38,7 +43,10 @@ public class ForegroundAppObserverThread extends Thread {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public ForegroundAppObserverThread(Context context) {
+        MyApplication.getBus().register(this);
+
         this.context = context;
+        this.lastEvent = NULL;
         final ReentrantLock reentrantLock = new ReentrantLock();
         this.usageStatsManager = getUsageStatsManager();
         this.activityManager = (ActivityManager) this.context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -47,9 +55,9 @@ public class ForegroundAppObserverThread extends Thread {
                 Log.d(TAG, "handleMessage: " + Integer.toString(message.what));
                 switch(message.what) {
                     case OBSERVE:
-                        getForegroundApp();
                         Log.d(TAG, "handleMessage: enqueuing next message");
                         reentrantLock.lock();
+                        MyApplication.getBus().post(new ForegroundMessage(getForegroundApp()));
                         this.sendEmptyMessageDelayed(OBSERVE, SLEEP_LENGTH);
                         reentrantLock.unlock();
                         break;
@@ -84,7 +92,7 @@ public class ForegroundAppObserverThread extends Thread {
     }
 
     private String getForegroundApp() {
-        String currentApp = "NULL";
+        String currentApp = NULL;
         if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             long time = System.currentTimeMillis();
             List<UsageStats> appList = this.usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST,  time - LOOK_BACK_INTERVAL, time);

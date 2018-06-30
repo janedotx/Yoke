@@ -92,6 +92,9 @@ public class ManagerService extends Service {
         boolean shouldObserve = true;
         Log.d(TAG, "processEvent: " + phoneEvent);
         Log.d(TAG, "processPhoneEvent: " + Boolean.toString(shouldObserve));
+        int event = Integer.parseInt(phoneEvent);
+
+        appObserverThread.getHandler().sendEmptyMessage(event);
    //     */
     }
 
@@ -161,7 +164,6 @@ public class ManagerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand: start");
-        MyApplication.getBus().post(1);
         return START_STICKY;
     }
 
