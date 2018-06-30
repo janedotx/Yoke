@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class ForegroundAppObserverThread extends Thread {
     private static final String TAG = "ForegroundAppObserverTh";
@@ -47,7 +46,6 @@ public class ForegroundAppObserverThread extends Thread {
 
         this.context = context;
         this.lastEvent = NULL;
-        final ReentrantLock reentrantLock = new ReentrantLock();
         this.usageStatsManager = getUsageStatsManager();
         this.activityManager = (ActivityManager) this.context.getSystemService(Context.ACTIVITY_SERVICE);
         this.handler = new Handler() {
@@ -56,15 +54,11 @@ public class ForegroundAppObserverThread extends Thread {
                 switch(message.what) {
                     case OBSERVE:
                         Log.d(TAG, "handleMessage: enqueuing next message");
-                        reentrantLock.lock();
                         MyApplication.getBus().post(new ForegroundMessage(getForegroundApp()));
                         this.sendEmptyMessageDelayed(OBSERVE, SLEEP_LENGTH);
-                        reentrantLock.unlock();
                         break;
                     case DO_NOT_OBSERVE:
-                        reentrantLock.lock();
                         this.removeMessages(OBSERVE);
-                        reentrantLock.unlock();
                         break;
                 }
             }
