@@ -16,13 +16,6 @@ public class PhoneScreenOffReceiver extends BroadcastReceiver{
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
-            /*
-            Intent i = new Intent(context, ManagerService.class);
-            android.util.Log.d(TAG, "about to stop service cause phone screen off");
-            context.stopService(i);
-            */
-        }
         Log.d(TAG, "onReceive: phone went off");
         MyApplication.getBus().post(Integer.toString(ForegroundAppObserverThread.DO_NOT_OBSERVE));
     }

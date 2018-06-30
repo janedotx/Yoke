@@ -225,7 +225,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         } catch (IOException e) {
             Log.d(TAG, "onStart: ioexception");
         }
-        RulesManager.foo();
 
     }
 

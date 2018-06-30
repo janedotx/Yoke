@@ -15,6 +15,7 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.squareup.otto.Subscribe;
+import com.system2override.yoke.OttoMessages.CurrentAppMessage;
 import com.system2override.yoke.OttoMessages.ForegroundMessage;
 import com.system2override.yoke.models.PerAppTodoRule;
 
@@ -34,8 +35,8 @@ public class ForegroundAppObserverThread extends Thread {
     UsageStatsManager usageStatsManager;
     ActivityManager activityManager;
     Handler handler;
-    String lastEvent;
-
+    String lastApp;
+    AppChangeEventHandler appChangeEventHandler;
 
     public static final int OBSERVE = 1;
     public static final int DO_NOT_OBSERVE = 0;
@@ -45,7 +46,7 @@ public class ForegroundAppObserverThread extends Thread {
         MyApplication.getBus().register(this);
 
         this.context = context;
-        this.lastEvent = NULL;
+        this.lastApp = NULL;
         this.usageStatsManager = getUsageStatsManager();
         this.activityManager = (ActivityManager) this.context.getSystemService(Context.ACTIVITY_SERVICE);
         this.handler = new Handler() {
@@ -105,7 +106,6 @@ public class ForegroundAppObserverThread extends Thread {
             currentApp = tasks.get(0).processName;
         }
 
-        Log.d("adapter", "Current App in foreground is: " + currentApp);
         return currentApp;
     }
 
@@ -113,4 +113,19 @@ public class ForegroundAppObserverThread extends Thread {
         return handler;
     }
 
+    @com.squareup.otto.Subscribe
+    public void publishAppChanges(ForegroundMessage message) {
+        if (message.getApp() == NULL) {
+            if (lastApp != NULL) {
+                Log.d(TAG, "publishAppChanges: currentApp is " + lastApp);
+                MyApplication.getBus().post(new CurrentAppMessage(lastApp));
+                BannedApps.addTime(this.context, SLEEP_LENGTH);
+            }
+        } else {
+            lastApp = message.getApp();
+            Log.d(TAG, "publishAppChanges: currentApp is " + lastApp);
+            BannedApps.addTime(this.context, SLEEP_LENGTH);
+            MyApplication.getBus().post(new CurrentAppMessage(lastApp));
+        }
+    }
 }

@@ -20,11 +20,13 @@ import java.util.Date;
 public class MyApplication extends Application {
     private static final String TAG = "MyApplication";
     public static Bus bus;
+    public static String packageName;
 
     @Override
     public void onCreate() {
         super.onCreate();
         bus = new Bus(ThreadEnforcer.ANY);
+        packageName = getApplicationContext().getPackageName();
 
 //        writeLogCat();
     }
