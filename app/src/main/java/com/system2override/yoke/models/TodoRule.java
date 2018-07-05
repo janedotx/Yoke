@@ -18,13 +18,13 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 public class TodoRule extends Rule {
     // this is in milliseconds
     @ColumnInfo(name="initialTimeGrant")
-    private int initialTimeGrant;
+    private long initialTimeGrant;
 
     @ColumnInfo(name = "todoAppId")
     private int todoAppId;
 
     @ColumnInfo(name="refreshGrantTime")
-    private int refreshGrantTime;
+    private long refreshGrantTime;
 
     public int getTodoAppId() {
         return todoAppId;
@@ -38,19 +38,19 @@ public class TodoRule extends Rule {
         return id;
     }
 
-    public int getInitialTimeGrant() {
+    public long getInitialTimeGrant() {
         return initialTimeGrant;
     }
 
-    public int getRefreshGrantTime() {
+    public long getRefreshGrantTime() {
         return refreshGrantTime;
     }
 
-    public void setInitialTimeGrant(int initialTimeGrant) {
+    public void setInitialTimeGrant(long initialTimeGrant) {
         this.initialTimeGrant = initialTimeGrant;
     }
 
-    public void setRefreshGrantTime(int refreshGrantTime) {
+    public void setRefreshGrantTime(long refreshGrantTime) {
         this.refreshGrantTime = refreshGrantTime;
     }
 }

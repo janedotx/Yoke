@@ -12,7 +12,10 @@ public interface TodoRuleDao {
     long insert(TodoRule todoRule);
 
     @Query("SELECT * FROM TodoRules")
-    public List<TodoRule> loadAllPerAppTodoRules();
+    public List<TodoRule> loadAllTodoRules();
+
+    @Query("SELECT * FROM TodoRules LIMIT 1")
+    public TodoRule getTodoRule();
 
     @Query("SELECT * from TodoRules where :id = id")
     public TodoRule getRuleFromId(int id);

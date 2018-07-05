@@ -38,11 +38,11 @@ public class DBInstrumentedTest {
 
     @After
     public void closeDb() throws IOException {
-        mTestDbWrapper.close();
+        mTestDbWrapper.tearDown();
     }
 
     @Test
-    public void insertsWorkProperly() {
+    public void insertLocalTasksWorkProperly() {
         assertEquals(3, mTestDbWrapper.getDb().localTaskDao().loadAllLocalTasks().size());
         List<LocalTask> tasks = mTestDbWrapper.getDb().localTaskDao().loadAllLocalTasks();
         Log.d(TAG, "insertsWorkProperly: " + tasks.get(0).toString());

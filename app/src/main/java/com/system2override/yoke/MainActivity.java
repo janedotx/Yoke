@@ -48,6 +48,7 @@ import com.google.api.services.tasks.TasksScopes;
 import com.google.api.services.tasks.model.*;
 import com.system2override.yoke.models.TodoApp;
 import com.system2override.yoke.models.PerAppTodoRule;
+import com.system2override.yoke.models.TodoRule;
 
 import android.Manifest;
 import android.accounts.AccountManager;
@@ -113,48 +114,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         } catch (IOException e) {
             Log.d(TAG, "onCreate: io exception");
         }
-        /*
-
-        LinearLayout activityLayout = new LinearLayout(this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        activityLayout.setLayoutParams(lp);
-        activityLayout.setOrientation(LinearLayout.VERTICAL);
-        activityLayout.setPadding(16, 16, 16, 16);
-
-        ViewGroup.LayoutParams tlp = new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-                */
-
-        /*
-        mCallApiButton = new Button(this);
-        mCallApiButton.setText(BUTTON_TEXT);
-        mCallApiButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCallApiButton.setEnabled(false);
-                mOutputText.setText("");
-                getResultsFromApi();
-                mCallApiButton.setEnabled(true);
-            }
-        });
-
-        mainView.addView(mCallApiButton);
-
-        mOutputText = new TextView(this);
-        mOutputText.setLayoutParams(tlp);
-        mOutputText.setPadding(16, 16, 16, 16);
-        mOutputText.setVerticalScrollBarEnabled(true);
-        mOutputText.setMovementMethod(new ScrollingMovementMethod());
-        mOutputText.setText(
-                "Click the \'" + BUTTON_TEXT +"\' button to test the API.");
-        activityLayout.addView(mOutputText);
-
-        setContentView(activityLayout);
-
-*/
 
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Calling Google Tasks API ...");
@@ -181,38 +140,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             startService(intent);
         }
 
-
-        boolean success = this.deleteDatabase("db");
-        Log.d(TAG, "onStart: database successfully deleted " + Boolean.toString(success));
-
-        HarnessDatabase db = Room.databaseBuilder(getApplicationContext(),
-                HarnessDatabase.class, "db").fallbackToDestructiveMigration().allowMainThreadQueries().build();
-//  /*
-
-        if (null == db.todoAppDao().getTodoAppFromName("gtasks")) {
-            TodoApp app = new TodoApp();
-            app.setTodoAppName("gtasks");
-            db.todoAppDao().insert(app);
-
-
-            app = db.todoAppDao().getTodoAppFromName(app.getTodoAppName());
-            PerAppTodoRule rule = new PerAppTodoRule();
-            rule.setTodoAppId(app.getId());
-            rule.setTime(45000);
-            rule.setPackageName("com.android.contacts");
-            db.perAppTodoRuleDao().insert(rule);
-        }
-//        */
-
-        GeneralDebugging.printDb(db);
-//        rule = db.todoRuleDao().getRuleFromId(1);
-//        Log.d(TAG, "onStart: counter name" + rule.getCounterName());
-/*        ArrayList<TodoRule> rules = new ArrayList<>(Arrays.asList(db.todoRuleDao().loadAllTodoRules()));
-        for (int i = 0; i < rules.size(); i++) {
-            Log.d(TAG, "onStart: " + rules.get(i).toString());
-        }
-        */
-        db.close();
+        setupDB();
+        /*
         try {
             FileInputStream stream = this.openFileInput("error.log");
             byte[] buffer = new byte[100000];
@@ -225,7 +154,45 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         } catch (IOException e) {
             Log.d(TAG, "onStart: ioexception");
         }
+        */
 
+    }
+
+    private void setUpAlarm() {
+
+    }
+
+    private void setupDB() {
+        boolean success = this.deleteDatabase("db");
+        Log.d(TAG, "onStart: database successfully deleted " + Boolean.toString(success));
+
+        HarnessDatabase db = MyApplication.getDb(this);
+//  /*
+
+        if (null == db.todoAppDao().getTodoAppFromName("gtasks")) {
+            TodoApp app = new TodoApp();
+            app.setTodoAppName("gtasks");
+            db.todoAppDao().insert(app);
+
+
+            app = db.todoAppDao().getTodoAppFromName(app.getTodoAppName());
+            TodoRule rule = new TodoRule();
+            rule.setTodoAppId(app.getId());
+            rule.setInitialTimeGrant(60000);
+            rule.setRefreshGrantTime(60000);
+            db.todoRuleDao().insert(rule);
+        }
+//        */
+
+        GeneralDebugging.printDb(db);
+//        rule = db.todoRuleDao().getRuleFromId(1);
+//        Log.d(TAG, "onStart: counter name" + rule.getCounterName());
+/*        ArrayList<TodoRule> rules = new ArrayList<>(Arrays.asList(db.todoRuleDao().loadAllTodoRules()));
+        for (int i = 0; i < rules.size(); i++) {
+            Log.d(TAG, "onStart: " + rules.get(i).toString());
+        }
+        */
+        db.close();
     }
 
     @Override

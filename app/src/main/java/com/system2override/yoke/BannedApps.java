@@ -9,9 +9,8 @@ import java.util.Set;
 
 public class BannedApps {
     private static final String TAG = "BannedApps";
-    private static final String bannedAppsFile = "BANNED";
-    private static final String bannedAppsKey = "BANNED_APPS";
-    private static final String bannedAppsTime = "BANNED_APPS_TIME";
+    private static final String BANNED_APPS_FILE = "BANNED";
+    private static final String BANNED_APPS_KEY = "BANNED_APPS";
 
     private static Set<String> apps = null;
 
@@ -20,7 +19,7 @@ public class BannedApps {
         if (apps == null) {
             Log.d(TAG, "getApps: hello null");
             SharedPreferences prefs = context.getSharedPreferences(fullPath(), Context.MODE_PRIVATE);
-            apps = prefs.getStringSet(bannedAppsKey, new HashSet<String>());
+            apps = prefs.getStringSet(BANNED_APPS_KEY, new HashSet<String>());
         }
         return apps;
     }
@@ -28,7 +27,7 @@ public class BannedApps {
     public static void setApps(Context context, Set<String> newApps) {
         apps = newApps;
         SharedPreferences.Editor editor = context.getSharedPreferences(fullPath(), Context.MODE_PRIVATE).edit();
-        editor.putStringSet(bannedAppsKey, newApps);
+        editor.putStringSet(BANNED_APPS_KEY, newApps);
         editor.apply();
 
     }
@@ -39,23 +38,8 @@ public class BannedApps {
         setApps(context, apps);
     }
 
-    public static long addTime(Context context, long time) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(fullPath(), Context.MODE_PRIVATE).edit();
-        SharedPreferences prefs = context.getSharedPreferences(fullPath(), Context.MODE_PRIVATE);
-        Long currentTime = prefs.getLong(bannedAppsTime, 0L);
-        currentTime += time;
-        editor.putLong(bannedAppsTime, currentTime);
-        editor.apply();
-        return currentTime;
-    }
-
-    public static long getTime(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(fullPath(), Context.MODE_PRIVATE);
-        return prefs.getLong(bannedAppsTime, 0L);
-    }
-
     private static String fullPath() {
-        return MyApplication.packageName + "." + bannedAppsFile;
+        return MyApplication.packageName + "." + BANNED_APPS_FILE;
     }
 
 }

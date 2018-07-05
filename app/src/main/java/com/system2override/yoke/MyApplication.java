@@ -1,6 +1,7 @@
 package com.system2override.yoke;
 
 import android.app.Application;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.util.Log;
 
@@ -38,6 +39,11 @@ public class MyApplication extends Application {
     @Override
     public void onLowMemory() {
         super.onLowMemory();
+    }
+
+    public static HarnessDatabase getDb(Context context) {
+        return Room.databaseBuilder(context,
+                HarnessDatabase.class, BuildConfig.DATABASE_FILE).fallbackToDestructiveMigration().allowMainThreadQueries().build();
     }
 
     // bad to have this running while debugging, because logcat no longer prints to stdout and you can't

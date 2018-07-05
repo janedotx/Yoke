@@ -20,8 +20,6 @@ public abstract class HarnessDatabase extends RoomDatabase {
     public abstract TodoAppDao todoAppDao();
     public abstract PerAppTodoRuleDao perAppTodoRuleDao();
     public abstract TodoRuleDao todoRuleDao();
-
     public abstract LocalTaskDao localTaskDao();
-
 
 }

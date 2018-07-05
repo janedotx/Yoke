@@ -37,11 +37,4 @@ public class BannedAppsTest {
 
     }
 
-    @Test
-    public void testAddTime() {
-        BannedApps.addTime(InstrumentationRegistry.getTargetContext(), 1000L);
-        long curTime = BannedApps.getTime(InstrumentationRegistry.getTargetContext());
-        assertEquals(1000L, curTime);
-    }
-
 }

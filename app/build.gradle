@@ -29,9 +29,15 @@ android {
                 files("$projectDir/schemas".toString())
     }
     buildTypes {
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "DATABASE_FILE", "\"db\""
+        }
+
+        debug {
+            buildConfigField "String", "DATABASE_FILE", "\"test-db\""
         }
     }
 }

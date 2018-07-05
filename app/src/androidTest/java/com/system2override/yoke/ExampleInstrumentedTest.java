@@ -46,7 +46,7 @@ public class ExampleInstrumentedTest {
 
     @After
     public void closeDb() throws IOException {
-               mTestDbWrapper.close();
+        mTestDbWrapper.tearDown();
     }
 
     @Test

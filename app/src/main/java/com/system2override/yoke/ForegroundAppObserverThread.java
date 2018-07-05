@@ -119,13 +119,14 @@ public class ForegroundAppObserverThread extends Thread {
             if (lastApp != NULL) {
                 Log.d(TAG, "publishAppChanges: currentApp is " + lastApp);
                 MyApplication.getBus().post(new CurrentAppMessage(lastApp));
-                BannedApps.addTime(this.context, SLEEP_LENGTH);
+ //               BannedApps.addTime(this.context, SLEEP_LENGTH);
             }
         } else {
             lastApp = message.getApp();
             Log.d(TAG, "publishAppChanges: currentApp is " + lastApp);
-            BannedApps.addTime(this.context, SLEEP_LENGTH);
+//            BannedApps.addTime(this.context, SLEEP_LENGTH);
             MyApplication.getBus().post(new CurrentAppMessage(lastApp));
         }
+//        Log.d(TAG, "publishAppChanges: amount of time is " + Long.toString(BannedApps.getTime(this.context)));
     }
 }

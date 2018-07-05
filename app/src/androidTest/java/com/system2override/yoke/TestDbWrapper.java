@@ -12,6 +12,7 @@ import com.system2override.yoke.models.LocalTaskDao;
 import com.system2override.yoke.models.LocalTask;
 import com.system2override.yoke.models.PerAppTodoRule;
 import com.system2override.yoke.models.TodoApp;
+import com.system2override.yoke.models.TodoRule;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,19 +25,17 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(AndroidJUnit4.class)
 public class TestDbWrapper extends AndroidTestCase {
     private static final String TAG = "TestDbWrapper";
 //    /*
     private LocalTaskDao mTaskDao;
     private HarnessDatabase mDb;
+    private Context context;
 
     public TestDbWrapper() {
-        Context context = InstrumentationRegistry.getContext();
-        mDb = Room.inMemoryDatabaseBuilder(context, HarnessDatabase.class)
-                .fallbackToDestructiveMigration()
-                .allowMainThreadQueries()
-                .build();
+        this.context = InstrumentationRegistry.getTargetContext();
+        context.deleteDatabase(BuildConfig.DATABASE_FILE);
+        mDb = MyApplication.getDb(context);
     }
 
     public void setUpFixtures() {
@@ -58,6 +57,13 @@ public class TestDbWrapper extends AndroidTestCase {
         }
         mDb.localTaskDao().insertLocalTasksList(localTaskList);
 
+        TodoRule todoRule = new TodoRule();
+        todoRule.setInitialTimeGrant(1000);
+        todoRule.setRefreshGrantTime(2000);
+        todoRule.setTodoAppId(app1.getId());
+
+        mDb.todoRuleDao().insert(todoRule);
+
     }
 
     public LocalTask createFixtureTask(TodoApp todoApp, int i) {
@@ -71,8 +77,9 @@ public class TestDbWrapper extends AndroidTestCase {
         return localTask;
     }
 
-    public void close() throws IOException {
+    public void tearDown() throws IOException {
         mDb.close();
+        context.deleteDatabase(BuildConfig.DATABASE_FILE);
     }
 
     public HarnessDatabase getDb() { return mDb; }
