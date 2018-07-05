@@ -36,11 +36,13 @@ import com.google.api.client.util.ExponentialBackOff;
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.Calendar;
 
 import static com.system2override.yoke.TodoAppConstants.GTASKS_SCOPES;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.squareup.otto.Subscribe;
+import com.system2override.yoke.BroadcastReceivers.DailyResetReceiver;
 import com.system2override.yoke.BroadcastReceivers.PhoneScreenOffReceiver;
 import com.system2override.yoke.BroadcastReceivers.PhoneScreenOnReceiver;
 
@@ -52,6 +54,7 @@ public class ManagerService extends Service {
     private ForegroundAppObserverThread appObserverThread;
     private PhoneScreenOffReceiver screenOffReceiver;
     private PhoneScreenOnReceiver screenOnReceiver;
+    private DailyResetReceiver dailyResetReceiver;
 
     public ManagerService() {
         super();
@@ -70,6 +73,35 @@ public class ManagerService extends Service {
             }
 //            */
         }
+
+        registerReceivers();
+        setDailyResetAlarm();
+        appObserverThread = new ForegroundAppObserverThread(this);
+        appObserverThread.start();
+        appObserverThread.getHandler().sendEmptyMessage(ForegroundAppObserverThread.OBSERVE);
+
+    }
+
+    private void setDailyResetAlarm() {
+        IntentFilter resetFilter = new IntentFilter(TimeBank.RESET_ACTION);
+        dailyResetReceiver = new DailyResetReceiver();
+        this.registerReceiver(dailyResetReceiver, resetFilter);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 18);
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.AM_PM, Calendar.AM);
+
+        AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        Intent resetIntent = new Intent(TimeBank.RESET_ACTION);
+        PendingIntent pendingResetIntent = PendingIntent.getBroadcast(this, 0, resetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        am.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 1000 * 60 * 1, pendingResetIntent);
+        am.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 1000 * 60 * 60 * 24, pendingResetIntent);
+    }
+
+    private void registerReceivers() {
         IntentFilter filterOn = new IntentFilter("android.intent.action.SCREEN_ON");
         screenOnReceiver = new PhoneScreenOnReceiver();
         IntentFilter filterOff = new IntentFilter("android.intent.action.SCREEN_OFF");
@@ -77,14 +109,7 @@ public class ManagerService extends Service {
 
         this.registerReceiver(screenOnReceiver, filterOn);
         this.registerReceiver(screenOffReceiver, filterOff);
-        Log.d(TAG, "onCreate: these fucking receivers were registered");
-
-
-//        launchManagerThread();
-        appObserverThread = new ForegroundAppObserverThread(this);
-        appObserverThread.start();
-        appObserverThread.getHandler().sendEmptyMessage(ForegroundAppObserverThread.OBSERVE);
-
+        Log.d(TAG, "registerReceivers: these fucking receivers were registered");
     }
 
     @com.squareup.otto.Subscribe

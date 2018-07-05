@@ -10,6 +10,8 @@ public class TimeBank {
     private static final String TIME_AVAILABLE_KEY = "TIME_AVAILABLE_KEY";
     private static final String TIME_FILE = "TIME";
 
+    public static final String RESET_ACTION = MyApplication.packageName + ".RESET";
+
     // intended for use when tracking amount of time spent in foreground for a bad app
     public static long addSpentTime(Context context, long time) {
         SharedPreferences.Editor editor = getSharedPreferencesEditor(context);
