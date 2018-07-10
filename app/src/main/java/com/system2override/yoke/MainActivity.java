@@ -131,6 +131,13 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         checkForAccessFineLocation(this);
         checkForGoogleTasksPermission(this);
 
+        startManagerService();
+
+        setupDB();
+
+
+    }
+    private void startManagerService() {
         Intent intent = new Intent(this, ManagerService.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             android.util.Log.d(TAG, "subscribeToSensor: about to start foreground service " + Long.toString(System.currentTimeMillis()));
@@ -139,23 +146,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             android.util.Log.d(TAG, "subscribeToSensor: about to start service " + Long.toString(System.currentTimeMillis()));
             startService(intent);
         }
-
-        setupDB();
-        /*
-        try {
-            FileInputStream stream = this.openFileInput("error.log");
-            byte[] buffer = new byte[100000];
-            stream.read(buffer);
-            String str = new String(buffer);
-            Log.d(TAG, "onStart: error.log contents " + str);
-
-        } catch (FileNotFoundException e) {
-            Log.d(TAG, "onStart: error.log not found");
-        } catch (IOException e) {
-            Log.d(TAG, "onStart: ioexception");
-        }
-        */
-
     }
 
     private void setUpAlarm() {
@@ -214,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private void checkForUsageStatsPermission(Context context) {
         try {
             PackageManager packageManager = context.getPackageManager();
-            ApplicationInfo appInfo = packageManager.getApplicationInfo("com.system2override.yoke", 0);
+            ApplicationInfo appInfo = packageManager.getApplicationInfo(MyApplication.packageName, 0);
             AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
             int mode = appOps.checkOpNoThrow(OPSTR_GET_USAGE_STATS, appInfo.uid, context.getPackageName());
             if (mode != MODE_ALLOWED) {

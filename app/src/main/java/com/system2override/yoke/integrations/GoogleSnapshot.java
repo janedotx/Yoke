@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GoogleSnapshot {
+    public static final long MAX_LISTS = 10;
     private static final String TAG = "GoogleSnapshot";
 
     /* to initialize the Tasks service
@@ -34,7 +35,23 @@ public class GoogleSnapshot {
                 .setApplicationName("Google Tasks API Android Quickstart")
                 .build();
      */
-    private static final String[] SCOPES = {TasksScopes.TASKS_READONLY};
+    private static final String[] SCOPES = {TasksScopes.TASKS};
+
+    public static List<TaskList> getTaskLists(Tasks mService) {
+        try {
+            TaskLists result = mService.tasklists().list()
+                    .setMaxResults(MAX_LISTS)
+                    .execute();
+            List<TaskList> taskLists = result.getItems();
+            return taskLists;
+        } catch (IOException e) {
+            return new ArrayList<TaskList>();
+        }
+    }
+
+    public static void getTasksForList(Tasks mService, TaskList taskList, String updatedMin) throws IOException {
+
+    }
 
     // make sure device is online before calling ths.
     // make sure device has an account before calling this
@@ -42,7 +59,7 @@ public class GoogleSnapshot {
                                            String updatedMin) throws IOException {
         Log.d(TAG, "getTasks: ");
         TaskLists result = mService.tasklists().list()
-                .setMaxResults(Long.valueOf(10))
+                .setMaxResults(MAX_LISTS)
                 .execute();
         Log.d(TAG, "getTasks: result "+ result.toPrettyString());
         List<TaskList> tasklists = result.getItems();
@@ -58,14 +75,14 @@ public class GoogleSnapshot {
                         .getItems();
                 for (int i = 0; i < resultingTasks.size(); i++) {
                     Task resultingTask = resultingTasks.get(i);
-                    allTasks.add(convertToLocalTask(resultingTask));
+                    allTasks.add(convertToLocalTask(resultingTask, taskList.getId()));
                 }
             }
         }
         return allTasks;
     }
 
-    private static LocalTask convertToLocalTask(Task task) {
+    private static LocalTask convertToLocalTask(Task task, String taskListId) {
         LocalTask localTask = new LocalTask();
 
         localTask.setCompleted((task.getCompleted() != null));
@@ -74,6 +91,13 @@ public class GoogleSnapshot {
         }
         localTask.setUpdatedAt(task.getUpdated().toStringRfc3339());
         localTask.setTodoAppName(TodoAppConstants.GTASKS);
+        localTask.setDescription(task.getTitle());
+        localTask.setTodoAppIdString(task.getId());
+        if (task.getDue() != null) {
+            localTask.setDueDate(task.getDue().toStringRfc3339());
+        }
+
+        localTask.setTaskListIdString(taskListId);
 
         return localTask;
     }

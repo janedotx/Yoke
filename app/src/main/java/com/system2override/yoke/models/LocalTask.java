@@ -45,6 +45,14 @@ public class LocalTask {
     @ColumnInfo(name="todoAppIdString")
     public String todoAppIdString;
 
+    // the task list that this task belongs to
+    @ColumnInfo(name="taskListId")
+    public String taskListIdString;
+
+    // RFC 3339 (which is in UTC)
+    @ColumnInfo(name="dueDate")
+    public String dueDate;
+
     public int getId() {
         return id;
     }
@@ -125,5 +133,21 @@ public class LocalTask {
 
     public boolean hasSameId(LocalTask otherTask) {
         return this.todoAppIdString.equals(otherTask.getTodoAppIdString());
+    }
+
+    public String getTaskListIdString() {
+        return taskListIdString;
+    }
+
+    public void setTaskListIdString(String taskListIdString) {
+        this.taskListIdString = taskListIdString;
+    }
+
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
     }
 }

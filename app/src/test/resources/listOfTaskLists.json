@@ -1,0 +1,20 @@
+{
+  "kind": "tasks#taskLists",
+  "etag": "\"-7OFI3jKFsqNjDtcscX9ImH8hVU/KrXqH2xKBEXapkJ3ErFz9G7Mngg\"",
+  "items": [
+    {
+      "kind": "tasks#taskList",
+      "id": "MTEyOTkxOTk5NTY2NDI2OTkwMjI6MDow",
+      "title": "Jane's list",
+      "updated": "2018-07-09T23:11:14.000Z",
+      "selfLink": "https://www.googleapis.com/tasks/v1/users/@me/lists/MTEyOTkxOTk5NTY2NDI2OTkwMjI6MDow"
+    },
+    {
+      "kind": "tasks#taskList",
+      "id": "MTEyOTkxOTk5NTY2NDI2OTkwMjI6NTk5NDMyMjUyODAxNzI1NTow",
+      "title": "Todo",
+      "updated": "2018-05-16T03:45:02.000Z",
+      "selfLink": "https://www.googleapis.com/tasks/v1/users/@me/lists/MTEyOTkxOTk5NTY2NDI2OTkwMjI6NTk5NDMyMjUyODAxNzI1NTow"
+    }
+  ]
+}

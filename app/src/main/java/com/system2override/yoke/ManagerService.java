@@ -75,7 +75,7 @@ public class ManagerService extends Service {
         }
 
         registerReceivers();
-        setDailyResetAlarm();
+//        setDailyResetAlarm();
         appObserverThread = new ForegroundAppObserverThread(this);
         appObserverThread.start();
         appObserverThread.getHandler().sendEmptyMessage(ForegroundAppObserverThread.OBSERVE);
@@ -90,7 +90,7 @@ public class ManagerService extends Service {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MINUTE, 18);
+        calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.HOUR, 0);
         calendar.set(Calendar.AM_PM, Calendar.AM);
 
@@ -198,6 +198,7 @@ public class ManagerService extends Service {
         appObserverThread.getHandler().getLooper().quit();
         this.unregisterReceiver(screenOffReceiver);
         this.unregisterReceiver(screenOnReceiver);
+        this.unregisterReceiver(dailyResetReceiver);
         super.onDestroy();
     }
 
