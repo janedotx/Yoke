@@ -41,4 +41,7 @@ public interface LocalTaskDao {
 
     @Insert
     public void insertLocalTasksList(List<LocalTask> localTasks);
+
+    @Query("SELECT * FROM LocalTasks ORDER BY updatedAt DESC LIMIT 1")
+    public LocalTask getMostRecentlyUpdatedLocalTask();
 }

@@ -6,6 +6,9 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.google.api.services.tasks.model.Task;
+import com.system2override.yoke.TodoAppConstants;
+
 import java.time.Instant;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -52,6 +55,9 @@ public class LocalTask {
     // RFC 3339 (which is in UTC)
     @ColumnInfo(name="dueDate")
     public String dueDate;
+
+    @ColumnInfo(name="parentID")
+    public String parentID;
 
     public int getId() {
         return id;
@@ -149,5 +155,36 @@ public class LocalTask {
 
     public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public String getParentID() {
+        return parentID;
+    }
+
+    public void setParentID(String parentID) {
+        this.parentID = parentID;
+    }
+
+    public LocalTask() {}
+
+    public LocalTask(Task task, String taskListId) {
+
+        this.setCompleted((task.getCompleted() != null));
+        if (task.getCompleted() != null) {
+            this.setDateCompleted(task.getCompleted().toStringRfc3339());
+        }
+        this.setUpdatedAt(task.getUpdated().toStringRfc3339());
+        this.setTodoAppName(TodoAppConstants.GTASKS);
+        this.setDescription(task.getTitle());
+        this.setTodoAppIdString(task.getId());
+        if (task.getDue() != null) {
+            this.setDueDate(task.getDue().toStringRfc3339());
+        }
+        if (task.getParent() != null) {
+            this.setParentID(task.getParent());
+        }
+
+        this.setTaskListIdString(taskListId);
+
     }
 }

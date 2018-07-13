@@ -1,0 +1,11 @@
+{
+  "kind": "tasks#task",
+  "id": "MTEyOTkxOTk5NTY2NDI2OTkwMjI6MDo2MDI5OTI1MTU4MjYxMjY3",
+  "etag": "\"-7OFI3jKFsqNjDtcscX9ImH8hVU/MTcxOTcxMDI2Mw\"",
+  "title": "reset time at midnight",
+  "updated": "2018-07-05T22:01:53.000Z",
+  "selfLink": "https://www.googleapis.com/tasks/v1/lists/MTEyOTkxOTk5NTY2NDI2OTkwMjI6MDow/tasks/MTEyOTkxOTk5NTY2NDI2OTkwMjI6MDo2MDI5OTI1MTU4MjYxMjY3",
+  "position": "00000000000132304876",
+  "status": "completed",
+  "completed": "2018-07-05T22:01:53.000Z"
+}

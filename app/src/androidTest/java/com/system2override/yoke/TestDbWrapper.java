@@ -72,7 +72,7 @@ public class TestDbWrapper extends AndroidTestCase {
         localTask.setDescription("description " + Integer.toString(i));
         localTask.setCompleted(false);
         localTask.setTodoAppName(todoApp.getTodoAppName());
-        localTask.setUpdatedAt(new DateTime(10000 + (1000 * i)).toStringRfc3339());
+        localTask.setUpdatedAt(new DateTime(10000 + (3600000 * i)).toStringRfc3339());
         localTask.setTodoAppIdString(todoApp.getTodoAppName() + Integer.toString(i));
         return localTask;
     }

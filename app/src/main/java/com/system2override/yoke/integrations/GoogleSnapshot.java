@@ -49,59 +49,46 @@ public class GoogleSnapshot {
         }
     }
 
-    public static void getTasksForList(Tasks mService, TaskList taskList, String updatedMin) throws IOException {
-
+    public static List<LocalTask> getTasks(Tasks mService, String updatedMin) throws IOException {
+        return new ArrayList<>();
     }
 
     // make sure device is online before calling ths.
     // make sure device has an account before calling this
-    public static List<LocalTask> getTasks(Tasks mService,
+    public static List<Task> getTasksForList(Tasks mService, String listID,
                                            String updatedMin) throws IOException {
-        Log.d(TAG, "getTasks: ");
-        TaskLists result = mService.tasklists().list()
-                .setMaxResults(MAX_LISTS)
-                .execute();
-        Log.d(TAG, "getTasks: result "+ result.toPrettyString());
-        List<TaskList> tasklists = result.getItems();
-        List<LocalTask> allTasks = new ArrayList<LocalTask>();
-        if (tasklists != null) {
-            Log.d(TAG, "getTasks: tasks lists are not null");
-            for (TaskList taskList : tasklists) {
-                List<Task> resultingTasks = mService.tasks()
-                        .list(taskList.getId())
+        Log.d(TAG, "getTasksForList: ");
+                 return mService.tasks()
+                        .list(listID)
                         .setShowCompleted(true)
                         .setUpdatedMin(updatedMin)
                         .execute()
                         .getItems();
-                for (int i = 0; i < resultingTasks.size(); i++) {
-                    Task resultingTask = resultingTasks.get(i);
-                    allTasks.add(convertToLocalTask(resultingTask, taskList.getId()));
-                }
-            }
+    }
+
+    // get all task objects that are currently in google task, that have been updated since updatedMin
+    // i don't know how to test this because i don't know how to mock the MockHTTPTransport blah blah
+    // to return different responses depending on the particular URL, which is necessary because this
+    // method will spawn two calls to two different API endpoints
+    // this jsut seems messy and horrible like wtf do i do about the classloader, so i can read my
+    // test JSON files?
+    // i guess maybe move it out of the sharedTest directory?
+    // also i cant really test the updatedMin stuff working since this is all mocked out, since the
+    // code that actually takes updatedMin into account and does stuff differently is on the Google
+    // Tasks server, not mine
+    public static List<Task> takeSnapshot(Tasks mService, String updatedMin) throws IOException {
+        List<TaskList> taskLists = getTaskLists(mService);
+
+        List<Task> allTasks = new ArrayList<>();
+        for (TaskList list:taskLists) {
+            allTasks.addAll(getTasksForList(mService, list.getId(), updatedMin));
         }
         return allTasks;
     }
 
-    private static LocalTask convertToLocalTask(Task task, String taskListId) {
-        LocalTask localTask = new LocalTask();
+    public static int findNumTasksDone(List<Task> oldSnapshot, List<Task> newSnapshot) {
 
-        localTask.setCompleted((task.getCompleted() != null));
-        if (task.getCompleted() != null) {
-            localTask.setDateCompleted(task.getCompleted().toStringRfc3339());
-        }
-        localTask.setUpdatedAt(task.getUpdated().toStringRfc3339());
-        localTask.setTodoAppName(TodoAppConstants.GTASKS);
-        localTask.setDescription(task.getTitle());
-        localTask.setTodoAppIdString(task.getId());
-        if (task.getDue() != null) {
-            localTask.setDueDate(task.getDue().toStringRfc3339());
-        }
-
-        localTask.setTaskListIdString(taskListId);
-
-        return localTask;
+        return -1;
     }
-
-
 
 }
