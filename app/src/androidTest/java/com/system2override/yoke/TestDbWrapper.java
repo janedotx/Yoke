@@ -8,6 +8,7 @@ import android.test.AndroidTestCase;
 import android.util.Log;
 
 import com.google.api.client.util.DateTime;
+import com.system2override.yoke.models.Habit;
 import com.system2override.yoke.models.LocalTaskDao;
 import com.system2override.yoke.models.LocalTask;
 import com.system2override.yoke.models.PerAppTodoRule;
@@ -64,6 +65,16 @@ public class TestDbWrapper extends AndroidTestCase {
 
         mDb.todoRuleDao().insert(todoRule);
 
+        Habit oldHabit = new Habit();
+
+        oldHabit.lastDateCompleted = 1_000_000_000_000L;
+        oldHabit.description = "i was completed a million years ago";
+        mDb.habitDao().insert(oldHabit);
+
+        Habit newHabit = new Habit();
+        newHabit.lastDateCompleted = System.currentTimeMillis();
+        newHabit.description = "i was completed a million years ago";
+        mDb.habitDao().insert(newHabit);
     }
 
     public LocalTask createFixtureTask(TodoApp todoApp, int i) {

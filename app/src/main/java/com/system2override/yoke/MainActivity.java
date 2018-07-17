@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     protected void onStart() {
         super.onStart();
         checkForUsageStatsPermission(this);
-        checkForAccessFineLocation(this);
+//        checkForAccessFineLocation(this);
         checkForGoogleTasksPermission(this);
 
         startManagerService();

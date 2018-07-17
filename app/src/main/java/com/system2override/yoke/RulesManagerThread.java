@@ -133,7 +133,6 @@ public class RulesManagerThread extends Thread {
 //                Log.d(TAG, "getForegroundTask: applist not null");
                 SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>();
                 for (UsageStats usageStats : appList) {
-//                    Log.d(TAG, "getForegroundTask: usagestat " + usageStats.getPackageName());
                     mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
                 }
                 if (mySortedMap != null && !mySortedMap.isEmpty()) {

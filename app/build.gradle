@@ -36,11 +36,6 @@ android {
 
         test {
             java.srcDirs += "$projectDir/src/sharedTest"
-
-            // frankly this makes no sense, but it makes it so that the TestUtils class in sharedTest
-            // can access the resources directory in the TestUtils#getClass#getClassLoader method
-            // you'd think that this would enable the classes in /test/ to be able to access these
-            // directories as resources, but nerp
             resources.srcDirs += files("$projectDir/src/sharedTest/resources".toString())
         }
     }

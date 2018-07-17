@@ -22,6 +22,7 @@ public class MyApplication extends Application {
     private static final String TAG = "MyApplication";
     public static Bus bus;
     public static String packageName;
+    public static String googleAPIClientId = "1052545727002-i62d0brehmtb9lc4b2teta3rbognvrmf.apps.googleusercontent.com";
 
     @Override
     public void onCreate() {

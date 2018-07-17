@@ -75,7 +75,7 @@ public class ManagerService extends Service {
         }
 
         registerReceivers();
-//        setDailyResetAlarm();
+        setDailyResetAlarm();
         appObserverThread = new ForegroundAppObserverThread(this);
         appObserverThread.start();
         appObserverThread.getHandler().sendEmptyMessage(ForegroundAppObserverThread.OBSERVE);

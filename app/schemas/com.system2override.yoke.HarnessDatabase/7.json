@@ -1,0 +1,313 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 7,
+    "identityHash": "78a337353213721328a47b1c3d46ecf1",
+    "entities": [
+      {
+        "tableName": "PerAppTodoRules",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `packageName` TEXT NOT NULL, `time` INTEGER NOT NULL, `todoAppId` INTEGER NOT NULL, FOREIGN KEY(`todoAppId`) REFERENCES `TodoApps`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "packageName",
+            "columnName": "packageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "time",
+            "columnName": "time",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "todoAppId",
+            "columnName": "todoAppId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "todoAppIndex",
+            "unique": false,
+            "columnNames": [
+              "todoAppId"
+            ],
+            "createSql": "CREATE  INDEX `todoAppIndex` ON `${TABLE_NAME}` (`todoAppId`)"
+          },
+          {
+            "name": "index_PerAppTodoRules_packageName",
+            "unique": false,
+            "columnNames": [
+              "packageName"
+            ],
+            "createSql": "CREATE  INDEX `index_PerAppTodoRules_packageName` ON `${TABLE_NAME}` (`packageName`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "TodoApps",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "todoAppId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "TodoApps",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `oauth2_token` TEXT, `todoapp_name` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "oauth2Token",
+            "columnName": "oauth2_token",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "todoAppName",
+            "columnName": "todoapp_name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_TodoApps_todoapp_name",
+            "unique": true,
+            "columnNames": [
+              "todoapp_name"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_TodoApps_todoapp_name` ON `${TABLE_NAME}` (`todoapp_name`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "LocalTasks",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `completed` INTEGER NOT NULL, `dateCompleted` TEXT, `todoAppId` INTEGER NOT NULL, `description` TEXT, `todoAppName` TEXT, `updatedAt` TEXT, `todoAppIdString` TEXT, `taskListId` TEXT, `dueDate` TEXT, `parentID` TEXT, FOREIGN KEY(`todoAppId`) REFERENCES `TodoApps`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "completed",
+            "columnName": "completed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dateCompleted",
+            "columnName": "dateCompleted",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "todoAppId",
+            "columnName": "todoAppId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "todoAppName",
+            "columnName": "todoAppName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "todoAppIdString",
+            "columnName": "todoAppIdString",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "taskListIdString",
+            "columnName": "taskListId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dueDate",
+            "columnName": "dueDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "parentID",
+            "columnName": "parentID",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_LocalTasks_todoAppId",
+            "unique": false,
+            "columnNames": [
+              "todoAppId"
+            ],
+            "createSql": "CREATE  INDEX `index_LocalTasks_todoAppId` ON `${TABLE_NAME}` (`todoAppId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "TodoApps",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "todoAppId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "TodoRules",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `initialTimeGrant` INTEGER NOT NULL, `todoAppId` INTEGER NOT NULL, `refreshGrantTime` INTEGER NOT NULL, FOREIGN KEY(`todoAppId`) REFERENCES `TodoApps`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "initialTimeGrant",
+            "columnName": "initialTimeGrant",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "todoAppId",
+            "columnName": "todoAppId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "refreshGrantTime",
+            "columnName": "refreshGrantTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_TodoRules_todoAppId",
+            "unique": false,
+            "columnNames": [
+              "todoAppId"
+            ],
+            "createSql": "CREATE  INDEX `index_TodoRules_todoAppId` ON `${TABLE_NAME}` (`todoAppId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "TodoApps",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "todoAppId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Habits",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `lastDateCompleted` INTEGER NOT NULL, `description` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastDateCompleted",
+            "columnName": "lastDateCompleted",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"78a337353213721328a47b1c3d46ecf1\")"
+    ]
+  }
+}

@@ -41,7 +41,7 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class DBInstrumentedTest {
+public class LocalTasksInstrumentedTest {
     private static final String TAG = "ExampleInstrumentedTest";
     TestDbWrapper mTestDbWrapper;
     utils.TestUtils mTestUtils;
