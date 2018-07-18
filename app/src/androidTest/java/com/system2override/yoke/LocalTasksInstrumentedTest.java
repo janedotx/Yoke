@@ -65,10 +65,10 @@ public class LocalTasksInstrumentedTest {
         Log.d(TAG, "insertsWorkProperly: " + tasks.get(0).toString());
         assertEquals(1, mTestDbWrapper.getDb()
                 .localTaskDao()
-                .getLocalTasksForAppSince("test_gtasks", new DateTime(11000).toStringRfc3339()).size());
+                .getLocalTasksSince(new DateTime(11000).toStringRfc3339()).size());
         assertEquals(3, mTestDbWrapper.getDb()
                 .localTaskDao()
-                .getIncompleteLocalTasksForApp("test_gtasks").size());
+                .getIncompleteLocalTasks().size());
     }
 
     @Test public void completeTypeConverterWorks() {
@@ -111,7 +111,6 @@ public class LocalTasksInstrumentedTest {
         assertEquals("reset time at midnight", localTask.getDescription());
         assertEquals("MTEyOTkxOTk5NTY2NDI2OTkwMjI6MDow", localTask.getTaskListIdString());
         assertEquals(null, localTask.getParentID());
-        assertEquals("gtasks", localTask.getTodoAppName());
         assertEquals(null, localTask.getDueDate());
         assertEquals("2018-07-05T22:01:53.000Z", localTask.getUpdatedAt());
         assertEquals("2018-07-05T22:01:53.000Z", localTask.getDateCompleted());

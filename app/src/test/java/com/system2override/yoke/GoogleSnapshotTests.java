@@ -63,7 +63,6 @@ public class GoogleSnapshotTests {
     }
 
 
-
     private MockLowLevelHttpRequest getMocks(String s) {
         final String file = s;
         return new MockLowLevelHttpRequest() {

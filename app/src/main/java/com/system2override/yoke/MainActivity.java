@@ -1,7 +1,6 @@
 package com.system2override.yoke;
 
 import android.app.AppOpsManager;
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -15,14 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -46,9 +38,6 @@ import com.google.api.client.util.ExponentialBackOff;
 
 import com.google.api.services.tasks.TasksScopes;
 import com.google.api.services.tasks.model.*;
-import com.system2override.yoke.models.TodoApp;
-import com.system2override.yoke.models.PerAppTodoRule;
-import com.system2override.yoke.models.TodoRule;
 
 import android.Manifest;
 import android.accounts.AccountManager;
@@ -134,9 +123,22 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         startManagerService();
 
         setupDB();
-
+        setupTimeBank();
+        setupBannedApps();
 
     }
+
+    private void setupTimeBank() {
+        TimeBank.setInitialTime(this, 60 * 1000);
+        TimeBank.setRewardTimeGrant(this, 60 * 1000);
+        TimeBank.resetTime(this);
+    }
+
+    private void setupBannedApps() {
+        BannedApps.clearApps(this);
+        BannedApps.addApp(this, "com.twitter.android");
+    }
+
     private void startManagerService() {
         Intent intent = new Intent(this, ManagerService.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -148,10 +150,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         }
     }
 
-    private void setUpAlarm() {
-
-    }
-
     private void setupDB() {
         boolean success = this.deleteDatabase("db");
         Log.d(TAG, "onStart: database successfully deleted " + Boolean.toString(success));
@@ -159,30 +157,11 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         HarnessDatabase db = MyApplication.getDb(this);
 //  /*
 
-        if (null == db.todoAppDao().getTodoAppFromName("gtasks")) {
-            TodoApp app = new TodoApp();
-            app.setTodoAppName("gtasks");
-            db.todoAppDao().insert(app);
-
-
-            app = db.todoAppDao().getTodoAppFromName(app.getTodoAppName());
-            TodoRule rule = new TodoRule();
-            rule.setTodoAppId(app.getId());
-            rule.setInitialTimeGrant(60000);
-            rule.setRefreshGrantTime(60000);
-            db.todoRuleDao().insert(rule);
-        }
 //        */
 
         GeneralDebugging.printDb(db);
-//        rule = db.todoRuleDao().getRuleFromId(1);
-//        Log.d(TAG, "onStart: counter name" + rule.getCounterName());
-/*        ArrayList<TodoRule> rules = new ArrayList<>(Arrays.asList(db.todoRuleDao().loadAllTodoRules()));
-        for (int i = 0; i < rules.size(); i++) {
-            Log.d(TAG, "onStart: " + rules.get(i).toString());
-        }
-        */
         db.close();
+
     }
 
     @Override

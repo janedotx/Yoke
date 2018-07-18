@@ -25,32 +25,47 @@ public class TimeBankTest {
         this.context = InstrumentationRegistry.getTargetContext();
         mTestDbWrapper = new TestDbWrapper();
         mTestDbWrapper.setUpFixtures();
+        TimeBank.setInitialTime(this.context, 1000);
+        TimeBank.setRewardTimeGrant(this.context, 2000);
         TimeBank.resetTime(this.context);
+
     }
 
     @Test
-    public void testAddTime() {
+    public void testAddSpentTime() {
         TimeBank.addSpentTime(this.context, 1000L);
         long curTime = TimeBank.getSpentTime(InstrumentationRegistry.getTargetContext());
         assertEquals(1000L, curTime);
     }
 
     @Test
+    public void testAddRewardGrant() {
+        TimeBank.addRewardGrant(this.context);
+        long curAvailableTime = TimeBank.getAvailableTime(this.context);
+        assertEquals(3000, curAvailableTime);
+    }
+
+    @Test
+    public void testSettersAndGetters() {
+        TimeBank.setInitialTime(this.context, 1000);
+        TimeBank.setRewardTimeGrant(this.context, 2000);
+        assertEquals(1000, TimeBank.getInitialTime(this.context));
+        assertEquals(2000, TimeBank.getRewardTimeGrant(this.context));
+    }
+
+    @Test
     public void testResetTime() {
-//        /*
         TimeBank.addSpentTime(this.context, 1000L);
         long curTime = TimeBank.getSpentTime(this.context);
         assertEquals(1000L, curTime);
 
-        TimeBank.addRefreshGrant(this.context);
+        TimeBank.addRewardGrant(this.context);
         long curAvailableTime = TimeBank.getAvailableTime(this.context);
         assertEquals(3000, curAvailableTime);
 
         TimeBank.resetTime(this.context);
-        long curSpentTime = TimeBank.getSpentTime(this.context);
-        assertEquals(0, curSpentTime);
-        long availableTime = TimeBank.getAvailableTime(this.context);
-        assertEquals(1000, availableTime);
+        assertEquals(0, TimeBank.getSpentTime(this.context));
+        assertEquals(1000, TimeBank.getAvailableTime(this.context));
 //        */
     }
 

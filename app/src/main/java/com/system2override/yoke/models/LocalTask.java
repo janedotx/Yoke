@@ -2,24 +2,15 @@ package com.system2override.yoke.models;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.google.api.client.util.DateTime;
 import com.google.api.services.tasks.model.Task;
 import com.system2override.yoke.TodoAppConstants;
 
 import java.time.Instant;
 
-import static android.arch.persistence.room.ForeignKey.CASCADE;
-
-@Entity(tableName = "LocalTasks",
-        foreignKeys = {@ForeignKey(entity = TodoApp.class,
-                                            parentColumns = "id",
-                                            childColumns="todoAppId",
-                                            onDelete = CASCADE)},
-        indices = {@Index(value = "todoAppId")}
-        )
+@Entity(tableName = "LocalTasks")
 public class LocalTask {
     @PrimaryKey(autoGenerate = true)
     public int id;
@@ -31,14 +22,8 @@ public class LocalTask {
     @ColumnInfo(name="dateCompleted")
     public String dateCompleted;
 
-    @ColumnInfo(name = "todoAppId")
-    public int todoAppId;
-
     @ColumnInfo(name = "description")
     public String description;
-
-    @ColumnInfo(name = "todoAppName")
-    public String todoAppName;
 
     // RFC 3339 (which is in UTC)
     @ColumnInfo(name="updatedAt")
@@ -79,13 +64,6 @@ public class LocalTask {
         this.dateCompleted = dateCompleted;
     }
 
-    public int getTodoAppId() {
-        return todoAppId;
-    }
-
-    public void setTodoAppId(int todoAppId) {
-        this.todoAppId = todoAppId;
-    }
 
     public String getUpdatedAt() {
         return updatedAt;
@@ -94,19 +72,6 @@ public class LocalTask {
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-    public void setTodoAppId(Integer todoAppId) {
-        this.todoAppId = todoAppId;
-    }
-
-    public String getTodoAppName() {
-        return todoAppName;
-    }
-
-    public void setTodoAppName(String todoAppName) {
-        this.todoAppName = todoAppName;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -129,9 +94,7 @@ public class LocalTask {
                 "id=" + id +
                 ", completed=" + completed +
                 ", dateCompleted='" + dateCompleted + '\'' +
-                ", todoAppId=" + todoAppId +
                 ", description='" + description + '\'' +
-                ", todoApp='" + todoAppName + '\'' +
                 ", updatedAt='" + updatedAt + '\'' +
                 ", todoAppIdString='" + todoAppIdString + '\'' +
                 '}';
@@ -165,6 +128,10 @@ public class LocalTask {
         this.parentID = parentID;
     }
 
+    public void setUpdatedAtInMS(long ms) {
+        this.updatedAt = new DateTime(ms).toStringRfc3339();
+    }
+
     public LocalTask() {}
 
     public LocalTask(Task task, String taskListId) {
@@ -174,7 +141,6 @@ public class LocalTask {
             this.setDateCompleted(task.getCompleted().toStringRfc3339());
         }
         this.setUpdatedAt(task.getUpdated().toStringRfc3339());
-        this.setTodoAppName(TodoAppConstants.GTASKS);
         this.setDescription(task.getTitle());
         this.setTodoAppIdString(task.getId());
         if (task.getDue() != null) {

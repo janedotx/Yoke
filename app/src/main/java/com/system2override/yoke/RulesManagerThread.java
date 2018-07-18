@@ -17,7 +17,6 @@ import android.view.WindowManager;
 import com.google.api.client.util.DateTime;
 
 import com.system2override.yoke.integrations.GoogleSnapshot;
-import com.system2override.yoke.models.PerAppTodoRule;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,8 +42,6 @@ public class RulesManagerThread extends Thread {
     UsageStatsManager manager;
     SharedPreferences sharedPrefs;
     SharedPreferences.Editor editor;
-    List<PerAppTodoRule> rules;
-    HashMap<String, List<PerAppTodoRule>> packageNameToRulesMap;
     PowerManager powerManager;
     HarnessDatabase db;
     Display display;
@@ -55,23 +52,10 @@ public class RulesManagerThread extends Thread {
         this.manager = getUsageStatsManager();
         this.sharedPrefs = context.getSharedPreferences(context.getString(R.string.rules_manager_file), Context.MODE_PRIVATE);
         this.editor = sharedPrefs.edit();
-        this.packageNameToRulesMap = new HashMap<String, List<PerAppTodoRule>>();
         this.powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 
         this.db = Room.databaseBuilder(context,
                 HarnessDatabase.class, "db").fallbackToDestructiveMigration().allowMainThreadQueries().build();
-        this.rules = this.db.perAppTodoRuleDao().loadAllPerAppTodoRules();
-
-        for (int i = 0; i < rules.size(); i++) {
-            PerAppTodoRule rule = rules.get(i);
-            Log.d(TAG, "RulesManagerThread: rule " + rule.toString());
-            Log.d(TAG, "RulesManagerThread: rule " + rule.getPackageName());
-            if (packageNameToRulesMap.get(rule.getPackageName()) == null) {
-                packageNameToRulesMap.put(rule.getPackageName(), new ArrayList<PerAppTodoRule>());
-            }
-            packageNameToRulesMap.get(rule.getPackageName()).add(rule);
-        }
-        Log.d(TAG, "RulesManagerThread: hashmap " + packageNameToRulesMap.toString());
 
     }
 
@@ -184,18 +168,13 @@ public class RulesManagerThread extends Thread {
    //         }
 
             String packageName = getForegroundTask();
-           PerAppTodoRule rule = db.perAppTodoRuleDao().getStrictestRuleForPackageName(packageName);
 /*
-            for (PerAppTodoRule rule: rules) {
-                Log.d(TAG, "run: rule " + rule.toString());
-            }
-            */
             // don't bother time tracking for apps that we have no rules for
             // save the expense of hitting SharedPreferences
 
 //            List<String> str = new ArrayList<>();
 //            str.get(1);
-            if (rule != null) {
+            /*
                 if (rule.getTime() <= this.sharedPrefs.getLong(packageName, 0)) {
                     // TODO if integration with relevant app shows a failure, boot them!
                     // otherwise, reset counter
@@ -210,7 +189,7 @@ public class RulesManagerThread extends Thread {
                 } else {
                     addTime(packageName, SLEEP_LENGTH);
                 }
-            }
+                */
 
             /*
                 get foreground task

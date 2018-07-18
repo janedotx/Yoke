@@ -88,11 +88,23 @@ public class ManagerService extends Service {
         this.registerReceiver(dailyResetReceiver, resetFilter);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
+        long time = System.currentTimeMillis();
+        calendar.setTimeInMillis(time);
+        // ensure this fires for the next upcoming midnight
+        // will this _always_ work?
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.HOUR, 0);
         calendar.set(Calendar.AM_PM, Calendar.AM);
+
+        long time1 = calendar.getTimeInMillis();
+        long time2 = calendar.getTimeInMillis();
+
+        Log.d(TAG, "setDailyResetAlarm: curtime " + Long.toString(time));
+        Log.d(TAG, "setDailyResetAlarm: time1 " + Long.toString(time1));
+        Log.d(TAG, "setDailyResetAlarm: time2 " + Long.toString(time2));
+        Log.d(TAG, "setDailyResetAlarm: calendar.getTimeInMillis " + Long.toString(calendar.getTimeInMillis()));
 
         AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         Intent resetIntent = new Intent(TimeBank.RESET_ACTION);

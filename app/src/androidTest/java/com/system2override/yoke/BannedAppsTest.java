@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,7 @@ public class BannedAppsTest {
     @Before
     public void setUp() {
         this.context = InstrumentationRegistry.getTargetContext();
+        BannedApps.clearApps(this.context);
     }
 
     @Test
@@ -35,6 +37,11 @@ public class BannedAppsTest {
         assertTrue(freshApps.contains("com.package.foo"));
         assertTrue(freshApps.contains("com.package.foo2"));
 
+    }
+
+    @After
+    public void tearDown() {
+        BannedApps.clearApps(this.context);
     }
 
 }

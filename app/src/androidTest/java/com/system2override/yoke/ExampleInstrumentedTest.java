@@ -53,11 +53,10 @@ public class ExampleInstrumentedTest {
     // plus multiple tasks?
     // this is the case where we had tasks t1, t2, t3, and t3 was done, so should return true
     public void verifyTaskWasCompleted(){
-        TodoApp app1 = mTestDbWrapper.getDb().todoAppDao().getTodoAppFromName("test_gtasks");
         List<LocalTask> apiTasks = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) {
-            LocalTask localTask = mTestDbWrapper.createFixtureTask(app1, i);
+            LocalTask localTask = mTestDbWrapper.createFixtureTask(i);
             apiTasks.add(localTask);
         }
     }

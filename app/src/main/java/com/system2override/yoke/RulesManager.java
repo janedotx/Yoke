@@ -5,17 +5,15 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.system2override.yoke.OttoMessages.CurrentAppMessage;
-import com.system2override.yoke.models.TodoRule;
+import com.system2override.yoke.OttoMessages.ForegroundMessage;
 
 public class RulesManager {
     private static final String TAG = "RulesManager";
     private Context context;
-    private TodoRule todoRule;
     private Intent launcherIntent;
 
-    public RulesManager(Context context, HarnessDatabase db) {
+    public RulesManager(Context context) {
         this.context = context;
-        this.todoRule = db.todoRuleDao().getTodoRule();
         this.launcherIntent = new Intent("android.intent.action.MAIN");
         this.launcherIntent.addCategory("android.intent.category.HOME");
 
@@ -23,12 +21,21 @@ public class RulesManager {
     }
 
     @com.squareup.otto.Subscribe
-    public void checkForRuleTriggers(CurrentAppMessage currentAppMessage) {
-        // TODO fix
-        long currentTime = TimeBank.getAvailableTime(this.context);
-        if (currentTime >= todoRule.getInitialTimeGrant()) {
+    public void processForegroundMessage(CurrentAppMessage currentAppMessage) {
+        Log.d(TAG, "processForegroundMessage: called me!");
+        boolean inBadApp = BannedApps.getApps(this.context).contains(currentAppMessage.getCurrentApp());
+        long availableTime = TimeBank.getAvailableTime(this.context);
+        long timeSpent = TimeBank.getSpentTime(this.context);
+
+        if (timeSpent >= availableTime && inBadApp) {
             this.context.startActivity(this.launcherIntent);
+            return;
         }
+
+        if (inBadApp) {
+            TimeBank.addSpentTime(this.context, ForegroundAppObserverThread.SLEEP_LENGTH);
+        }
+        Log.d(TAG, "processForegroundMessage: spentTime " + Long.toString(timeSpent));
 
     }
 

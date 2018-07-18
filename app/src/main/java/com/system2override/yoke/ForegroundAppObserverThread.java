@@ -17,7 +17,6 @@ import android.util.Log;
 import com.squareup.otto.Subscribe;
 import com.system2override.yoke.OttoMessages.CurrentAppMessage;
 import com.system2override.yoke.OttoMessages.ForegroundMessage;
-import com.system2override.yoke.models.PerAppTodoRule;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,9 +25,9 @@ import java.util.TreeMap;
 
 public class ForegroundAppObserverThread extends Thread {
     private static final String TAG = "ForegroundAppObserverTh";
-    private final long SLEEP_LENGTH = 2000;
-//    private final long LOOK_BACK_INTERVAL = 60 * 60 * 1000;
-    private final long LOOK_BACK_INTERVAL = 3 * 1000;
+    public static final long SLEEP_LENGTH = 2000;
+    private final long LOOK_BACK_INTERVAL = 60 * 60 * 1000;
+//    private final long LOOK_BACK_INTERVAL = 60 * 1000;
 
     public final String NULL = "NULL";
     Context context;
@@ -37,6 +36,7 @@ public class ForegroundAppObserverThread extends Thread {
     Handler handler;
     String lastApp;
     AppChangeEventHandler appChangeEventHandler;
+    RulesManager rulesEnforcer;
 
     public static final int OBSERVE = 1;
     public static final int DO_NOT_OBSERVE = 0;
@@ -46,6 +46,7 @@ public class ForegroundAppObserverThread extends Thread {
         MyApplication.getBus().register(this);
 
         this.context = context;
+        this.rulesEnforcer = new RulesManager(this.context);
         this.lastApp = NULL;
         this.usageStatsManager = getUsageStatsManager();
         this.activityManager = (ActivityManager) this.context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -105,6 +106,7 @@ public class ForegroundAppObserverThread extends Thread {
             List<ActivityManager.RunningAppProcessInfo> tasks = this.activityManager.getRunningAppProcesses();
             currentApp = tasks.get(0).processName;
         }
+        Log.d(TAG, "getForegroundApp: " + currentApp);
 
         return currentApp;
     }
@@ -113,6 +115,9 @@ public class ForegroundAppObserverThread extends Thread {
         return handler;
     }
 
+    // publish app changes, because if the user stays in an app for a long enough time, eventually the
+    // current foreground app will be NULL, since we look at the most recently used package in a
+    // relatively short window of time
     @com.squareup.otto.Subscribe
     public void publishAppChanges(ForegroundMessage message) {
         if (message.getApp() == NULL) {

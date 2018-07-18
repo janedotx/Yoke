@@ -15,17 +15,14 @@ public interface LocalTaskDao {
     @Query("SELECT * FROM LocalTasks")
     public List<LocalTask> loadAllLocalTasks();
 
-    @Query("SELECT * FROM LocalTasks WHERE :todoAppName = todoAppName AND updatedAt > :updatedAt")
-    public List<LocalTask> getLocalTasksForAppSince(String todoAppName, String updatedAt);
+    @Query("SELECT * FROM LocalTasks WHERE updatedAt > :updatedAt")
+    public List<LocalTask> getLocalTasksSince(String updatedAt);
 
-    @Query("SELECT * FROM LocalTasks WHERE :todoAppName = todoAppName AND completed = 0")
-    public List<LocalTask> getIncompleteLocalTasksForApp(String todoAppName);
+    @Query("SELECT * FROM LocalTasks WHERE completed = 0")
+    public List<LocalTask> getIncompleteLocalTasks();
 
-    @Query("SELECT * FROM LocalTasks WHERE :todoAppName = todoAppName AND completed = 1")
-    public List<LocalTask> getCompletedLocalTasksForApp(String todoAppName);
-
-    @Query("SELECT * FROM LocalTasks WHERE :todoAppName = todoAppName")
-    public List<LocalTask> getLocalTasksForTodoApp(String todoAppName);
+    @Query("SELECT * FROM LocalTasks WHERE completed = 1")
+    public List<LocalTask> getCompletedLocalTasks();
 
     @Query("SELECT * FROM LocalTasks WHERE :id = todoAppIdString")
     public LocalTask getLocalTasksByTodoAppIDString(String id);

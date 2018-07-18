@@ -9,27 +9,28 @@ import java.util.Set;
 
 public class BannedApps {
     private static final String TAG = "BannedApps";
-    private static final String BANNED_APPS_FILE = "BANNED";
-    private static final String BANNED_APPS_KEY = "BANNED_APPS";
+    private static final String BANNED_APPS_FILE = "BANNED_FILE";
+    private static final String BANNED_APPS_KEY = "BANNED_APPS_KEY";
 
-    private static Set<String> apps = null;
+    private static SharedPreferencesHelper helper;
 
-    public static Set<String> getApps(Context context) {
-        Log.d(TAG, "getApps: ");
-        if (apps == null) {
-            Log.d(TAG, "getApps: hello null");
-            SharedPreferences prefs = context.getSharedPreferences(fullPath(), Context.MODE_PRIVATE);
-            apps = prefs.getStringSet(BANNED_APPS_KEY, new HashSet<String>());
+    private static SharedPreferencesHelper getSharedPreferencesHelper() {
+        if (helper == null) {
+            helper = new SharedPreferencesHelper(BANNED_APPS_FILE);
         }
-        return apps;
+        return helper;
     }
 
+    public static Set<String> getApps(Context context) {
+        SharedPreferences prefs = getSharedPreferencesHelper().getSharedPreferences(context);
+        return prefs.getStringSet(BANNED_APPS_KEY, new HashSet<String>());
+    }
+
+
     public static void setApps(Context context, Set<String> newApps) {
-        apps = newApps;
-        SharedPreferences.Editor editor = context.getSharedPreferences(fullPath(), Context.MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getSharedPreferencesHelper().getSharedPreferencesEditor(context);
         editor.putStringSet(BANNED_APPS_KEY, newApps);
         editor.apply();
-
     }
 
     public static void addApp(Context context, String newApp) {
@@ -38,8 +39,8 @@ public class BannedApps {
         setApps(context, apps);
     }
 
-    private static String fullPath() {
-        return MyApplication.packageName + "." + BANNED_APPS_FILE;
+    public static void clearApps(Context context) {
+        setApps(context, new HashSet<String>());
     }
 
 }
