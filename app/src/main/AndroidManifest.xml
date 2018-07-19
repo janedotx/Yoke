@@ -41,6 +41,14 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".BroadcastReceivers.DailyResetReceiver"
+            android:label="DailyResetReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.system2override.yoke.RESET"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

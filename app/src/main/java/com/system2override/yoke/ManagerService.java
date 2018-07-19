@@ -83,13 +83,17 @@ public class ManagerService extends Service {
     }
 
     private void setDailyResetAlarm() {
+        /*
         IntentFilter resetFilter = new IntentFilter(TimeBank.RESET_ACTION);
         dailyResetReceiver = new DailyResetReceiver();
         this.registerReceiver(dailyResetReceiver, resetFilter);
+        */
 
         Calendar calendar = Calendar.getInstance();
         long time = System.currentTimeMillis();
-        calendar.setTimeInMillis(time);
+        calendar.setTimeInMillis(time + 65000);
+        Log.d(TAG, "setDailyResetAlarm: curtime " + Long.toString(time));
+/*        calendar.setTimeInMillis(time);
         // ensure this fires for the next upcoming midnight
         // will this _always_ work?
         calendar.add(Calendar.DAY_OF_YEAR, 1);
@@ -97,18 +101,19 @@ public class ManagerService extends Service {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.HOUR, 0);
         calendar.set(Calendar.AM_PM, Calendar.AM);
+        */
 
-        long time1 = calendar.getTimeInMillis();
-        long time2 = calendar.getTimeInMillis();
-
-        Log.d(TAG, "setDailyResetAlarm: curtime " + Long.toString(time));
-        Log.d(TAG, "setDailyResetAlarm: time1 " + Long.toString(time1));
-        Log.d(TAG, "setDailyResetAlarm: time2 " + Long.toString(time2));
         Log.d(TAG, "setDailyResetAlarm: calendar.getTimeInMillis " + Long.toString(calendar.getTimeInMillis()));
+        Log.d(TAG, "setDailyResetAlarm: action " + TimeBank.RESET_ACTION);
 
+        Intent resetIntent = new Intent(this, DailyResetReceiver.class);
+        resetIntent.setAction(TimeBank.RESET_ACTION);
+
+        PendingIntent pendingResetIntent = PendingIntent.getBroadcast(this,
+                                                                     0,
+                                                                      resetIntent,
+                                                                    PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        Intent resetIntent = new Intent(TimeBank.RESET_ACTION);
-        PendingIntent pendingResetIntent = PendingIntent.getBroadcast(this, 0, resetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 //        am.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 1000 * 60 * 1, pendingResetIntent);
         am.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 1000 * 60 * 60 * 24, pendingResetIntent);
     }
@@ -210,7 +215,7 @@ public class ManagerService extends Service {
         appObserverThread.getHandler().getLooper().quit();
         this.unregisterReceiver(screenOffReceiver);
         this.unregisterReceiver(screenOnReceiver);
-        this.unregisterReceiver(dailyResetReceiver);
+//        this.unregisterReceiver(dailyResetReceiver);
         super.onDestroy();
     }
 

@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     }
 
     private void setupTimeBank() {
-        TimeBank.setInitialTime(this, 60 * 1000);
+        TimeBank.setInitialTime(this, 60 * 3000);
         TimeBank.setRewardTimeGrant(this, 60 * 1000);
         TimeBank.resetTime(this);
     }

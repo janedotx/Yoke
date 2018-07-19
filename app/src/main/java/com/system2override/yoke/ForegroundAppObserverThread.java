@@ -26,8 +26,12 @@ import java.util.TreeMap;
 public class ForegroundAppObserverThread extends Thread {
     private static final String TAG = "ForegroundAppObserverTh";
     public static final long SLEEP_LENGTH = 2000;
-    private final long LOOK_BACK_INTERVAL = 60 * 60 * 1000;
+    // yoke last at least an hour
+//    private final long LOOK_BACK_INTERVAL = 60 * 60 * 1000;
+    // i've seen yoke last for at least a couple hours
 //    private final long LOOK_BACK_INTERVAL = 60 * 1000;
+    // yoke has gone strong for 2.5+ hours
+    private final long LOOK_BACK_INTERVAL = 12 * 60 * 60 * 1000;
 
     public final String NULL = "NULL";
     Context context;
