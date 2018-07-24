@@ -9,7 +9,8 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
 
     <application
@@ -27,28 +28,36 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AppLimit.AppLimitScreen">
+            <intent-filter>
+                <action android:name="com.system2override.yoke.APP_LIMIT_SCREEN" />
+            </intent-filter>
+        </activity>
+
         <service
             android:name=".ManagerService"
             android:stopWithTask="false">
             <intent-filter>
-                <action android:name="com.system2override.yoke.ManagerSrvice"/>
+                <action android:name="com.system2override.yoke.ManagerSrvice" />
             </intent-filter>
-        </service>s
+        </service>
         <receiver
             android:name=".BroadcastReceivers.ManagerServiceBootReceiver"
             android:label="ManagerServiceBootReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
         <receiver
             android:name=".BroadcastReceivers.DailyResetReceiver"
-            android:label="DailyResetReceiver"
-            android:exported="true">
+            android:exported="true"
+            android:label="DailyResetReceiver">
             <intent-filter>
-                <action android:name="com.system2override.yoke.RESET"/>
+                <action android:name="com.system2override.yoke.RESET" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".AppLimit.AppLimit"></activity>
     </application>
 
 </manifest>

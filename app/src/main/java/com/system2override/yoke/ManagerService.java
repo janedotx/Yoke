@@ -91,17 +91,14 @@ public class ManagerService extends Service {
 
         Calendar calendar = Calendar.getInstance();
         long time = System.currentTimeMillis();
-        calendar.setTimeInMillis(time + 65000);
         Log.d(TAG, "setDailyResetAlarm: curtime " + Long.toString(time));
-/*        calendar.setTimeInMillis(time);
+        calendar.setTimeInMillis(time);
         // ensure this fires for the next upcoming midnight
-        // will this _always_ work?
         calendar.add(Calendar.DAY_OF_YEAR, 1);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.HOUR, 0);
         calendar.set(Calendar.AM_PM, Calendar.AM);
-        */
 
         Log.d(TAG, "setDailyResetAlarm: calendar.getTimeInMillis " + Long.toString(calendar.getTimeInMillis()));
         Log.d(TAG, "setDailyResetAlarm: action " + TimeBank.RESET_ACTION);

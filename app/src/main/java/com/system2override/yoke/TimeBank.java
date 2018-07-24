@@ -47,7 +47,7 @@ public class TimeBank {
         return prefs.getLong(TIME_AVAILABLE_KEY, 0L);
     }
 
-    public static long addRewardGrant(Context context) {
+    public static long earnTime(Context context) {
         SharedPreferences.Editor editor = getSharedPreferencesHelper().getSharedPreferencesEditor(context);
         SharedPreferences prefs = getSharedPreferencesHelper().getSharedPreferences(context);
 
@@ -96,6 +96,10 @@ public class TimeBank {
     public static long getRewardTimeGrant(Context context) {
         SharedPreferences sharedPreferences = getSharedPreferencesHelper().getSharedPreferences(context);
         return sharedPreferences.getLong(REWARD_GRANT_TIME_KEY, 0L);
+    }
+
+    public static long getTotalEarnedTimeToday(Context context) {
+        return getAvailableTime(context) - getInitialTime(context);
     }
 
 }

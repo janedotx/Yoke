@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.system2override.yoke.AppLimit.AppLimitScreen;
 import com.system2override.yoke.OttoMessages.CurrentAppMessage;
 import com.system2override.yoke.OttoMessages.ForegroundMessage;
 
@@ -14,8 +15,9 @@ public class RulesManager {
 
     public RulesManager(Context context) {
         this.context = context;
-        this.launcherIntent = new Intent("android.intent.action.MAIN");
-        this.launcherIntent.addCategory("android.intent.category.HOME");
+//        this.launcherIntent = new Intent("android.intent.action.MAIN");
+//        this.launcherIntent.addCategory("android.intent.category.HOME");
+        this.launcherIntent = new Intent(this.context, AppLimitScreen.class);
 
         MyApplication.getBus().register(this);
     }

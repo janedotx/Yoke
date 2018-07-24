@@ -40,7 +40,7 @@ public class TimeBankTest {
 
     @Test
     public void testAddRewardGrant() {
-        TimeBank.addRewardGrant(this.context);
+        TimeBank.earnTime(this.context);
         long curAvailableTime = TimeBank.getAvailableTime(this.context);
         assertEquals(3000, curAvailableTime);
     }
@@ -59,7 +59,7 @@ public class TimeBankTest {
         long curTime = TimeBank.getSpentTime(this.context);
         assertEquals(1000L, curTime);
 
-        TimeBank.addRewardGrant(this.context);
+        TimeBank.earnTime(this.context);
         long curAvailableTime = TimeBank.getAvailableTime(this.context);
         assertEquals(3000, curAvailableTime);
 
@@ -67,6 +67,19 @@ public class TimeBankTest {
         assertEquals(0, TimeBank.getSpentTime(this.context));
         assertEquals(1000, TimeBank.getAvailableTime(this.context));
 //        */
+    }
+
+    @Test
+    public void testGetEarnedTime() {
+        assertEquals(0L, TimeBank.getTotalEarnedTimeToday(this.context));
+        TimeBank.earnTime(this.context);
+        assertEquals(2000L, TimeBank.getTotalEarnedTimeToday(this.context));
+        TimeBank.earnTime(this.context);
+        assertEquals(4000L, TimeBank.getTotalEarnedTimeToday(this.context));
+
+        TimeBank.resetTime(this.context);
+        assertEquals(0L, TimeBank.getTotalEarnedTimeToday(this.context));
+
     }
 
     @After
