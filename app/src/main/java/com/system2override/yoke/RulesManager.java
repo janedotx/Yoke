@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.system2override.yoke.AppLimit.AppLimitScreen;
+import com.system2override.yoke.Models.BannedApps;
+import com.system2override.yoke.Models.TimeBank;
 import com.system2override.yoke.OttoMessages.CurrentAppMessage;
-import com.system2override.yoke.OttoMessages.ForegroundMessage;
 
 public class RulesManager {
     private static final String TAG = "RulesManager";
@@ -24,10 +25,11 @@ public class RulesManager {
 
     @com.squareup.otto.Subscribe
     public void processForegroundMessage(CurrentAppMessage currentAppMessage) {
-        Log.d(TAG, "processForegroundMessage: called me!");
+ //       Log.d(TAG, "processForegroundMessage: called me!");
         boolean inBadApp = BannedApps.getApps(this.context).contains(currentAppMessage.getCurrentApp());
-        long availableTime = TimeBank.getAvailableTime(this.context);
-        long timeSpent = TimeBank.getSpentTime(this.context);
+        TimeBank timeBank = MyApplication.getTimeBank();
+        long availableTime = timeBank.getAvailableTime();
+        long timeSpent = timeBank.getSpentTime(this.context);
 
         if (timeSpent >= availableTime && inBadApp) {
             this.context.startActivity(this.launcherIntent);
@@ -35,7 +37,7 @@ public class RulesManager {
         }
 
         if (inBadApp) {
-            TimeBank.addSpentTime(this.context, ForegroundAppObserverThread.SLEEP_LENGTH);
+            timeBank.addSpentTime(this.context, ForegroundAppObserverThread.SLEEP_LENGTH);
         }
         Log.d(TAG, "processForegroundMessage: spentTime " + Long.toString(timeSpent));
 

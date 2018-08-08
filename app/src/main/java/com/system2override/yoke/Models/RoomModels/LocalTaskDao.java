@@ -1,4 +1,4 @@
-package com.system2override.yoke.models;
+package com.system2override.yoke.Models.RoomModels;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
@@ -11,6 +11,15 @@ import java.util.List;
 public interface LocalTaskDao {
     @Insert
     long insert(LocalTask localTask);
+
+    @Insert
+    public void insertLocalTasks(LocalTask... localTasks);
+
+    @Insert
+    public void insertLocalTasksList(List<LocalTask> localTasks);
+
+    @Update
+    public void update(LocalTask... task);
 
     @Query("SELECT * FROM LocalTasks")
     public List<LocalTask> loadAllLocalTasks();
@@ -30,15 +39,10 @@ public interface LocalTaskDao {
     @Query("SELECT * FROM LocalTasks WHERE :id = id")
     public LocalTask getLocalTasksByID(int id);
 
-    @Update
-    public void update(LocalTask... task);
-
-    @Insert
-    public void insertLocalTasks(LocalTask... localTasks);
-
-    @Insert
-    public void insertLocalTasksList(List<LocalTask> localTasks);
-
     @Query("SELECT * FROM LocalTasks ORDER BY updatedAt DESC LIMIT 1")
     public LocalTask getMostRecentlyUpdatedLocalTask();
+
+    @Query("SELECT * FROM LocalTasks WHERE completed = 0 LIMIT :limit")
+    public List<LocalTask> getSomeIncompletedTasks(int limit);
+
 }

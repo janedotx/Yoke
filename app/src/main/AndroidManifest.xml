@@ -33,6 +33,11 @@
                 <action android:name="com.system2override.yoke.APP_LIMIT_SCREEN" />
             </intent-filter>
         </activity>
+        <activity android:name=".TodoManagement.TodoManagementScreen">
+            <intent-filter>
+                <action android:name="com.system2override.yoke.TODO_MANAGEMENT_SCREEN" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".ManagerService"
@@ -41,6 +46,7 @@
                 <action android:name="com.system2override.yoke.ManagerSrvice" />
             </intent-filter>
         </service>
+
         <receiver
             android:name=".BroadcastReceivers.ManagerServiceBootReceiver"
             android:label="ManagerServiceBootReceiver">
@@ -57,7 +63,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".AppLimit.AppLimit"></activity>
+        <activity android:name=".AppLimit.AppLimit" />
+        <activity android:name=".TodoManagement.TodoManagement"></activity>
     </application>
 
 </manifest>

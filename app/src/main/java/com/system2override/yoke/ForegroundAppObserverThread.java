@@ -56,10 +56,10 @@ public class ForegroundAppObserverThread extends Thread {
         this.activityManager = (ActivityManager) this.context.getSystemService(Context.ACTIVITY_SERVICE);
         this.handler = new Handler() {
             public void handleMessage(Message message) {
-                Log.d(TAG, "handleMessage: " + Integer.toString(message.what));
+//                Log.d(TAG, "handleMessage: " + Integer.toString(message.what));
                 switch(message.what) {
                     case OBSERVE:
-                        Log.d(TAG, "handleMessage: enqueuing next message");
+//                        Log.d(TAG, "handleMessage: enqueuing next message");
                         MyApplication.getBus().post(new ForegroundMessage(getForegroundApp()));
                         this.sendEmptyMessageDelayed(OBSERVE, SLEEP_LENGTH);
                         break;
@@ -70,7 +70,7 @@ public class ForegroundAppObserverThread extends Thread {
             }
         };
 
-        Log.d(TAG, "ForegroundAppObserverThread: thread made");
+//        Log.d(TAG, "ForegroundAppObserverThread: thread made");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -110,7 +110,7 @@ public class ForegroundAppObserverThread extends Thread {
             List<ActivityManager.RunningAppProcessInfo> tasks = this.activityManager.getRunningAppProcesses();
             currentApp = tasks.get(0).processName;
         }
-        Log.d(TAG, "getForegroundApp: " + currentApp);
+//        Log.d(TAG, "getForegroundApp: " + currentApp);
 
         return currentApp;
     }
@@ -126,13 +126,13 @@ public class ForegroundAppObserverThread extends Thread {
     public void publishAppChanges(ForegroundMessage message) {
         if (message.getApp() == NULL) {
             if (lastApp != NULL) {
-                Log.d(TAG, "publishAppChanges: currentApp is " + lastApp);
+//                Log.d(TAG, "publishAppChanges: currentApp is " + lastApp);
                 MyApplication.getBus().post(new CurrentAppMessage(lastApp));
  //               BannedApps.addTime(this.context, SLEEP_LENGTH);
             }
         } else {
             lastApp = message.getApp();
-            Log.d(TAG, "publishAppChanges: currentApp is " + lastApp);
+//            Log.d(TAG, "publishAppChanges: currentApp is " + lastApp);
 //            BannedApps.addTime(this.context, SLEEP_LENGTH);
             MyApplication.getBus().post(new CurrentAppMessage(lastApp));
         }

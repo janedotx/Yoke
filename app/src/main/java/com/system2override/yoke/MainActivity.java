@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -38,6 +39,11 @@ import com.google.api.client.util.ExponentialBackOff;
 
 import com.google.api.services.tasks.TasksScopes;
 import com.google.api.services.tasks.model.*;
+import com.system2override.yoke.Models.BannedApps;
+import com.system2override.yoke.Models.RoomModels.Habit;
+import com.system2override.yoke.Models.TimeBank;
+import com.system2override.yoke.TodoManagement.TodoManagementScreen;
+import com.system2override.yoke.databinding.ActivityMainBinding;
 
 import android.Manifest;
 import android.accounts.AccountManager;
@@ -49,7 +55,9 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -96,7 +104,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        final ActivityMainBinding activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
         String path = this.getFilesDir() + "/error.log";
         try {
             Log.d(TAG, "onCreate: log contents" + readFile(path));
@@ -111,6 +120,22 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
+
+        activityMainBinding.button2.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, TodoManagementScreen.class);
+                startActivity(i);
+            }
+        });
+
+        TimeBank timeBank = MyApplication.getTimeBank();
+        activityMainBinding.setVariable(BR.availableTime, timeBank);
+//        activityMainBinding.mainViewTimeAvailable.setText(Long.toString(timeBank.getAvailableTime()));
+        setupDB();
+        setupTimeBank();
+        setupBannedApps();
     }
 
     @Override
@@ -122,21 +147,52 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
         startManagerService();
 
-        setupDB();
-        setupTimeBank();
-        setupBannedApps();
-
     }
 
     private void setupTimeBank() {
-        TimeBank.setInitialTime(this, 1 * 3000);
-        TimeBank.setRewardTimeGrant(this, 60 * 1000);
-        TimeBank.resetTime(this);
+        final EditText initialTimeEditText = findViewById(R.id.mainInitialTimeEdit);
+        final EditText refreshTimeEditText = findViewById(R.id.mainRefreshTimeGrantEdit);
+        TimeBank timeBank = MyApplication.getTimeBank();
+        initialTimeEditText.setText(Long.toString(timeBank.getInitialTime(this)/1000));
+        refreshTimeEditText.setText(Long.toString(timeBank.getRewardTimeGrant(this)/1000));
+
+        Button initialButton = findViewById(R.id.initialTimeButtonSave);
+        initialButton.setOnClickListener(new View.OnClickListener() {
+                                             @Override
+                                             public void onClick(View v) {
+                                                 String curTime = initialTimeEditText.getText().toString();
+                                                 MyApplication.getTimeBank().setInitialTime(MainActivity.this, Long.parseLong(curTime) * 1000);
+                                             }
+                                         }
+        );
+
+
+        Button refreshButton = findViewById(R.id.refreshButtonSave);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String refreshTime = refreshTimeEditText.getText().toString();
+                MyApplication.getTimeBank().setRewardTimeGrant(MainActivity.this, Long.parseLong(refreshTime) * 1000);
+            }
+        });
+
+        Button resetTimeBank = findViewById(R.id.resetTimeBank);
+        resetTimeBank.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApplication.getTimeBank().resetTime(MainActivity.this);
+            }
+        });
+
     }
 
     private void setupBannedApps() {
         BannedApps.clearApps(this);
         BannedApps.addApp(this, "com.twitter.android");
+    }
+
+    private void setupHabits() {
+
     }
 
     private void startManagerService() {
@@ -151,10 +207,32 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     }
 
     private void setupDB() {
-        boolean success = this.deleteDatabase("db");
+        boolean success = this.deleteDatabase(BuildConfig.DATABASE_FILE);
+//        boolean success = this.deleteDatabase("db");
         Log.d(TAG, "onStart: database successfully deleted " + Boolean.toString(success));
 
         HarnessDatabase db = MyApplication.getDb(this);
+
+ //       /*
+        Habit newHabit1 = new Habit();
+        newHabit1.description = "do pushups";
+
+        Habit newHabit2 = new Habit();
+        newHabit2.description = "stretch";
+
+        Habit newHabit3 = new Habit();
+        newHabit3.description = "read";
+
+        Habit newHabit4 = new Habit();
+        newHabit4.description = "etc";
+
+        Habit newHabit5 = new Habit();
+        newHabit5.description = "etc2";
+
+        db.habitDao().insert(newHabit1, newHabit2, newHabit3, newHabit4, newHabit5);
+//        */
+
+
 //  /*
 
 //        */
@@ -516,5 +594,17 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 Log.d(TAG, "onCancelled: "+"Request cancelled.");
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        TimeBank timeBank = MyApplication.getTimeBank();
+        long remainingTime = timeBank.getTimeRemaining(this);
+        Log.d(TAG, "onResume: remaining time " + Long.toString(remainingTime));
+        Log.d(TAG, "onResume: spent time " + Long.toString(timeBank.getSpentTime(this)));
+        Log.d(TAG, "onResume: available time " + Long.toString(timeBank.getAvailableTime()));
+        TextView remainingTimeView = findViewById(R.id.mainTimeRemainingView);
+        remainingTimeView.setText("Remaining time view is " + Long.toString(remainingTime/1000) + " seconds");
     }
 }

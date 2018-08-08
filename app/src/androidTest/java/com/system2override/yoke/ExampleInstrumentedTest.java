@@ -3,11 +3,8 @@ package com.system2override.yoke;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
-import com.google.api.client.util.DateTime;
-import com.system2override.yoke.models.LocalTask;
-import com.system2override.yoke.models.TodoApp;
+import com.system2override.yoke.Models.RoomModels.LocalTask;
 
 import org.junit.After;
 import org.junit.Before;

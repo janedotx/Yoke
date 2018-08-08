@@ -1,20 +1,42 @@
-package com.system2override.yoke;
+package com.system2override.yoke.Models;
 
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 
-public class TimeBank {
-    private static final String INITIAL_TIME_GRANT_KEY = "INITIAL_TIME_GRANT_KEY";
-    private static final String REWARD_GRANT_TIME_KEY = "REWARD_GRANT_TIME_KEY";
-    private static final String TIME_SPENT_KEY = "TIME_SPENT_BANNED_APPS_KEY";
-    private static final String TIME_AVAILABLE_KEY = "TIME_AVAILABLE_KEY";
-    private static final String TIME_FILE = "TIME";
+import com.system2override.yoke.MyApplication;
 
+public class TimeBank extends BaseObservable {
     public static final String RESET_ACTION = MyApplication.packageName + ".RESET";
-    private static SharedPreferencesHelper helper;
 
-    private static SharedPreferencesHelper getSharedPreferencesHelper(){
+    private final String INITIAL_TIME_GRANT_KEY = "INITIAL_TIME_GRANT_KEY";
+    private final String REWARD_GRANT_TIME_KEY = "REWARD_GRANT_TIME_KEY";
+    private final String TIME_SPENT_KEY = "TIME_SPENT_BANNED_APPS_KEY";
+    private final String TIME_AVAILABLE_KEY = "TIME_AVAILABLE_KEY";
+    private final String TIME_FILE = "TIME";
+
+    private SharedPreferencesHelper helper;
+    private SharedPreferences prefs;
+    private SharedPreferences.Editor editor;
+    private Context context;
+    private long availableTime;
+    private long spentTime;
+    private long initialTime;
+    private long rewardGrantTime;
+
+    public TimeBank(Context context) {
+        this.context = context;
+        this.prefs = getSharedPreferencesHelper().getSharedPreferences(this.context);
+        this.editor = getSharedPreferencesHelper().getSharedPreferencesEditor(this.context);
+
+        this.availableTime = this.prefs.getLong(TIME_AVAILABLE_KEY, 0L);
+        this.spentTime = this.prefs.getLong(TIME_SPENT_KEY, 0L);
+        this.initialTime = this.prefs.getLong(INITIAL_TIME_GRANT_KEY, 0L);
+        this.rewardGrantTime = this.prefs.getLong(REWARD_GRANT_TIME_KEY, 0L);
+    }
+
+    private SharedPreferencesHelper getSharedPreferencesHelper(){
         if (helper == null) {
             helper = new SharedPreferencesHelper(TIME_FILE);
         }
@@ -27,7 +49,7 @@ public class TimeBank {
     // whenever the user gets more time, this variable is increased
 
     // intended for use when tracking amount of time spent in foreground for a bad app
-    public static long addSpentTime(Context context, long time) {
+    public long addSpentTime(Context context, long time) {
         SharedPreferences.Editor editor = getSharedPreferencesHelper().getSharedPreferencesEditor(context);
         SharedPreferences prefs = getSharedPreferencesHelper().getSharedPreferences(context);
         long currentTime = prefs.getLong(TIME_SPENT_KEY, 0L);
@@ -37,17 +59,17 @@ public class TimeBank {
         return currentTime;
     }
 
-    public static long getSpentTime(Context context) {
+    public long getSpentTime(Context context) {
         SharedPreferences prefs = getSharedPreferencesHelper().getSharedPreferences(context);
         return prefs.getLong(TIME_SPENT_KEY, 0L);
     }
 
-    public static long getAvailableTime(Context context) {
-        SharedPreferences prefs = getSharedPreferencesHelper().getSharedPreferences(context);
+    @Bindable
+    public long getAvailableTime() {
         return prefs.getLong(TIME_AVAILABLE_KEY, 0L);
     }
 
-    public static long earnTime(Context context) {
+    public long earnTime(Context context) {
         SharedPreferences.Editor editor = getSharedPreferencesHelper().getSharedPreferencesEditor(context);
         SharedPreferences prefs = getSharedPreferencesHelper().getSharedPreferences(context);
 
@@ -56,50 +78,72 @@ public class TimeBank {
         currentTime += refreshTime;
         editor.putLong(TIME_AVAILABLE_KEY, currentTime);
         editor.apply();
+        this.availableTime = currentTime;
+
+//        notifyPropertyChanged(BR.availableTime);
+
+        return currentTime;
+    }
+    public void setAvailableTime(long time) {
+    }
+
+    // careful with this method, don't let current time get negative--though does it really matter?
+    public long unearnTime(Context context) {
+        SharedPreferences.Editor editor = getSharedPreferencesHelper().getSharedPreferencesEditor(context);
+        SharedPreferences prefs = getSharedPreferencesHelper().getSharedPreferences(context);
+
+        long refreshTime = prefs.getLong(REWARD_GRANT_TIME_KEY, 0l);
+        long currentTime = prefs.getLong(TIME_AVAILABLE_KEY, 0L);
+        currentTime -= refreshTime;
+        editor.putLong(TIME_AVAILABLE_KEY, currentTime);
+        editor.apply();
 
         return currentTime;
     }
 
-    public static void resetTime(Context context) {
+    public void resetTime(Context context) {
         // reset spent time
         SharedPreferences.Editor editor = getSharedPreferencesHelper().getSharedPreferencesEditor(context);
         editor.putLong(TIME_SPENT_KEY, 0);
         editor.apply();
 
-        // reset permitted ration of time
+        // reset total available time to just the initial time
 
         SharedPreferences sharedPreferences = getSharedPreferencesHelper().getSharedPreferences(context);
         long initialGrantTime = sharedPreferences.getLong(INITIAL_TIME_GRANT_KEY, 0L);
-
         editor.putLong(TIME_AVAILABLE_KEY, initialGrantTime);
         editor.apply();
 
     }
 
-    public static void setInitialTime(Context context, long initialTime) {
+    public void setInitialTime(Context context, long initialTime) {
         SharedPreferences.Editor editor = getSharedPreferencesHelper().getSharedPreferencesEditor(context);
         editor.putLong(INITIAL_TIME_GRANT_KEY, initialTime);
         editor.apply();
     }
 
-    public static long getInitialTime(Context context) {
+    public long getInitialTime(Context context) {
         SharedPreferences sharedPreferences = getSharedPreferencesHelper().getSharedPreferences(context);
         return sharedPreferences.getLong(INITIAL_TIME_GRANT_KEY, 0L);
     }
 
-    public static void setRewardTimeGrant(Context context, long time) {
+    public void setRewardTimeGrant(Context context, long time) {
         SharedPreferences.Editor editor = getSharedPreferencesHelper().getSharedPreferencesEditor(context);
         editor.putLong(REWARD_GRANT_TIME_KEY, time);
         editor.apply();
     }
 
-    public static long getRewardTimeGrant(Context context) {
+    public long getRewardTimeGrant(Context context) {
         SharedPreferences sharedPreferences = getSharedPreferencesHelper().getSharedPreferences(context);
         return sharedPreferences.getLong(REWARD_GRANT_TIME_KEY, 0L);
     }
 
-    public static long getTotalEarnedTimeToday(Context context) {
-        return getAvailableTime(context) - getInitialTime(context);
+    public long getTotalEarnedTimeToday(Context context) {
+        return getAvailableTime() - getInitialTime(context);
+    }
+
+    public long getTimeRemaining(Context context) {
+        return getAvailableTime() - getSpentTime(context);
     }
 
 }

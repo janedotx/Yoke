@@ -1,26 +1,16 @@
 package com.system2override.yoke.integrations;
 
-import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.TasksScopes;
 import com.google.api.services.tasks.model.Task;
 import com.google.api.services.tasks.model.TaskList;
 import com.google.api.services.tasks.model.TaskLists;
-import com.system2override.yoke.TodoAppConstants;
-import com.system2override.yoke.models.LocalTask;
+import com.system2override.yoke.Models.RoomModels.LocalTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GoogleSnapshot {

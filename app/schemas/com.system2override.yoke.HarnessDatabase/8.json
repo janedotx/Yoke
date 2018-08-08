@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 8,
-    "identityHash": "5d2d24a8c16db25c15efe9359919128e",
+    "identityHash": "1eb53b4f321c89440665ecbcdc4b692e",
     "entities": [
       {
         "tableName": "LocalTasks",
@@ -74,7 +74,7 @@
       },
       {
         "tableName": "Habits",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `lastDateCompleted` INTEGER NOT NULL, `description` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `lastDateCompleted` TEXT, `description` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -85,8 +85,8 @@
           {
             "fieldPath": "lastDateCompleted",
             "columnName": "lastDateCompleted",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "description",
@@ -107,7 +107,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"5d2d24a8c16db25c15efe9359919128e\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1eb53b4f321c89440665ecbcdc4b692e\")"
     ]
   }
 }

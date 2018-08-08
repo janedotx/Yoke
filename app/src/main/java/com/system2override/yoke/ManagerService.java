@@ -1,27 +1,18 @@
 package com.system2override.yoke;
 
-import android.accounts.AccountManager;
-import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.app.usage.UsageEvents;
-import android.app.usage.UsageStats;
-import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -41,10 +32,10 @@ import java.util.Calendar;
 import static com.system2override.yoke.TodoAppConstants.GTASKS_SCOPES;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.squareup.otto.Subscribe;
 import com.system2override.yoke.BroadcastReceivers.DailyResetReceiver;
 import com.system2override.yoke.BroadcastReceivers.PhoneScreenOffReceiver;
 import com.system2override.yoke.BroadcastReceivers.PhoneScreenOnReceiver;
+import com.system2override.yoke.Models.TimeBank;
 
 public class ManagerService extends Service {
     private static final String TAG = "ManagerService";

@@ -5,12 +5,14 @@ import android.support.test.InstrumentationRegistry;
 import android.test.AndroidTestCase;
 
 import com.google.api.client.util.DateTime;
-import com.system2override.yoke.models.Habit;
-import com.system2override.yoke.models.LocalTaskDao;
-import com.system2override.yoke.models.LocalTask;
+import com.system2override.yoke.Models.RoomModels.Habit;
+import com.system2override.yoke.Models.RoomModels.LocalTaskDao;
+import com.system2override.yoke.Models.RoomModels.LocalTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -41,14 +43,26 @@ public class TestDbWrapper extends AndroidTestCase {
 
         Habit oldHabit = new Habit();
 
-        oldHabit.lastDateCompleted = 1_000_000_000_000L;
+        oldHabit.lastDateCompleted = "2000-10-01";
         oldHabit.description = "i was completed a million years ago";
         mDb.habitDao().insert(oldHabit);
 
         Habit newHabit = new Habit();
-        newHabit.lastDateCompleted = System.currentTimeMillis();
-        newHabit.description = "i was completed a million years ago";
+        newHabit.lastDateCompleted = Habit.convertMSToYYMMDD(System.currentTimeMillis());
+        newHabit.description = "i was just completed";
         mDb.habitDao().insert(newHabit);
+
+        Habit neverTouchedHabit = new Habit();
+        neverTouchedHabit.description = "never";
+        mDb.habitDao().insert(neverTouchedHabit);
+
+        Calendar yesterdayCalObj = new GregorianCalendar();
+        yesterdayCalObj.setTimeInMillis(System.currentTimeMillis());
+        yesterdayCalObj.add(Calendar.DAY_OF_YEAR, -1);
+        Habit yesterdayHabit = new Habit();
+        yesterdayHabit.description = "yesterday";
+        yesterdayHabit.lastDateCompleted = Habit.convertMSToYYMMDD(yesterdayCalObj.getTimeInMillis());
+        mDb.habitDao().insert(yesterdayHabit);
     }
 
     public LocalTask createFixtureTask(int i) {

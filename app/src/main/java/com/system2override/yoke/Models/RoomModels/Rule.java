@@ -1,4 +1,4 @@
-package com.system2override.yoke.models;
+package com.system2override.yoke.Models.RoomModels;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;

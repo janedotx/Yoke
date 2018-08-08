@@ -1,8 +1,9 @@
-package com.system2override.yoke;
+package com.system2override.yoke.Models;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
+
+import com.system2override.yoke.Models.SharedPreferencesHelper;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,7 +1,5 @@
 package com.system2override.yoke;
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
@@ -17,20 +15,14 @@ import com.google.api.client.testing.http.MockLowLevelHttpRequest;
 import com.google.api.client.testing.http.MockLowLevelHttpResponse;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.tasks.model.Task;
-import com.system2override.yoke.models.LocalTask;
-import com.system2override.yoke.models.TodoApp;
+import com.system2override.yoke.Models.RoomModels.LocalTask;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -120,6 +112,6 @@ public class LocalTasksInstrumentedTest {
     @Test
     public void testGetMostRecent() {
         LocalTask l = mTestDbWrapper.getDb().localTaskDao().getMostRecentlyUpdatedLocalTask();
-        assertEquals("1969-12-31T21:00:10.000-05:00", l.getUpdatedAt());
+        assertEquals("1969-12-31T19:00:12.000-05:00", l.getUpdatedAt());
     }
 }

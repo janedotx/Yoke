@@ -2,8 +2,8 @@ package com.system2override.yoke;
 
 import android.util.Log;
 
-import com.system2override.yoke.models.Habit;
-import com.system2override.yoke.models.LocalTask;
+import com.system2override.yoke.Models.RoomModels.Habit;
+import com.system2override.yoke.Models.RoomModels.LocalTask;
 
 import java.util.List;
 

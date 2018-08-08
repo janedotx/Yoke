@@ -1,7 +1,9 @@
-package com.system2override.yoke;
+package com.system2override.yoke.Models;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.system2override.yoke.MyApplication;
 
 public class SharedPreferencesHelper {
     String mFullFilePath;

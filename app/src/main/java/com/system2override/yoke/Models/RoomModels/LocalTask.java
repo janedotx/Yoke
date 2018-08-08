@@ -1,4 +1,4 @@
-package com.system2override.yoke.models;
+package com.system2override.yoke.Models.RoomModels;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -6,12 +6,10 @@ import android.arch.persistence.room.PrimaryKey;
 
 import com.google.api.client.util.DateTime;
 import com.google.api.services.tasks.model.Task;
-import com.system2override.yoke.TodoAppConstants;
-
-import java.time.Instant;
+import com.system2override.yoke.Models.ToDoInterface;
 
 @Entity(tableName = "LocalTasks")
-public class LocalTask {
+public class LocalTask implements ToDoInterface {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
@@ -48,12 +46,17 @@ public class LocalTask {
         return id;
     }
 
+    @Override // ToDoInterface
     public boolean isCompleted() {
         return completed;
     }
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+        if (completed) {
+            long ms = System.currentTimeMillis();
+            this.setDateCompleted(new DateTime(ms).toStringRfc3339());
+        }
     }
 
     public String getDateCompleted() {
@@ -72,9 +75,14 @@ public class LocalTask {
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    @Override
     public String getDescription() {
         return description;
     }
+
+    @Override
+    public String getToDoType() { return this.getClass().getSimpleName(); }
 
     public void setDescription(String description) {
         this.description = description;

@@ -4,11 +4,11 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 
-import com.system2override.yoke.models.Habit;
-import com.system2override.yoke.models.HabitDao;
-import com.system2override.yoke.models.LocalTask;
-import com.system2override.yoke.models.LocalTaskDao;
-import com.system2override.yoke.models.MyTypeConverters;
+import com.system2override.yoke.Models.RoomModels.Habit;
+import com.system2override.yoke.Models.RoomModels.HabitDao;
+import com.system2override.yoke.Models.RoomModels.LocalTask;
+import com.system2override.yoke.Models.RoomModels.LocalTaskDao;
+import com.system2override.yoke.Models.RoomModels.MyTypeConverters;
 
 @Database(version = 8, entities = {LocalTask.class, Habit.class})
 @TypeConverters({MyTypeConverters.class})

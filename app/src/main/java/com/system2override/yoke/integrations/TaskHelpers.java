@@ -1,7 +1,6 @@
 package com.system2override.yoke.integrations;
 
-import com.system2override.yoke.HarnessDatabase;
-import com.system2override.yoke.models.LocalTask;
+import com.system2override.yoke.Models.RoomModels.LocalTask;
 
 import java.util.ArrayList;
 import java.util.HashSet;
