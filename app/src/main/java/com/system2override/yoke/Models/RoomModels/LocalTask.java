@@ -6,6 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 
 import com.google.api.client.util.DateTime;
 import com.google.api.services.tasks.model.Task;
+import com.system2override.yoke.HarnessDatabase;
 import com.system2override.yoke.Models.ToDoInterface;
 
 @Entity(tableName = "LocalTasks")
@@ -160,5 +161,9 @@ public class LocalTask implements ToDoInterface {
 
         this.setTaskListIdString(taskListId);
 
+    }
+
+    public void save(HarnessDatabase db) {
+        db.localTaskDao().update(this);
     }
 }

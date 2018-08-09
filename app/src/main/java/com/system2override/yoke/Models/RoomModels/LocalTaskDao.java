@@ -21,6 +21,9 @@ public interface LocalTaskDao {
     @Update
     public void update(LocalTask... task);
 
+    @Update
+    public void update(LocalTask task);
+
     @Query("SELECT * FROM LocalTasks")
     public List<LocalTask> loadAllLocalTasks();
 

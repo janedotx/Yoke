@@ -22,6 +22,9 @@ public interface HabitDao {
     @Update
     public void updateHabits(List<Habit> habits);
 
+    @Update
+    public void update(Habit habit);
+
     @Delete
     public void delete(Habit h);
 

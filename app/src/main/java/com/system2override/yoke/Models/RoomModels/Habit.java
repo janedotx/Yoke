@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.system2override.yoke.HarnessDatabase;
 import com.system2override.yoke.Models.ToDoInterface;
 
 import java.util.Calendar;
@@ -91,6 +92,10 @@ public class Habit implements ToDoInterface {
         String month = Integer.toString(todayCalObj.get(Calendar.MONTH));
         String day = Integer.toString(todayCalObj.get(Calendar.DAY_OF_MONTH));
         return year + "-" + month + "-" + day;
+    }
+
+    public void save(HarnessDatabase db) {
+        db.habitDao().update(this);
     }
 
 }

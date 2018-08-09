@@ -62,7 +62,8 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
                     timeBank.unearnTime(ToDoListAdapter.this.context);
                     Log.d(TAG, "onCheckBoxClick: availableTime is now " + Long.toString(timeBank.getAvailableTime()/ 1000L));
                 }
-                // then notify adapter something has changed
+                t.save(MyApplication.getDb(ToDoListAdapter.this.context));
+                ToDoListAdapter.this.notifyDataSetChanged();
             }
         });
     }
