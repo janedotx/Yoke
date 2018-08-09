@@ -33,7 +33,7 @@ public class MyApplication extends Application {
         super.onCreate();
         bus = new Bus(ThreadEnforcer.ANY);
         packageName = getApplicationContext().getPackageName();
-        timeBank = new TimeBank(this);
+        timeBank = new TimeBank(this, bus);
 
 //        writeLogCat();
     }

@@ -4,10 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.util.Log;
 
+import com.squareup.otto.Bus;
 import com.system2override.yoke.MyApplication;
+import com.system2override.yoke.OttoMessages.TimeBankEarnedTime;
 
 public class TimeBank extends BaseObservable {
+    private static final String TAG = "TimeBank";
     public static final String RESET_ACTION = MyApplication.packageName + ".RESET";
 
     private final String INITIAL_TIME_GRANT_KEY = "INITIAL_TIME_GRANT_KEY";
@@ -20,13 +24,15 @@ public class TimeBank extends BaseObservable {
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
     private Context context;
+    private Bus bus;
     private long availableTime;
     private long spentTime;
     private long initialTime;
     private long rewardGrantTime;
 
-    public TimeBank(Context context) {
+    public TimeBank(Context context, Bus bus) {
         this.context = context;
+        this.bus = bus;
         this.prefs = getSharedPreferencesHelper().getSharedPreferences(this.context);
         this.editor = getSharedPreferencesHelper().getSharedPreferencesEditor(this.context);
 
@@ -64,7 +70,6 @@ public class TimeBank extends BaseObservable {
         return prefs.getLong(TIME_SPENT_KEY, 0L);
     }
 
-    @Bindable
     public long getAvailableTime() {
         return prefs.getLong(TIME_AVAILABLE_KEY, 0L);
     }
@@ -79,8 +84,9 @@ public class TimeBank extends BaseObservable {
         editor.putLong(TIME_AVAILABLE_KEY, currentTime);
         editor.apply();
         this.availableTime = currentTime;
+        Log.d(TAG, "earnTime: about to post");
 
-//        notifyPropertyChanged(BR.availableTime);
+        this.bus.post(new TimeBankEarnedTime());
 
         return currentTime;
     }

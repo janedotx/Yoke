@@ -39,9 +39,11 @@ import com.google.api.client.util.ExponentialBackOff;
 
 import com.google.api.services.tasks.TasksScopes;
 import com.google.api.services.tasks.model.*;
+import com.squareup.otto.Subscribe;
 import com.system2override.yoke.Models.BannedApps;
 import com.system2override.yoke.Models.RoomModels.Habit;
 import com.system2override.yoke.Models.TimeBank;
+import com.system2override.yoke.OttoMessages.TimeBankEarnedTime;
 import com.system2override.yoke.TodoManagement.TodoManagementScreen;
 import com.system2override.yoke.databinding.ActivityMainBinding;
 
@@ -73,7 +75,10 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     public static final String[] SCOPES = { TasksScopes.TASKS_READONLY };
     private TextView mOutputText;
     private Button mCallApiButton;
+    private TextView timeAvailableView;
+
     ProgressDialog mProgress;
+
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
@@ -131,7 +136,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         });
 
         TimeBank timeBank = MyApplication.getTimeBank();
-        activityMainBinding.setVariable(BR.availableTime, timeBank);
 //        activityMainBinding.mainViewTimeAvailable.setText(Long.toString(timeBank.getAvailableTime()));
         setupDB();
         setupTimeBank();
@@ -152,7 +156,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private void setupTimeBank() {
         final EditText initialTimeEditText = findViewById(R.id.mainInitialTimeEdit);
         final EditText refreshTimeEditText = findViewById(R.id.mainRefreshTimeGrantEdit);
+        this.timeAvailableView = findViewById(R.id.mainViewTimeAvailable);
         TimeBank timeBank = MyApplication.getTimeBank();
+        this.timeAvailableView.setText("Available time is " + Long.toString(timeBank.getAvailableTime()/1000L));
         initialTimeEditText.setText(Long.toString(timeBank.getInitialTime(this)/1000));
         refreshTimeEditText.setText(Long.toString(timeBank.getRewardTimeGrant(this)/1000));
 
@@ -606,5 +612,12 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         Log.d(TAG, "onResume: available time " + Long.toString(timeBank.getAvailableTime()));
         TextView remainingTimeView = findViewById(R.id.mainTimeRemainingView);
         remainingTimeView.setText("Remaining time view is " + Long.toString(remainingTime/1000) + " seconds");
+    }
+
+    @Subscribe
+    protected void updateTimeAvailableView(TimeBankEarnedTime event) {
+        Log.d(TAG, "updateTimeAvailableView: ");
+        TimeBank timeBank = MyApplication.getTimeBank();
+        this.timeAvailableView.setText("Available time is " + Long.toString(timeBank.getAvailableTime()));
     }
 }
