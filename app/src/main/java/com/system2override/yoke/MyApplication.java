@@ -7,6 +7,9 @@ import android.util.Log;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
+import com.system2override.yoke.Models.BannedApps;
+import com.system2override.yoke.Models.RoomModels.Habit;
+import com.system2override.yoke.Models.Streaks;
 import com.system2override.yoke.Models.TimeBank;
 
 import java.io.File;
@@ -27,6 +30,10 @@ public class MyApplication extends Application {
     public static String packageName;
     public static String googleAPIClientId = "1052545727002-i62d0brehmtb9lc4b2teta3rbognvrmf.apps.googleusercontent.com";
     public static TimeBank timeBank;
+    public static BannedApps bannedApps;
+    public static Streaks streaks;
+
+    public static String MIDNIGHT_RESET_ACTION = "MIDNIGHT_RESET";
 
     @Override
     public void onCreate() {
@@ -34,11 +41,16 @@ public class MyApplication extends Application {
         bus = new Bus(ThreadEnforcer.ANY);
         packageName = getApplicationContext().getPackageName();
         timeBank = new TimeBank(this, bus);
+        bannedApps = new BannedApps(this);
+        setupDB();
+        setupBannedApps();
 
 //        writeLogCat();
     }
 
     public static TimeBank getTimeBank() { return timeBank; }
+    public static BannedApps getBannedApps() { return bannedApps; }
+    public static Streaks getStreaks() { return streaks; }
 
     public static Bus getBus() {
         return bus;
@@ -79,4 +91,47 @@ public class MyApplication extends Application {
         todayCalObj.setTimeInMillis(System.currentTimeMillis());
         return todayCalObj;
     }
+
+    private void setupDB() {
+        boolean success = this.deleteDatabase(BuildConfig.DATABASE_FILE);
+//        boolean success = this.deleteDatabase("db");
+        Log.d(TAG, "onStart: database successfully deleted " + Boolean.toString(success));
+
+        HarnessDatabase db = MyApplication.getDb(this);
+
+        //       /*
+        Habit newHabit1 = new Habit();
+        newHabit1.description = "do pushups";
+
+        Habit newHabit2 = new Habit();
+        newHabit2.description = "stretch";
+
+        Habit newHabit3 = new Habit();
+        newHabit3.description = "do yoga";
+
+        Habit newHabit4 = new Habit();
+        newHabit4.description = "sketch something";
+
+        Habit newHabit5 = new Habit();
+        newHabit5.description = "cook";
+
+        db.habitDao().insert(newHabit1, newHabit2, newHabit3, newHabit4, newHabit5);
+//        */
+
+
+//  /*
+
+//        */
+
+        GeneralDebugging.printDb(db);
+        db.close();
+
+    }
+
+    private void setupBannedApps() {
+        bannedApps.clearApps();
+        bannedApps.addApp( "com.twitter.android");
+        bannedApps.addApp( "com.instagram.android");
+    }
+
 }

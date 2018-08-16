@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -33,10 +34,15 @@ public class TodoManagementScreen extends AppCompatActivity {
     private List<ToDoInterface> completed;
 
     private TextView timeAvailableView;
+    private Button goAddToDoButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: " + System.identityHashCode(this));
+        if (savedInstanceState != null) {
+            Log.d(TAG, "onCreate: bundle contents " + savedInstanceState.toString());
+        }
         MyApplication.getBus().register(this);
         setContentView(R.layout.activity_todo_management);
 
@@ -46,10 +52,14 @@ public class TodoManagementScreen extends AppCompatActivity {
         this.timeAvailableView.setText("Available time is " + Long.toString(timeBank.getAvailableTime()));
 
         HarnessDatabase db = MyApplication.getDb(this);
-        List<Habit> habits = db.habitDao().getAllHabitsBefore(Habit.convertMSToYYMMDD(System.currentTimeMillis()));
+        String today = Habit.convertMSToYYMMDD(System.currentTimeMillis());
+        //List<Habit> habits = db.habitDao().getAllHabitsCompletedBefore(today);
+        List<Habit> habits = db.habitDao().loadAllHabits();
         for (Habit h: habits) {
             incompletes.add((ToDoInterface) h);
+            Log.d(TAG, "onCreate: loading this habit " + h.description + " " + h.isCompleted() + " " + h.getLastDateCompleted());
         }
+        Log.d(TAG, "onCreate: incompletes size " + incompletes.size());
 
         this.toDoListView = (RecyclerView) findViewById(R.id.toDoListView);
 
@@ -68,6 +78,47 @@ public class TodoManagementScreen extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        goAddToDoButton = findViewById(R.id.toDoManagementGoAddToDoButton);
+        goAddToDoButton.setOnClickListener(new View.OnClickListener() {
+                                               @Override
+                                               public void onClick(View v) {
+                                                   Intent i = new Intent(TodoManagementScreen.this, AddToDo.class);
+                                                   startActivity(i);
+                                               }
+                                           }
+        );
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(TAG, "onResume: " + System.identityHashCode(this));
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        Log.d(TAG, "onStart: ");
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "onStop: ");
+        super.onStop();
+        finish();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(TAG, "onPause: ");
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "onDestroy: ");
+        super.onDestroy();
     }
 
     @Subscribe

@@ -5,6 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 import com.system2override.yoke.Models.TimeBank;
 
 import org.junit.After;
@@ -28,7 +29,7 @@ public class TimeBankTest {
         this.context = InstrumentationRegistry.getTargetContext();
         mTestDbWrapper = new TestDbWrapper();
         mTestDbWrapper.setUpFixtures();
-        this.timeBank = new TimeBank(this.context, new Bus());
+        this.timeBank = new TimeBank(this.context, new Bus(ThreadEnforcer.ANY));
         timeBank.setInitialTime(this.context, 1000);
         timeBank.setRewardTimeGrant(this.context, 2000);
         timeBank.resetTime(this.context);

@@ -95,7 +95,7 @@ public class ManagerService extends Service {
         Log.d(TAG, "setDailyResetAlarm: action " + TimeBank.RESET_ACTION);
 
         Intent resetIntent = new Intent(this, DailyResetReceiver.class);
-        resetIntent.setAction(TimeBank.RESET_ACTION);
+        resetIntent.setAction(MyApplication.MIDNIGHT_RESET_ACTION);
 
         PendingIntent pendingResetIntent = PendingIntent.getBroadcast(this,
                                                                      0,

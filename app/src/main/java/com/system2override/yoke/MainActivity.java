@@ -40,6 +40,7 @@ import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.tasks.TasksScopes;
 import com.google.api.services.tasks.model.*;
 import com.squareup.otto.Subscribe;
+import com.system2override.yoke.BannedAppManagement.BannedAppScreen;
 import com.system2override.yoke.Models.BannedApps;
 import com.system2override.yoke.Models.RoomModels.Habit;
 import com.system2override.yoke.Models.TimeBank;
@@ -111,12 +112,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         super.onCreate(savedInstanceState);
         final ActivityMainBinding activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        String path = this.getFilesDir() + "/error.log";
-        try {
-            Log.d(TAG, "onCreate: log contents" + readFile(path));
-        } catch (IOException e) {
-            Log.d(TAG, "onCreate: io exception");
-        }
+
+        /*
 
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Calling Google Tasks API ...");
@@ -126,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
 
+*/
         activityMainBinding.button2.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -135,11 +133,16 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             }
         });
 
-        TimeBank timeBank = MyApplication.getTimeBank();
-//        activityMainBinding.mainViewTimeAvailable.setText(Long.toString(timeBank.getAvailableTime()));
-        setupDB();
+        ((Button) findViewById(R.id.mainBannedAppsButton)).setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Intent i = new Intent(MainActivity.this, BannedAppScreen.class);
+               startActivity(i);
+           }
+        });
         setupTimeBank();
-        setupBannedApps();
+
+//        activityMainBinding.mainViewTimeAvailable.setText(Long.toString(timeBank.getAvailableTime()));
     }
 
     @Override
@@ -147,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         super.onStart();
         checkForUsageStatsPermission(this);
 //        checkForAccessFineLocation(this);
-        checkForGoogleTasksPermission(this);
+//        checkForGoogleTasksPermission(this);
 
         startManagerService();
 
@@ -191,16 +194,11 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         });
 
     }
-
-    private void setupBannedApps() {
-        BannedApps.clearApps(this);
-        BannedApps.addApp(this, "com.twitter.android");
-    }
-
     private void setupHabits() {
 
     }
 
+    // according to docs, this is idempotent
     private void startManagerService() {
         Intent intent = new Intent(this, ManagerService.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -210,42 +208,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             android.util.Log.d(TAG, "subscribeToSensor: about to start service " + Long.toString(System.currentTimeMillis()));
             startService(intent);
         }
-    }
-
-    private void setupDB() {
-        boolean success = this.deleteDatabase(BuildConfig.DATABASE_FILE);
-//        boolean success = this.deleteDatabase("db");
-        Log.d(TAG, "onStart: database successfully deleted " + Boolean.toString(success));
-
-        HarnessDatabase db = MyApplication.getDb(this);
-
- //       /*
-        Habit newHabit1 = new Habit();
-        newHabit1.description = "do pushups";
-
-        Habit newHabit2 = new Habit();
-        newHabit2.description = "stretch";
-
-        Habit newHabit3 = new Habit();
-        newHabit3.description = "read";
-
-        Habit newHabit4 = new Habit();
-        newHabit4.description = "etc";
-
-        Habit newHabit5 = new Habit();
-        newHabit5.description = "etc2";
-
-        db.habitDao().insert(newHabit1, newHabit2, newHabit3, newHabit4, newHabit5);
-//        */
-
-
-//  /*
-
-//        */
-
-        GeneralDebugging.printDb(db);
-        db.close();
-
     }
 
     @Override

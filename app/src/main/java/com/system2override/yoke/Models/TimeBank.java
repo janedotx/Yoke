@@ -2,15 +2,13 @@ package com.system2override.yoke.Models;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
 import android.util.Log;
 
 import com.squareup.otto.Bus;
 import com.system2override.yoke.MyApplication;
 import com.system2override.yoke.OttoMessages.TimeBankEarnedTime;
 
-public class TimeBank extends BaseObservable {
+public class TimeBank extends SharedPreferencesModel {
     private static final String TAG = "TimeBank";
     public static final String RESET_ACTION = MyApplication.packageName + ".RESET";
 
@@ -18,12 +16,8 @@ public class TimeBank extends BaseObservable {
     private final String REWARD_GRANT_TIME_KEY = "REWARD_GRANT_TIME_KEY";
     private final String TIME_SPENT_KEY = "TIME_SPENT_BANNED_APPS_KEY";
     private final String TIME_AVAILABLE_KEY = "TIME_AVAILABLE_KEY";
-    private final String TIME_FILE = "TIME";
+    public final String FILE = "TIME";
 
-    private SharedPreferencesHelper helper;
-    private SharedPreferences prefs;
-    private SharedPreferences.Editor editor;
-    private Context context;
     private Bus bus;
     private long availableTime;
     private long spentTime;
@@ -31,22 +25,13 @@ public class TimeBank extends BaseObservable {
     private long rewardGrantTime;
 
     public TimeBank(Context context, Bus bus) {
-        this.context = context;
+        super(context);
         this.bus = bus;
-        this.prefs = getSharedPreferencesHelper().getSharedPreferences(this.context);
-        this.editor = getSharedPreferencesHelper().getSharedPreferencesEditor(this.context);
 
         this.availableTime = this.prefs.getLong(TIME_AVAILABLE_KEY, 0L);
         this.spentTime = this.prefs.getLong(TIME_SPENT_KEY, 0L);
         this.initialTime = this.prefs.getLong(INITIAL_TIME_GRANT_KEY, 0L);
         this.rewardGrantTime = this.prefs.getLong(REWARD_GRANT_TIME_KEY, 0L);
-    }
-
-    private SharedPreferencesHelper getSharedPreferencesHelper(){
-        if (helper == null) {
-            helper = new SharedPreferencesHelper(TIME_FILE);
-        }
-        return helper;
     }
 
     // convenience methods for toppig up daily ration and all that

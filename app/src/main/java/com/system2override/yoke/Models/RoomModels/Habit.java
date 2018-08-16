@@ -3,6 +3,7 @@ package com.system2override.yoke.Models.RoomModels;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.util.Log;
 
 import com.system2override.yoke.HarnessDatabase;
 import com.system2override.yoke.Models.ToDoInterface;
@@ -12,6 +13,7 @@ import java.util.GregorianCalendar;
 
 @Entity(tableName = "Habits")
 public class Habit implements ToDoInterface {
+    private static final String TAG = "Habit";
     @PrimaryKey(autoGenerate = true)
     public int id;
 
@@ -70,6 +72,7 @@ public class Habit implements ToDoInterface {
     }
 
     public void setCompleted(boolean completed) {
+        Log.d(TAG, "setCompleted: ");
         if (completed) {
             this.setLastDateCompleted(Habit.convertMSToYYMMDD(System.currentTimeMillis()));
         } else {
@@ -95,6 +98,7 @@ public class Habit implements ToDoInterface {
     }
 
     public void save(HarnessDatabase db) {
+        Log.d(TAG, "save: and completed is " + Boolean.toString(this.isCompleted()));
         db.habitDao().update(this);
     }
 

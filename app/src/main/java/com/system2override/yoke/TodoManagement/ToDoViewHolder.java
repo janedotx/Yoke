@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.system2override.yoke.Models.ToDoInterface;
 import com.system2override.yoke.R;
 
-public class ToDoViewHolder  extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class ToDoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     public TextView description;
     public CheckBox checkBox;
     public ToDoInterface todo;

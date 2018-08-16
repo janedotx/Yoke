@@ -21,16 +21,18 @@ public class StreaksTest {
     private static final String TAG = "HabitInstrumentedTest";
     TestDbWrapper mTestDbWrapper;
     Context context;
+    Streaks streak;
 
     @Before
     public void setUp() {
         mTestDbWrapper = new TestDbWrapper();
         mTestDbWrapper.setUpFixtures();
         this.context = InstrumentationRegistry.getTargetContext();
-        Streaks.setStreakCompletedToday(context, false);
-        Streaks.setLongestStreak(context, 0);
-        Streaks.setStreakCompletedToday(context, false);
-        Streaks.setCurrentStreak(context, 0);
+        streak = new Streaks(this.context);
+        streak.setStreakCompletedToday(false);
+        streak.setLongestStreak(0);
+        streak.setStreakCompletedToday(false);
+        streak.setCurrentStreak(0);
     }
 
     private void completeAllHabits() {
@@ -43,54 +45,61 @@ public class StreaksTest {
 
     @Test
     public void addStreakTest() {
-        assertFalse(Streaks.canAddStreak(mTestDbWrapper.getDb()));
+        List<Habit> habits = mTestDbWrapper.getDb().habitDao().loadAllHabits();
+        assertFalse(streak.canAddStreak(habits));
         completeAllHabits();
-        assertTrue(Streaks.canAddStreak(mTestDbWrapper.getDb()));
+        List<Habit> habits2 = mTestDbWrapper.getDb().habitDao().loadAllHabits();
+        assertTrue(streak.canAddStreak(habits2));
 
     }
 
     @Test
     public void testSettersGetters() {
-        assertEquals(0, Streaks.getCurrentStreak(context));
-        assertEquals(0, Streaks.getLongestStreak(context));
+        assertEquals(0, streak.getCurrentStreak());
+        assertEquals(0, streak.getLongestStreak());
 
-        Streaks.setCurrentStreak(context, 1);
-        assertEquals(1, Streaks.getCurrentStreak(context));
+        streak.setCurrentStreak(1);
+        assertEquals(1, streak.getCurrentStreak());
 
-        Streaks.setLongestStreak(context, 1);
-        assertEquals(1, Streaks.getLongestStreak(context));
+        streak.setLongestStreak(1);
+        assertEquals(1, streak.getLongestStreak());
 
-        assertFalse(Streaks.getStreakCompletedToday(context));
-        Streaks.setStreakCompletedToday(context, true);
-        assertTrue(Streaks.getStreakCompletedToday(context));
+        assertFalse(streak.getStreakCompletedToday());
+        streak.setStreakCompletedToday(true);
+        assertTrue(streak.getStreakCompletedToday());
     }
 
 
     @Test
     public void testUpdateStreakInformation() {
-        Streaks.updateStreakInformation(context, mTestDbWrapper.getDb());
+        List<Habit> habits = mTestDbWrapper.getDb().habitDao().loadAllHabits();
+        streak.updateStreakInformation(habits);
         completeAllHabits();
-        Streaks.updateStreakInformation(context, mTestDbWrapper.getDb());
+        streak.updateStreakInformation(habits);
     }
 
     @Test
     public void testResetStreakInformation() {
         // case where daily habits weren't completed, so the current streak is reset to zero
-        Streaks.setCurrentStreak(context, 1);
-        Streaks.updateStreakInformation(context, mTestDbWrapper.getDb());
-        assertFalse(Streaks.getStreakCompletedToday(context));
-        Streaks.resetStreakInformation(context);
-        assertEquals(0, Streaks.getCurrentStreak(context));
+        List<Habit> habits = mTestDbWrapper.getDb().habitDao().loadAllHabits();
+        streak.setCurrentStreak(1);
+        streak.setLongestStreak(1);
+        streak.updateStreakInformation(habits);
+        assertFalse(streak.getStreakCompletedToday());
+        streak.endStreakDay(habits);
+        assertEquals(0, streak.getCurrentStreak());
 
         // case where all daily habits were completed, and current streak is not reset to zero
         completeAllHabits();
-        Streaks.updateStreakInformation(context, mTestDbWrapper.getDb());
+        List<Habit> habits1 = mTestDbWrapper.getDb().habitDao().loadAllHabits();
+        streak.updateStreakInformation(habits1);
 
-        assertTrue(Streaks.getStreakCompletedToday(context));
-        assertEquals(1, Streaks.getLongestStreak(context));
-        Streaks.resetStreakInformation(context);
-        assertFalse(Streaks.getStreakCompletedToday(context));
-        assertEquals(1, Streaks.getLongestStreak(context));
+        List<Habit> habits2 = mTestDbWrapper.getDb().habitDao().loadAllHabits();
+        assertTrue(streak.getStreakCompletedToday());
+        assertEquals(1, streak.getLongestStreak());
+        streak.endStreakDay(habits2);
+        assertFalse(streak.getStreakCompletedToday());
+        assertEquals(1, streak.getLongestStreak());
 
     }
 

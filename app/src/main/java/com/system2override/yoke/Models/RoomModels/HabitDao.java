@@ -44,13 +44,16 @@ public interface HabitDao {
     public List<Habit> getAllHabitsBefore(String lastDateCompleted, int limit);
 
     @Query("SELECT * FROM Habits where lastDateCompleted < :lastDateCompleted")
-    public List<Habit> getAllHabitsBefore(String lastDateCompleted);
+    public List<Habit> getAllHabitsCompletedBefore(String lastDateCompleted);
 
     @Query("SELECT * FROM Habits WHERE description = :description")
     public List<Habit> getHabitsByMatchingDescription(String description);
 
     @Query("SELECT * FROM Habits WHERE description = :description LIMIT 1")
     public Habit getFirstHabitByMatchingDescription(String description);
+
+    @Query("SELECT * FROM Habits WHERE id = :id")
+    public Habit getById(int id);
 
 }
 

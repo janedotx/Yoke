@@ -9,24 +9,17 @@ import com.system2override.yoke.MyApplication;
 
 import java.util.List;
 
-public class Streaks {
-    private static final String STREAKS_FILE = "STREAKS_FILE";
+public class Streaks extends SharedPreferencesModel {
+    private static final String FILE = "STREAKS_FILE";
     private static final String CURRENT_STREAKS_KEY = "CURRENT_STREAKS_KEY";
     private static final String LONGEST_STREAKS_KEY = "LONGEST_STREAKS_KEY";
     private static final String STREAK_COMPLETED_TODAY = "STREAK_COMPLETED_TODAY";
 
-    private static SharedPreferencesHelper helper;
-
-    private static SharedPreferencesHelper getSharedPreferencesHelper() {
-        if (helper == null) {
-            helper = new SharedPreferencesHelper(STREAKS_FILE);
-        }
-        return helper;
+    public Streaks(Context c) {
+        super(c);
     }
 
-    public static boolean canAddStreak(HarnessDatabase db) {
-        List<Habit> habits = db.habitDao().loadAllHabits();
-
+    public boolean canAddStreak(List<Habit> habits) {
         boolean allDone = true;
         for (Habit h: habits) {
             if (!h.completedOn(MyApplication.getTodayCalObj())) {
@@ -36,65 +29,63 @@ public class Streaks {
         return allDone;
     }
 
-    public static boolean getStreakCompletedToday(Context context) {
-        SharedPreferences prefs = getSharedPreferencesHelper().getSharedPreferences(context);
-        return prefs.getBoolean(STREAK_COMPLETED_TODAY, false);
+    public boolean getStreakCompletedToday() {
+        return this.prefs.getBoolean(STREAK_COMPLETED_TODAY, false);
     }
 
-    public static void setStreakCompletedToday(Context context, boolean completion) {
-        SharedPreferences.Editor editor = getSharedPreferencesHelper().getSharedPreferencesEditor(context);
-        editor.putBoolean(STREAK_COMPLETED_TODAY, completion);
-        editor.apply();
+    public void setStreakCompletedToday(boolean completion) {
+        this.editor.putBoolean(STREAK_COMPLETED_TODAY, completion);
+        this.editor.apply();
     }
 
-    public static int getCurrentStreak(Context context) {
-        SharedPreferences prefs = getSharedPreferencesHelper().getSharedPreferences(context);
-        return prefs.getInt(CURRENT_STREAKS_KEY, 0);
+    public int getCurrentStreak() {
+        return this.prefs.getInt(CURRENT_STREAKS_KEY, 0);
     }
 
-    public static void setCurrentStreak(Context context, int streak) {
-        SharedPreferences.Editor editor = getSharedPreferencesHelper().getSharedPreferencesEditor(context);
-        editor.putInt(CURRENT_STREAKS_KEY, streak);
-        editor.apply();
+    public void setCurrentStreak(int streak) {
+        this.editor.putInt(CURRENT_STREAKS_KEY, streak);
+        this.editor.apply();
     }
 
-    public static int getLongestStreak(Context context) {
-        SharedPreferences prefs = getSharedPreferencesHelper().getSharedPreferences(context);
-        return prefs.getInt(LONGEST_STREAKS_KEY, 0);
+    public int getLongestStreak() {
+        return this.prefs.getInt(LONGEST_STREAKS_KEY, 0);
     }
 
-    public static void setLongestStreak(Context context, int newStreak) {
-        SharedPreferences.Editor editor = getSharedPreferencesHelper().getSharedPreferencesEditor(context);
-        editor.putInt(LONGEST_STREAKS_KEY, newStreak);
-        editor.apply();
+    public void setLongestStreak(int newStreak) {
+        this.editor.putInt(LONGEST_STREAKS_KEY, newStreak);
+        this.editor.apply();
     }
 
-    public static void updateStreakInformation(Context context, HarnessDatabase db) {
-        if (canAddStreak(db)) {
-            SharedPreferences prefs = getSharedPreferencesHelper().getSharedPreferences(context);
-            int currentStreak = getCurrentStreak(context);
+    public void updateStreakInformation(List<Habit> habits) {
+        int currentStreak = getCurrentStreak();
+        if (canAddStreak(habits)) {
             currentStreak += 1;
-            SharedPreferences.Editor editor = getSharedPreferencesHelper().getSharedPreferencesEditor(context);
-            editor.putInt(CURRENT_STREAKS_KEY, currentStreak);
-            editor.apply();
-            setStreakCompletedToday(context, true);
-
-            int longestStreak = getLongestStreak(context);
-            if (currentStreak > longestStreak) {
-                longestStreak += 1;
-                setLongestStreak(context, longestStreak);
-
+            setCurrentStreak(currentStreak);
+            setStreakCompletedToday(true);
+        } else {
+            if (getStreakCompletedToday()) {
+                setStreakCompletedToday(false);
+                setCurrentStreak(currentStreak - 1);
             }
         }
     }
 
-    public static void resetStreakInformation(Context context) {
-        boolean streakCompletedToday = getStreakCompletedToday(context);
+    public void endStreakDay(List<Habit> habits) {
+        boolean streakCompletedToday = getStreakCompletedToday();
 
         if (!streakCompletedToday) {
-            setCurrentStreak(context, 0);
+            setCurrentStreak(0);
         } else {
-            setStreakCompletedToday(context, false);
+            setStreakCompletedToday(false);
+        }
+
+        int longestStreak = getLongestStreak();
+        int currentStreak = getCurrentStreak();
+
+        if (currentStreak > longestStreak) {
+            setLongestStreak(currentStreak);
+
         }
     }
+
 }

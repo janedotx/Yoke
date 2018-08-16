@@ -13,7 +13,9 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.system2override.yoke.HarnessDatabase;
 import com.system2override.yoke.Models.RoomModels.Habit;
+import com.system2override.yoke.Models.Streaks;
 import com.system2override.yoke.Models.TimeBank;
 import com.system2override.yoke.Models.ToDoInterface;
 import com.system2override.yoke.MyApplication;
@@ -39,31 +41,41 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
             @Override
             public void onTextClick(TextView v, int position) {
                 Log.d(TAG, "onTextClick: " + Integer.toString(position));
+                ToDoInterface t = toDoList.get(position);
+                Toast.makeText(ToDoListAdapter.this.context, "clikced me", Toast.LENGTH_LONG).show();
+                Log.d(TAG, "onTextClick: checkbox status should be " + Boolean.toString(t.isCompleted()));
 
             }
 
             @Override
             public void onCheckBoxClick(CheckBox b, int position) {
                 Log.d(TAG, "onCheckBoxClick: " + Integer.toString(position));
-                ToDoInterface t = toDoList.get(position);
+                ToDoInterface toDo = toDoList.get(position);
                 TimeBank timeBank = MyApplication.getTimeBank();
+                HarnessDatabase db = MyApplication.getDb(ToDoListAdapter.this.context);
                 if (b.isChecked()) {
-                    t.setCompleted(true);
+                    toDo.setCompleted(true);
+                    Log.d(TAG, "onCheckBoxClick: set completed worked? " + Boolean.toString(toDo.isCompleted()));
                     // this woudl be a great place to use RxJava, set up this object as an observable
                     // and have the TimeBank subscribe to its changes but I don't know how to make
                     // that work and I don't feel inclined to learn at the moment
                     Log.d(TAG, "onCheckBoxClick: availableTime was " + Long.toString(timeBank.getAvailableTime()/ 1000L));
                     timeBank.earnTime(ToDoListAdapter.this.context);
-                    Log.d(TAG, "onCheckBoxClick: availableTime is now " + Long.toString(timeBank.getAvailableTime()/ 1000L));
+//                    toDoList.remove(position);
 
                 } else {
-                    t.setCompleted(false);
+                    toDo.setCompleted(false);
                     Log.d(TAG, "onCheckBoxClick: availableTime was " + Long.toString(timeBank.getAvailableTime()/ 1000L));
                     timeBank.unearnTime(ToDoListAdapter.this.context);
                     Log.d(TAG, "onCheckBoxClick: availableTime is now " + Long.toString(timeBank.getAvailableTime()/ 1000L));
                 }
-                t.save(MyApplication.getDb(ToDoListAdapter.this.context));
+                toDo.save(db);
+
+                List<Habit> habits = db.habitDao().loadAllHabits();
+                Streaks streak = MyApplication.getStreaks();
+                db.close();
                 ToDoListAdapter.this.notifyDataSetChanged();
+
             }
         });
     }

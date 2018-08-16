@@ -18,32 +18,41 @@ import java.util.Set;
 public class BannedAppsTest {
     private static final String TAG = "BannedAppsTest";
     Context context;
+    BannedApps bannedApps;
 
     @Before
     public void setUp() {
         this.context = InstrumentationRegistry.getTargetContext();
-        BannedApps.clearApps(this.context);
+        bannedApps = new BannedApps(this.context);
+        bannedApps.clearApps();
     }
 
     @Test
     public void testBannedAppsAppManagement() {
-        Set<String> apps = BannedApps.getApps(context);
+        Set<String> apps = bannedApps.getApps();
         assertEquals(0, apps.size());
 
-        BannedApps.addApp(context, "com.package.foo");
-        BannedApps.addApp(context, "com.package.foo2");
+        bannedApps.addApp("com.package.foo");
+        bannedApps.addApp("com.package.foo2");
 
-        Set<String> freshApps = BannedApps.getApps(context);
+        Set<String> freshApps = bannedApps.getApps();
         assertEquals(2, freshApps.size());
 
         assertTrue(freshApps.contains("com.package.foo"));
         assertTrue(freshApps.contains("com.package.foo2"));
 
+        bannedApps.removeApp("com.package.foo");
+
+        Set<String> freshApps2 = bannedApps.getApps();
+        assertEquals(1, freshApps2.size());
+
+        assertTrue(freshApps2.contains("com.package.foo2"));
+
     }
 
     @After
     public void tearDown() {
-        BannedApps.clearApps(this.context);
+        bannedApps.clearApps();
     }
 
 }

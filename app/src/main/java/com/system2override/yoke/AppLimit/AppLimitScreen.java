@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.system2override.yoke.MainActivity;
@@ -23,6 +24,8 @@ public class AppLimitScreen extends AppCompatActivity implements AppLimitScreenV
     private TextView todoOneView;
     private TextView todoTwoView;
     private TextView todoThreeView;
+
+    private TableLayout table;
 
     private AppLimitTasks appLimitTasks;
 
@@ -43,6 +46,8 @@ public class AppLimitScreen extends AppCompatActivity implements AppLimitScreenV
                 startActivity(i);
             }
         });
+
+        table = (TableLayout) findViewById(R.id.app_limit_todos_table);
     }
 
     private void setViews() {
@@ -56,14 +61,16 @@ public class AppLimitScreen extends AppCompatActivity implements AppLimitScreenV
         // TODO implement streak stuff later
         // TODO implement habit stuff
         List<ToDoInterface> todos = this.appLimitTasks.getToDos();
+        if (todos.size() > 0) {
 
-        Log.d(TAG, "populateViews: todos " + Integer.toString(todos.size()));
-        Log.d(TAG, "populateViews: " + todos.get(0).getDescription());
-        Log.d(TAG, "populateViews: " + todos.get(1).getDescription());
-        Log.d(TAG, "populateViews: " + todos.get(2).getDescription());
-        this.todoOneView.setText(todos.get(0).getDescription());
-        this.todoTwoView.setText(todos.get(1).getDescription());
-        this.todoThreeView.setText(todos.get(2).getDescription());
+            Log.d(TAG, "populateViews: todos " + Integer.toString(todos.size()));
+            Log.d(TAG, "populateViews: " + todos.get(0).getDescription());
+            Log.d(TAG, "populateViews: " + todos.get(1).getDescription());
+            Log.d(TAG, "populateViews: " + todos.get(2).getDescription());
+            this.todoOneView.setText(todos.get(0).getDescription());
+            this.todoTwoView.setText(todos.get(1).getDescription());
+            this.todoThreeView.setText(todos.get(2).getDescription());
+        }
     }
 
     @Override
@@ -71,5 +78,10 @@ public class AppLimitScreen extends AppCompatActivity implements AppLimitScreenV
         super.onDestroy();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
 
 }

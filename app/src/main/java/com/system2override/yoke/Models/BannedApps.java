@@ -8,40 +8,39 @@ import com.system2override.yoke.Models.SharedPreferencesHelper;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BannedApps {
-    private static final String TAG = "BannedApps";
-    private static final String BANNED_APPS_FILE = "BANNED_FILE";
-    private static final String BANNED_APPS_KEY = "BANNED_APPS_KEY";
+public class BannedApps extends SharedPreferencesModel {
+    private final String TAG = "BannedApps";
+    private final String FILE = "BANNED_FILE";
+    private final String BANNED_APPS_KEY = "BANNED_APPS_KEY";
 
-    private static SharedPreferencesHelper helper;
-
-    private static SharedPreferencesHelper getSharedPreferencesHelper() {
-        if (helper == null) {
-            helper = new SharedPreferencesHelper(BANNED_APPS_FILE);
-        }
-        return helper;
+    public BannedApps(Context context) {
+        super(context);
     }
 
-    public static Set<String> getApps(Context context) {
-        SharedPreferences prefs = getSharedPreferencesHelper().getSharedPreferences(context);
-        return prefs.getStringSet(BANNED_APPS_KEY, new HashSet<String>());
+    public Set<String> getApps() {
+        return this.prefs.getStringSet(BANNED_APPS_KEY, new HashSet<String>());
     }
 
 
-    public static void setApps(Context context, Set<String> newApps) {
-        SharedPreferences.Editor editor = getSharedPreferencesHelper().getSharedPreferencesEditor(context);
-        editor.putStringSet(BANNED_APPS_KEY, newApps);
-        editor.apply();
+    public void setApps(Set<String> newApps) {
+        this.editor.putStringSet(BANNED_APPS_KEY, newApps);
+        this.editor.apply();
     }
 
-    public static void addApp(Context context, String newApp) {
-        Set<String> apps = getApps(context);
+    public void removeApp(String app) {
+        Set<String> apps = getApps();
+        apps.remove(app);
+        setApps(apps);
+    }
+
+    public void addApp(String newApp) {
+        Set<String> apps = getApps();
         apps.add(newApp);
-        setApps(context, apps);
+        setApps(apps);
     }
 
-    public static void clearApps(Context context) {
-        setApps(context, new HashSet<String>());
+    public void clearApps() {
+        setApps(new HashSet<String>());
     }
 
 }

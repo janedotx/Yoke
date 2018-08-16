@@ -38,6 +38,11 @@
                 <action android:name="com.system2override.yoke.TODO_MANAGEMENT_SCREEN" />
             </intent-filter>
         </activity>
+        <activity android:name=".BannedAppManagement.BannedAppScreen">
+            <intent-filter>
+                <action android:name="com.system2override.yoke.BANNED_APP_SCREEN" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".ManagerService"
@@ -64,7 +69,8 @@
         </receiver>
 
         <activity android:name=".AppLimit.AppLimit" />
-        <activity android:name=".TodoManagement.TodoManagement"></activity>
+        <activity android:name=".TodoManagement.TodoManagement" />
+        <activity android:name=".TodoManagement.AddToDo"></activity>
     </application>
 
 </manifest>
