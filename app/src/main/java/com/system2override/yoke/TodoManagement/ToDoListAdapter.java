@@ -42,7 +42,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
             public void onTextClick(TextView v, int position) {
                 Log.d(TAG, "onTextClick: " + Integer.toString(position));
                 ToDoInterface t = toDoList.get(position);
-                Toast.makeText(ToDoListAdapter.this.context, "clikced me", Toast.LENGTH_LONG).show();
                 Log.d(TAG, "onTextClick: checkbox status should be " + Boolean.toString(t.isCompleted()));
 
             }
@@ -72,9 +71,16 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
                 toDo.save(db);
 
                 List<Habit> habits = db.habitDao().loadAllHabits();
+                Log.d(TAG, "onCheckBoxClick: habits " + habits.toString());
                 Streaks streak = MyApplication.getStreaks();
+                streak.updateStreakInformation(habits);
+                Log.d(TAG, "onCheckBoxClick: streaks now is " + Integer.toString(streak.getCurrentStreak()));
                 db.close();
                 ToDoListAdapter.this.notifyDataSetChanged();
+                Toast.makeText(ToDoListAdapter.this.context,
+                        "current streak is now " + Integer.toString(streak.getCurrentStreak()),
+                        Toast.LENGTH_LONG)
+                        .show();
 
             }
         });

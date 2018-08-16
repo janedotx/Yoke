@@ -72,10 +72,22 @@ public class StreaksTest {
 
     @Test
     public void testUpdateStreakInformation() {
+        // ensure that a streak is extended when all dailies are checked off
         List<Habit> habits = mTestDbWrapper.getDb().habitDao().loadAllHabits();
         streak.updateStreakInformation(habits);
         completeAllHabits();
-        streak.updateStreakInformation(habits);
+        List<Habit> habits3 = mTestDbWrapper.getDb().habitDao().loadAllHabits();
+        streak.updateStreakInformation(habits3);
+        assertEquals(true, streak.getStreakCompletedToday());
+
+        // ensure that a streak that was extended when all dailies are checked off is shortened
+        // when a daily is unchecked
+        Habit first = habits.get(0);
+        first.setCompleted(false);
+        mTestDbWrapper.getDb().habitDao().update(first);
+        List<Habit> habits2 = mTestDbWrapper.getDb().habitDao().loadAllHabits();
+        streak.updateStreakInformation(habits2);
+        assertEquals(false, streak.getStreakCompletedToday());
     }
 
     @Test

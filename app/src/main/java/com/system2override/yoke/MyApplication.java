@@ -42,6 +42,7 @@ public class MyApplication extends Application {
         packageName = getApplicationContext().getPackageName();
         timeBank = new TimeBank(this, bus);
         bannedApps = new BannedApps(this);
+        streaks = new Streaks(this);
         setupDB();
         setupBannedApps();
 

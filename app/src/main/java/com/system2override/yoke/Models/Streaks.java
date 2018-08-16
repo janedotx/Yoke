@@ -63,6 +63,7 @@ public class Streaks extends SharedPreferencesModel {
             setCurrentStreak(currentStreak);
             setStreakCompletedToday(true);
         } else {
+            // this case is for when the user checks off all their dailies, and then unchecks one or more
             if (getStreakCompletedToday()) {
                 setStreakCompletedToday(false);
                 setCurrentStreak(currentStreak - 1);
