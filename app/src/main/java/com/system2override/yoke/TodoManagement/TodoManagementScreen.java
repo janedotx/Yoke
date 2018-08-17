@@ -52,7 +52,6 @@ public class TodoManagementScreen extends AppCompatActivity {
         this.timeAvailableView.setText("Available time is " + Long.toString(timeBank.getAvailableTime()));
 
         HarnessDatabase db = MyApplication.getDb(this);
-        String today = Habit.convertMSToYYMMDD(System.currentTimeMillis());
         //List<Habit> habits = db.habitDao().getAllHabitsCompletedBefore(today);
         List<Habit> habits = db.habitDao().loadAllHabits();
         for (Habit h: habits) {

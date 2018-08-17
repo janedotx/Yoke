@@ -8,25 +8,22 @@
     android:layout_height="wrap_content">
 
     <TextView
-        style="@style/BaseToDoTextView"
         android:id="@+id/toDoDescription"
-        android:layout_width="187dp"
+        style="@style/BaseToDoTextView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:orientation="vertical"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/toDoCheckBox"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
         android:id="@+id/toDoCheckBox"
-        android:layout_width="63dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:background="@color/checkboxColor"
         app:layout_constraintBottom_toBottomOf="@+id/toDoDescription"
         app:layout_constraintEnd_toEndOf="parent"

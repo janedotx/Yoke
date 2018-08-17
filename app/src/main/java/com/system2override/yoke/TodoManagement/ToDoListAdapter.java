@@ -13,14 +13,17 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.otto.Subscribe;
 import com.system2override.yoke.HarnessDatabase;
 import com.system2override.yoke.Models.RoomModels.Habit;
 import com.system2override.yoke.Models.Streaks;
 import com.system2override.yoke.Models.TimeBank;
 import com.system2override.yoke.Models.ToDoInterface;
 import com.system2override.yoke.MyApplication;
+import com.system2override.yoke.OttoMessages.MidnightResetEvent;
 import com.system2override.yoke.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
@@ -31,6 +34,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
     public ToDoListAdapter(Context context, List<ToDoInterface> toDoList) {
         this.toDoList = toDoList;
         this.context = context;
+        MyApplication.getBus().register(this);
     }
 
     @NonNull
@@ -76,7 +80,8 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
                 streak.updateStreakInformation(habits);
                 Log.d(TAG, "onCheckBoxClick: streaks now is " + Integer.toString(streak.getCurrentStreak()));
                 db.close();
-                ToDoListAdapter.this.notifyDataSetChanged();
+///                ToDoListAdapter.this.notifyDataSetChanged();
+                Log.d(TAG, "notifyDataSetChanged: ");
                 Toast.makeText(ToDoListAdapter.this.context,
                         "current streak is now " + Integer.toString(streak.getCurrentStreak()),
                         Toast.LENGTH_LONG)
@@ -93,6 +98,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ToDoViewHolder holder, int position) {
+        Log.d(TAG, "onBindViewHolder: " + Integer.toString(position));
         ToDoInterface todo = this.toDoList.get(position);
         holder.description.setText(todo.getDescription());
         holder.checkBox.setChecked(todo.isCompleted());
@@ -101,6 +107,23 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
     @Override
     public int getItemCount() {
         return this.toDoList.size();
+    }
+
+    // todo
+    // this has to change a lot whenever the tasks integration happens
+    @Subscribe
+    public void updateToDoList(MidnightResetEvent e) {
+
+        List<ToDoInterface> incompletes = new ArrayList<>();
+        HarnessDatabase db = MyApplication.getDb(this.context);
+        //List<Habit> habits = db.habitDao().getAllHabitsCompletedBefore(today);
+        List<Habit> habits = db.habitDao().loadAllHabits();
+        for (Habit h: habits) {
+            incompletes.add((ToDoInterface) h);
+            Log.d(TAG, "onCreate: loading this habit " + h.description + " " + h.isCompleted() + " " + h.getLastDateCompleted());
+        }
+        this.toDoList = incompletes;
+        notifyDataSetChanged();
     }
 
     /*

@@ -5,8 +5,10 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="black_overlay">#66000000</color>
-    <color name="background1">#e5d7a2</color>
+    <color name="tealBackground">#235b7b</color>
     <color name="white">#fff</color>
     <color name="black">#000</color>
-    <color name="checkboxColor">#f0f0f0</color>
+    <color name="checkboxColor">#fff</color>
+    <color name="bottomBoxSepia">#c2b78e</color>
+    <color name="topBoxSepia">#d3c99c</color>
 </resources>

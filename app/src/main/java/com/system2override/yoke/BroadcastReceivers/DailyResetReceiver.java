@@ -10,6 +10,7 @@ import com.system2override.yoke.Models.RoomModels.Habit;
 import com.system2override.yoke.Models.Streaks;
 import com.system2override.yoke.Models.TimeBank;
 import com.system2override.yoke.MyApplication;
+import com.system2override.yoke.OttoMessages.MidnightResetEvent;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class DailyResetReceiver extends BroadcastReceiver{
             List<Habit> habits = MyApplication.getDb(context).habitDao().loadAllHabits();
             timeBank.resetTime(context);
             streak.endStreakDay(habits);
+            MyApplication.getBus().post(new MidnightResetEvent());
             Toast.makeText(context, "Midnight reset happened",
                     Toast.LENGTH_LONG).show();
         }
