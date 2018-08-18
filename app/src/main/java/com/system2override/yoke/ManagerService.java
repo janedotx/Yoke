@@ -85,11 +85,11 @@ public class ManagerService extends Service {
         Log.d(TAG, "setDailyResetAlarm: curtime " + Long.toString(time));
         calendar.setTimeInMillis(time);
         // ensure this fires for the next upcoming midnight
-        calendar.add(Calendar.DAY_OF_YEAR, 1);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.AM_PM, Calendar.AM);
+//        calendar.add(Calendar.DAY_OF_YEAR, 1);
+//        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 2);
+//        calendar.set(Calendar.HOUR, 0);
+//        calendar.set(Calendar.AM_PM, Calendar.AM);
 
         Log.d(TAG, "setDailyResetAlarm: calendar.getTimeInMillis " + Long.toString(calendar.getTimeInMillis()));
         Log.d(TAG, "setDailyResetAlarm: action " + TimeBank.RESET_ACTION);
@@ -103,7 +103,8 @@ public class ManagerService extends Service {
                                                                     PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
 //        am.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 1000 * 60 * 1, pendingResetIntent);
-        am.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 1000 * 60 * 60 * 24, pendingResetIntent);
+//        am.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 1000 * 60 * 60 * 24, pendingResetIntent);
+        am.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 3000, pendingResetIntent);
     }
 
     private void registerReceivers() {

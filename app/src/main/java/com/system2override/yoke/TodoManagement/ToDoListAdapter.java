@@ -80,7 +80,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
                 streak.updateStreakInformation(habits);
                 Log.d(TAG, "onCheckBoxClick: streaks now is " + Integer.toString(streak.getCurrentStreak()));
                 db.close();
-///                ToDoListAdapter.this.notifyDataSetChanged();
+                ToDoListAdapter.this.notifyDataSetChanged();
                 Log.d(TAG, "notifyDataSetChanged: ");
                 Toast.makeText(ToDoListAdapter.this.context,
                         "current streak is now " + Integer.toString(streak.getCurrentStreak()),

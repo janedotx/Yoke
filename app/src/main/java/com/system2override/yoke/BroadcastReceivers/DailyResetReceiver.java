@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.system2override.yoke.HarnessDatabase;
 import com.system2override.yoke.Models.RoomModels.Habit;
 import com.system2override.yoke.Models.Streaks;
 import com.system2override.yoke.Models.TimeBank;
@@ -22,10 +23,20 @@ public class DailyResetReceiver extends BroadcastReceiver{
         Streaks streak = MyApplication.getStreaks();
 
         if (MyApplication.MIDNIGHT_RESET_ACTION.equals(intent.getAction())) {
-            List<Habit> habits = MyApplication.getDb(context).habitDao().loadAllHabits();
+            HarnessDatabase db = MyApplication.getDb(context);
+            List<Habit> habits = db.habitDao().loadAllHabits();
             timeBank.resetTime(context);
             streak.endStreakDay(habits);
+
+
+            // delete me quick
+            for (Habit h: habits) {
+                h.setCompleted(false);
+                db.habitDao().update(h);
+            }
+            db.close();
             MyApplication.getBus().post(new MidnightResetEvent());
+            Log.d(TAG, "onReceive: midnight reset happened");
             Toast.makeText(context, "Midnight reset happened",
                     Toast.LENGTH_LONG).show();
         }

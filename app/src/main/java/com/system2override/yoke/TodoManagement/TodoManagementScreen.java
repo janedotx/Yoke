@@ -75,6 +75,7 @@ public class TodoManagementScreen extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(TodoManagementScreen.this, MainActivity.class);
                 startActivity(i);
+                finish();
             }
         });
 
@@ -105,7 +106,6 @@ public class TodoManagementScreen extends AppCompatActivity {
     protected void onStop() {
         Log.d(TAG, "onStop: ");
         super.onStop();
-        finish();
     }
 
     @Override
