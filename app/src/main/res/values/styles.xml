@@ -22,15 +22,17 @@
 
     <style name="BaseToDoView">
         <item name="android:layout_height">69dp</item>
-        <!--
-        <item name="android:background">#aaa</item>
-        <-->
         <item name="android:layout_marginTop">3dp</item>
+        <item name="android:background">@color/tealBackground</item>
     </style>
 
     <style name="BaseToDoTextView">
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="BaseToDoCheckBox">
         <item name="android:background">@color/tealBackground</item>
     </style>
+
 
 </resources>
