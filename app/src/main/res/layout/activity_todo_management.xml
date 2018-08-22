@@ -11,8 +11,33 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="185dp"
-        android:background="@color/topBoxSepia"
-        >
+        android:background="@color/topBoxSepia">
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Back to main"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/toDoManagementGoAddToDoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:text="Add new todo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button3" />
 
         <TableLayout
             android:id="@+id/todoManagementInfoBox"
@@ -25,11 +50,10 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TableRow
+                style="@style/toDoManagementInfoTableRow"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginTop="16dp"
-                style="@style/toDoManagementInfoTableRow"
-                >
+                android:layout_marginTop="16dp">
 
                 <TextView
                     android:id="@+id/toDoManagementCurrentStreakHeader"
@@ -40,8 +64,8 @@
                     android:textSize="12sp" />
 
                 <TextView
-                    style="@style/toDoManagementInfoValues"
                     android:id="@+id/toDoManagementCurrentStreakValue"
+                    style="@style/toDoManagementInfoValues"
                     android:text="TextView"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
@@ -50,7 +74,7 @@
             <TableRow
                 style="@style/toDoManagementInfoTableRow"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/toDoManagementLongestStreakHeader"
@@ -61,18 +85,17 @@
                     android:textSize="12sp" />
 
                 <TextView
-                    style="@style/toDoManagementInfoValues"
                     android:id="@+id/toDoManagementLongestStreakValue"
+                    style="@style/toDoManagementInfoValues"
                     android:layout_width="wrap_content"
-                    android:textSize="12sp"
+                    android:text="TextView"
                     android:textColor="@color/white"
-                    android:text="TextView" />
+                    android:textSize="12sp" />
             </TableRow>
 
             <TableRow
                 style="@style/toDoManagementInfoTableRow"
-                android:layout_width="match_parent"
-                 >
+                android:layout_width="match_parent">
 
                 <TextView
                     android:id="@+id/todoManagementAvailableTimeHeader"
@@ -97,7 +120,7 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -105,15 +128,15 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/toDoListView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:scrollbars="vertical"
-            android:paddingBottom="84dp"
             android:clipToPadding="false"
+            android:paddingBottom="84dp"
+            android:scrollbars="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -123,36 +146,13 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
+            android:layout_gravity="end|bottom|right"
             android:layout_margin="16dp"
             android:backgroundTint="@color/HobbesPink"
-            android:src="@drawable/ic_round_add_24px" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Back to main"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/toDoManagementGoAddToDoButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Add new todo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button3" />
-    </android.support.constraint.ConstraintLayout>
+            android:src="@drawable/ic_round_add_24px"
+            app:layout_anchor="@id/toDoListView"
+            app:layout_anchorGravity="bottom|right|end" />
+    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>
