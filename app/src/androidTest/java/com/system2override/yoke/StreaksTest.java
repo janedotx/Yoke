@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 import com.system2override.yoke.Models.RoomModels.Habit;
 import com.system2override.yoke.Models.Streaks;
 
@@ -28,7 +30,7 @@ public class StreaksTest {
         mTestDbWrapper = new TestDbWrapper();
         mTestDbWrapper.setUpFixtures();
         this.context = InstrumentationRegistry.getTargetContext();
-        streak = new Streaks(this.context);
+        streak = new Streaks(this.context, new Bus(ThreadEnforcer.ANY));
         streak.setStreakCompletedToday(false);
         streak.setLongestStreak(0);
         streak.setStreakCompletedToday(false);
@@ -79,6 +81,8 @@ public class StreaksTest {
         List<Habit> habits3 = mTestDbWrapper.getDb().habitDao().loadAllHabits();
         streak.updateStreakInformation(habits3);
         assertEquals(true, streak.getStreakCompletedToday());
+        assertEquals(1, streak.getCurrentStreak());
+        assertEquals(1, streak.getLongestStreak());
 
         // ensure that a streak that was extended when all dailies are checked off is shortened
         // when a daily is unchecked
@@ -88,6 +92,8 @@ public class StreaksTest {
         List<Habit> habits2 = mTestDbWrapper.getDb().habitDao().loadAllHabits();
         streak.updateStreakInformation(habits2);
         assertEquals(false, streak.getStreakCompletedToday());
+        assertEquals(0, streak.getCurrentStreak());
+        assertEquals(0, streak.getLongestStreak());
     }
 
     @Test

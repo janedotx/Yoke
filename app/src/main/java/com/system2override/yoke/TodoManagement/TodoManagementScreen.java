@@ -1,5 +1,6 @@
 package com.system2override.yoke.TodoManagement;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,9 +17,12 @@ import com.squareup.otto.Subscribe;
 import com.system2override.yoke.HarnessDatabase;
 import com.system2override.yoke.MainActivity;
 import com.system2override.yoke.Models.RoomModels.Habit;
+import com.system2override.yoke.Models.Streaks;
 import com.system2override.yoke.Models.TimeBank;
 import com.system2override.yoke.Models.ToDoInterface;
 import com.system2override.yoke.MyApplication;
+import com.system2override.yoke.OttoMessages.MidnightResetEvent;
+import com.system2override.yoke.OttoMessages.StreakUpdateEvent;
 import com.system2override.yoke.OttoMessages.TimeBankEarnedTime;
 import com.system2override.yoke.R;
 
@@ -33,7 +37,9 @@ public class TodoManagementScreen extends AppCompatActivity {
     private List<ToDoInterface> incompletes = new ArrayList<>();
     private List<ToDoInterface> completed;
 
-    private TextView timeAvailableView;
+    private TextView earnedTimeValueView;
+    private TextView currentStreakValueView;
+    private TextView longestStreakValueView;
     private Button goAddToDoButton;
 
     @Override
@@ -46,11 +52,6 @@ public class TodoManagementScreen extends AppCompatActivity {
         MyApplication.getBus().register(this);
         setContentView(R.layout.activity_todo_management);
 
-        timeAvailableView = findViewById(R.id.todoManagementAvailableTime);
-
-        TimeBank timeBank = MyApplication.getTimeBank();
-        this.timeAvailableView.setText("Available time is " + Long.toString(timeBank.getAvailableTime()));
-
         HarnessDatabase db = MyApplication.getDb(this);
         //List<Habit> habits = db.habitDao().getAllHabitsCompletedBefore(today);
         List<Habit> habits = db.habitDao().loadAllHabits();
@@ -61,6 +62,7 @@ public class TodoManagementScreen extends AppCompatActivity {
         Log.d(TAG, "onCreate: incompletes size " + incompletes.size());
 
         this.toDoListView = (RecyclerView) findViewById(R.id.toDoListView);
+        initializeValueViews();
 
         this.adapter = new ToDoListAdapter(this, incompletes);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -88,6 +90,26 @@ public class TodoManagementScreen extends AppCompatActivity {
                                                }
                                            }
         );
+    }
+
+    private void initializeValueViews() {
+
+        this.earnedTimeValueView = findViewById(R.id.todoManagementAvailableTimeValue);
+        TimeBank timeBank = MyApplication.getTimeBank();
+        this.earnedTimeValueView.setText(Long.toString(timeBank.getAvailableTime()));
+
+        this.currentStreakValueView = findViewById(R.id.toDoManagementCurrentStreakValue);
+        this.longestStreakValueView = findViewById(R.id.toDoManagementLongestStreakValue);
+
+        updateStreakValues();
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void updateStreakValues() {
+        Streaks streak = MyApplication.getStreaks();
+        this.currentStreakValueView.setText(Integer.toString(streak.getCurrentStreak()));
+        this.longestStreakValueView.setText(Integer.toString(streak.getLongestStreak()));
+
     }
 
     @Override
@@ -124,7 +146,18 @@ public class TodoManagementScreen extends AppCompatActivity {
     public void makeTimeAvailableChanges(TimeBankEarnedTime event) {
         Log.d(TAG, "makeTimeAvailableChanges: ");
         TimeBank timeBank = MyApplication.getTimeBank();
-        this.timeAvailableView.setText("Available time is " + Long.toString(timeBank.getAvailableTime()));
+        this.earnedTimeValueView.setText(Long.toString(timeBank.getTotalEarnedTimeToday()));
+    }
+
+    @Subscribe
+    public void updateStreak(StreakUpdateEvent event) {
+        updateStreakValues();
+    }
+
+    @Subscribe
+    public void updateInfoViewValues(MidnightResetEvent e) {
+        this.earnedTimeValueView.setText("0");
+        Streaks streak = MyApplication.getStreaks();
     }
 
 }

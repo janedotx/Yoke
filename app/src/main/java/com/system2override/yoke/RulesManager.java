@@ -29,7 +29,7 @@ public class RulesManager {
         boolean inBadApp = MyApplication.getBannedApps().getApps().contains(currentAppMessage.getCurrentApp());
         TimeBank timeBank = MyApplication.getTimeBank();
         long availableTime = timeBank.getAvailableTime();
-        long timeSpent = timeBank.getSpentTime(this.context);
+        long timeSpent = timeBank.getSpentTime();
 
         if (timeSpent >= availableTime && inBadApp) {
             this.context.startActivity(this.launcherIntent);
@@ -37,7 +37,7 @@ public class RulesManager {
         }
 
         if (inBadApp) {
-            timeBank.addSpentTime(this.context, ForegroundAppObserverThread.SLEEP_LENGTH);
+            timeBank.addSpentTime(ForegroundAppObserverThread.SLEEP_LENGTH);
         }
 //        Log.d(TAG, "processForegroundMessage: spentTime " + Long.toString(timeSpent));
 

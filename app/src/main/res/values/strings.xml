@@ -11,4 +11,7 @@
     <string name="daily_streaks_header">Daily streaks</string>
     <string name="time_so_far_header">Time so far</string>
     <string name="motivational_message">Hey doofus get back to work</string>
+    <string name="current_streak_label_text">YOUR CURRENT STREAK</string>
+    <string name="toDoManagementLongestStreakHeader">LONGEST STREAK</string>
+    <string name="toDoManagementAvailableTimeHeader">Time earned today</string>
 </resources>

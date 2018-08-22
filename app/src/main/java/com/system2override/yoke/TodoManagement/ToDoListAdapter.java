@@ -63,13 +63,13 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
                     // and have the TimeBank subscribe to its changes but I don't know how to make
                     // that work and I don't feel inclined to learn at the moment
                     Log.d(TAG, "onCheckBoxClick: availableTime was " + Long.toString(timeBank.getAvailableTime()/ 1000L));
-                    timeBank.earnTime(ToDoListAdapter.this.context);
+                    timeBank.earnTime();
 //                    toDoList.remove(position);
 
                 } else {
                     toDo.setCompleted(false);
                     Log.d(TAG, "onCheckBoxClick: availableTime was " + Long.toString(timeBank.getAvailableTime()/ 1000L));
-                    timeBank.unearnTime(ToDoListAdapter.this.context);
+                    timeBank.unearnTime();
                     Log.d(TAG, "onCheckBoxClick: availableTime is now " + Long.toString(timeBank.getAvailableTime()/ 1000L));
                 }
                 toDo.save(db);

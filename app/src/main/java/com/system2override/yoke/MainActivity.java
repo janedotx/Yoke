@@ -162,15 +162,15 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         this.timeAvailableView = findViewById(R.id.mainViewTimeAvailable);
         TimeBank timeBank = MyApplication.getTimeBank();
         this.timeAvailableView.setText("Available time is " + Long.toString(timeBank.getAvailableTime()/1000L));
-        initialTimeEditText.setText(Long.toString(timeBank.getInitialTime(this)/1000));
-        refreshTimeEditText.setText(Long.toString(timeBank.getRewardTimeGrant(this)/1000));
+        initialTimeEditText.setText(Long.toString(timeBank.getInitialTime()/1000));
+        refreshTimeEditText.setText(Long.toString(timeBank.getRewardTimeGrant()/1000));
 
         Button initialButton = findViewById(R.id.initialTimeButtonSave);
         initialButton.setOnClickListener(new View.OnClickListener() {
                                              @Override
                                              public void onClick(View v) {
                                                  String curTime = initialTimeEditText.getText().toString();
-                                                 MyApplication.getTimeBank().setInitialTime(MainActivity.this, Long.parseLong(curTime) * 1000);
+                                                 MyApplication.getTimeBank().setInitialTime(Long.parseLong(curTime) * 1000);
                                              }
                                          }
         );
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             @Override
             public void onClick(View v) {
                 String refreshTime = refreshTimeEditText.getText().toString();
-                MyApplication.getTimeBank().setRewardTimeGrant(MainActivity.this, Long.parseLong(refreshTime) * 1000);
+                MyApplication.getTimeBank().setRewardTimeGrant(Long.parseLong(refreshTime) * 1000);
             }
         });
 
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         resetTimeBank.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyApplication.getTimeBank().resetTime(MainActivity.this);
+                MyApplication.getTimeBank().resetTime();
             }
         });
 
@@ -568,9 +568,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     protected void onResume() {
         super.onResume();
         TimeBank timeBank = MyApplication.getTimeBank();
-        long remainingTime = timeBank.getTimeRemaining(this);
+        long remainingTime = timeBank.getTimeRemaining();
         Log.d(TAG, "onResume: remaining time " + Long.toString(remainingTime));
-        Log.d(TAG, "onResume: spent time " + Long.toString(timeBank.getSpentTime(this)));
+        Log.d(TAG, "onResume: spent time " + Long.toString(timeBank.getSpentTime()));
         Log.d(TAG, "onResume: available time " + Long.toString(timeBank.getAvailableTime()));
         TextView remainingTimeView = findViewById(R.id.mainTimeRemainingView);
         remainingTimeView.setText("Remaining time view is " + Long.toString(remainingTime/1000) + " seconds");

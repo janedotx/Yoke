@@ -14,18 +14,86 @@
         android:background="@color/topBoxSepia"
         >
 
-        <TextView
-            android:id="@+id/todoManagementAvailableTime"
-            style="@style/BaseToDoView"
-            android:layout_width="264dp"
-            android:layout_height="26dp"
+        <TableLayout
+            android:id="@+id/todoManagementInfoBox"
+            android:layout_width="241dp"
+            android:layout_height="102dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="40dp"
-            android:text="TextView"
+            android:layout_marginTop="22dp"
+            android:background="@color/tealBackground"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                style="@style/toDoManagementInfoTableRow"
+                >
+
+                <TextView
+                    android:id="@+id/toDoManagementCurrentStreakHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/current_streak_label_text"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <TextView
+                    style="@style/toDoManagementInfoValues"
+                    android:id="@+id/toDoManagementCurrentStreakValue"
+                    android:text="TextView"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </TableRow>
+
+            <TableRow
+                style="@style/toDoManagementInfoTableRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/toDoManagementLongestStreakHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/toDoManagementLongestStreakHeader"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <TextView
+                    style="@style/toDoManagementInfoValues"
+                    android:id="@+id/toDoManagementLongestStreakValue"
+                    android:layout_width="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:text="TextView" />
+            </TableRow>
+
+            <TableRow
+                style="@style/toDoManagementInfoTableRow"
+                android:layout_width="match_parent"
+                 >
+
+                <TextView
+                    android:id="@+id/todoManagementAvailableTimeHeader"
+                    android:layout_width="wrap_content"
+                    android:text="@string/toDoManagementAvailableTimeHeader"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="22dp" />
+
+                <TextView
+                    android:id="@+id/todoManagementAvailableTimeValue"
+                    style="@style/toDoManagementInfoValues"
+                    android:layout_width="wrap_content"
+                    android:text="TextView"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </TableRow>
+
+        </TableLayout>
+
 
     </android.support.constraint.ConstraintLayout>
 
@@ -44,12 +112,23 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:scrollbars="vertical"
+            android:paddingBottom="84dp"
+            android:clipToPadding="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toDoManagementGoAddToDoButton"
             app:layout_constraintVertical_bias="0.054" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:backgroundTint="@color/HobbesPink"
+            android:src="@drawable/ic_round_add_24px" />
 
         <Button
             android:id="@+id/button3"

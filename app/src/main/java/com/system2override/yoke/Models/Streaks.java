@@ -3,9 +3,11 @@ package com.system2override.yoke.Models;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.squareup.otto.Bus;
 import com.system2override.yoke.HarnessDatabase;
 import com.system2override.yoke.Models.RoomModels.Habit;
 import com.system2override.yoke.MyApplication;
+import com.system2override.yoke.OttoMessages.StreakUpdateEvent;
 
 import java.util.List;
 
@@ -14,9 +16,11 @@ public class Streaks extends SharedPreferencesModel {
     private static final String CURRENT_STREAKS_KEY = "CURRENT_STREAKS_KEY";
     private static final String LONGEST_STREAKS_KEY = "LONGEST_STREAKS_KEY";
     private static final String STREAK_COMPLETED_TODAY = "STREAK_COMPLETED_TODAY";
+    private Bus bus;
 
-    public Streaks(Context c) {
+    public Streaks(Context c, Bus bus) {
         super(c);
+        this.bus = bus;
     }
 
     public boolean canAddStreak(List<Habit> habits) {
@@ -29,6 +33,11 @@ public class Streaks extends SharedPreferencesModel {
         return allDone;
     }
 
+    // it is unfortunate we have this variable, but we need it in case the user checks off everything,
+    // and then unchecks one item. we need some way to distinguish between the case where unchecking
+    // an item undoes a streak, and the case where the user is checking off one more item but has not
+    // yet completed a streak. without this variable, the only knowledge we have is whether we're
+    // eligible for a streak completion. without this variable, we can't store any state about the day
     public boolean getStreakCompletedToday() {
         return this.prefs.getBoolean(STREAK_COMPLETED_TODAY, false);
     }
@@ -58,20 +67,31 @@ public class Streaks extends SharedPreferencesModel {
 
     public void updateStreakInformation(List<Habit> habits) {
         int currentStreak = getCurrentStreak();
+        int longestStreak = getLongestStreak();
+
         if (canAddStreak(habits)) {
             currentStreak += 1;
             setCurrentStreak(currentStreak);
             setStreakCompletedToday(true);
+
+            if (currentStreak > longestStreak) {
+                setLongestStreak(currentStreak);
+
+            }
         } else {
             // this case is for when the user checks off all their dailies, and then unchecks one or more
             if (getStreakCompletedToday()) {
                 setStreakCompletedToday(false);
                 setCurrentStreak(currentStreak - 1);
+                if (currentStreak == longestStreak) {
+                    setLongestStreak(currentStreak - 1);
+                }
             }
         }
+        this.bus.post(new StreakUpdateEvent());
     }
 
-    public void endStreakDay(List<Habit> habits) {
+    public void endStreakDay() {
         boolean streakCompletedToday = getStreakCompletedToday();
 
         if (!streakCompletedToday) {
@@ -80,13 +100,7 @@ public class Streaks extends SharedPreferencesModel {
             setStreakCompletedToday(false);
         }
 
-        int longestStreak = getLongestStreak();
-        int currentStreak = getCurrentStreak();
-
-        if (currentStreak > longestStreak) {
-            setLongestStreak(currentStreak);
-
-        }
+        this.bus.post(new StreakUpdateEvent());
     }
 
 }

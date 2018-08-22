@@ -30,66 +30,66 @@ public class TimeBankTest {
         mTestDbWrapper = new TestDbWrapper();
         mTestDbWrapper.setUpFixtures();
         this.timeBank = new TimeBank(this.context, new Bus(ThreadEnforcer.ANY));
-        timeBank.setInitialTime(this.context, 1000);
-        timeBank.setRewardTimeGrant(this.context, 2000);
-        timeBank.resetTime(this.context);
+        timeBank.setInitialTime(1000);
+        timeBank.setRewardTimeGrant(2000);
+        timeBank.resetTime();
 
     }
 
     @Test
     public void testAddSpentTime() {
-        timeBank.addSpentTime(this.context, 1000L);
-        long curTime = timeBank.getSpentTime(InstrumentationRegistry.getTargetContext());
+        timeBank.addSpentTime(1000L);
+        long curTime = timeBank.getSpentTime();
         assertEquals(1000L, curTime);
     }
 
     @Test
     public void testAddRewardGrant() {
-        timeBank.earnTime(this.context);
+        timeBank.earnTime();
         long curAvailableTime = timeBank.getAvailableTime();
         assertEquals(3000, curAvailableTime);
     }
 
     @Test
     public void testSettersAndGetters() {
-        timeBank.setInitialTime(this.context, 1000);
-        timeBank.setRewardTimeGrant(this.context, 2000);
-        assertEquals(1000, timeBank.getInitialTime(this.context));
-        assertEquals(2000, timeBank.getRewardTimeGrant(this.context));
+        timeBank.setInitialTime(1000);
+        timeBank.setRewardTimeGrant(2000);
+        assertEquals(1000, timeBank.getInitialTime());
+        assertEquals(2000, timeBank.getRewardTimeGrant());
     }
 
     @Test
     public void testResetTime() {
-        timeBank.addSpentTime(this.context, 1000L);
-        long curTime = timeBank.getSpentTime(this.context);
+        timeBank.addSpentTime(1000L);
+        long curTime = timeBank.getSpentTime();
         assertEquals(1000L, curTime);
 
-        timeBank.earnTime(this.context);
+        timeBank.earnTime();
         long curAvailableTime = timeBank.getAvailableTime();
         assertEquals(3000, curAvailableTime);
 
-        timeBank.resetTime(this.context);
-        assertEquals(0, timeBank.getSpentTime(this.context));
+        timeBank.resetTime();
+        assertEquals(0, timeBank.getSpentTime());
         assertEquals(1000, timeBank.getAvailableTime());
 //        */
     }
 
     @Test
     public void testGetEarnedTime() {
-        assertEquals(0L, timeBank.getTotalEarnedTimeToday(this.context));
-        timeBank.earnTime(this.context);
-        assertEquals(2000L, timeBank.getTotalEarnedTimeToday(this.context));
-        timeBank.earnTime(this.context);
-        assertEquals(4000L, timeBank.getTotalEarnedTimeToday(this.context));
+        assertEquals(0L, timeBank.getTotalEarnedTimeToday());
+        timeBank.earnTime();
+        assertEquals(2000L, timeBank.getTotalEarnedTimeToday());
+        timeBank.earnTime();
+        assertEquals(4000L, timeBank.getTotalEarnedTimeToday());
 
-        timeBank.resetTime(this.context);
-        assertEquals(0L, timeBank.getTotalEarnedTimeToday(this.context));
+        timeBank.resetTime();
+        assertEquals(0L, timeBank.getTotalEarnedTimeToday());
 
     }
 
     @After
     public void tearDown() {
-        timeBank.resetTime(this.context);
+        timeBank.resetTime();
         try {
             mTestDbWrapper.tearDown();
         } catch (IOException e) {
