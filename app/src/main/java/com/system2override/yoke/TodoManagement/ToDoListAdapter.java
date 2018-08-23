@@ -131,17 +131,11 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
     public void updateAdaptersOnToDoCompletion(ToDoCompletedEvent e) {
         if (this.tab == ToDoListFragment.COMPLETED_TODOS) {
             this.toDoList.add(e.toDo);
+            // oddly, these logging statements never appear, but if i comment out the post
+            // events, then the tabs fail to update properly
             Log.d(TAG, "updateAdaptersOnToDoCompletion: " + e.toDo.getDescription());
             notifyDataSetChanged();
         }
-    }
-
-    @Subscribe
-    public void getBlankMessage(BlankMessage e) {
-        if (this.tab == ToDoListFragment.COMPLETED_TODOS) {
-            Log.d(TAG, "updateAdaptersOnToDoCompletion: BLANK");
-        }
-
     }
 
     @Subscribe
