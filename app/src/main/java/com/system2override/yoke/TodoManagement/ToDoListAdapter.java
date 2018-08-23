@@ -20,7 +20,10 @@ import com.system2override.yoke.Models.Streaks;
 import com.system2override.yoke.Models.TimeBank;
 import com.system2override.yoke.Models.ToDoInterface;
 import com.system2override.yoke.MyApplication;
+import com.system2override.yoke.OttoMessages.BlankMessage;
 import com.system2override.yoke.OttoMessages.MidnightResetEvent;
+import com.system2override.yoke.OttoMessages.ToDoCompletedEvent;
+import com.system2override.yoke.OttoMessages.ToDoUncheckedEvent;
 import com.system2override.yoke.R;
 
 import java.util.ArrayList;
@@ -30,10 +33,12 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
     private static final String TAG = "ToDoListAdapter";
     private List<ToDoInterface> toDoList;
     private Context context;
+    private int tab;
 
-    public ToDoListAdapter(Context context, List<ToDoInterface> toDoList) {
+    public ToDoListAdapter(Context context, List<ToDoInterface> toDoList, int tab) {
         this.toDoList = toDoList;
         this.context = context;
+        this.tab = tab;
         MyApplication.getBus().register(this);
     }
 
@@ -64,28 +69,27 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
                     // that work and I don't feel inclined to learn at the moment
                     Log.d(TAG, "onCheckBoxClick: availableTime was " + Long.toString(timeBank.getAvailableTime()/ 1000L));
                     timeBank.earnTime();
-//                    toDoList.remove(position);
-
+                    if (ToDoListAdapter.this.tab == ToDoListFragment.INCOMPLETE_TODOS) {
+                        toDoList.remove(position);
+                    }
+                    MyApplication.getBus().post(new ToDoCompletedEvent(toDo));
                 } else {
                     toDo.setCompleted(false);
-                    Log.d(TAG, "onCheckBoxClick: availableTime was " + Long.toString(timeBank.getAvailableTime()/ 1000L));
                     timeBank.unearnTime();
-                    Log.d(TAG, "onCheckBoxClick: availableTime is now " + Long.toString(timeBank.getAvailableTime()/ 1000L));
+                    if (ToDoListAdapter.this.tab == ToDoListFragment.COMPLETED_TODOS) {
+                        toDoList.remove(position);
+                    }
+                    MyApplication.getBus().post(new ToDoUncheckedEvent(toDo));
                 }
                 toDo.save(db);
 
+                // update streak information as necessary
                 List<Habit> habits = db.habitDao().loadAllHabits();
-                Log.d(TAG, "onCheckBoxClick: habits " + habits.toString());
                 Streaks streak = MyApplication.getStreaks();
                 streak.updateStreakInformation(habits);
-                Log.d(TAG, "onCheckBoxClick: streaks now is " + Integer.toString(streak.getCurrentStreak()));
                 db.close();
                 ToDoListAdapter.this.notifyDataSetChanged();
                 Log.d(TAG, "notifyDataSetChanged: ");
-                Toast.makeText(ToDoListAdapter.this.context,
-                        "current streak is now " + Integer.toString(streak.getCurrentStreak()),
-                        Toast.LENGTH_LONG)
-                        .show();
 
             }
         });
@@ -113,46 +117,40 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
     // this has to change a lot whenever the tasks integration happens
     @Subscribe
     public void updateToDoList(MidnightResetEvent e) {
-
         List<ToDoInterface> incompletes = new ArrayList<>();
         HarnessDatabase db = MyApplication.getDb(this.context);
-        //List<Habit> habits = db.habitDao().getAllHabitsCompletedBefore(today);
         List<Habit> habits = db.habitDao().loadAllHabits();
         for (Habit h: habits) {
             incompletes.add((ToDoInterface) h);
-            Log.d(TAG, "onCreate: loading this habit " + h.description + " " + h.isCompleted() + " " + h.getLastDateCompleted());
         }
         this.toDoList = incompletes;
         notifyDataSetChanged();
     }
 
-    /*
-
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        ViewHolder viewHolder;
-        if (convertView == null) {
-            convertView = this.inflater.inflate(this.resource, parent, false);
-            viewHolder = new ViewHolder(convertView);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-
-        ToDoInterface currentToDo = toDoList.get(position);
-        viewHolder.description.setText(currentToDo.getDescription());
-
-        return convertView;
-    }
-    private class ViewHolder {
-        final TextView description;
-
-        ViewHolder(View v) {
-            this.description = (TextView) v.findViewById(R.id.toDoDescription);
+    @Subscribe
+    public void updateAdaptersOnToDoCompletion(ToDoCompletedEvent e) {
+        if (this.tab == ToDoListFragment.COMPLETED_TODOS) {
+            this.toDoList.add(e.toDo);
+            Log.d(TAG, "updateAdaptersOnToDoCompletion: " + e.toDo.getDescription());
+            notifyDataSetChanged();
         }
     }
-    */
 
+    @Subscribe
+    public void getBlankMessage(BlankMessage e) {
+        if (this.tab == ToDoListFragment.COMPLETED_TODOS) {
+            Log.d(TAG, "updateAdaptersOnToDoCompletion: BLANK");
+        }
+
+    }
+
+    @Subscribe
+    public void updateAdaptersOnToDoUnchecking(ToDoUncheckedEvent e) {
+        if (this.tab == ToDoListFragment.INCOMPLETE_TODOS) {
+            this.toDoList.add(e.toDo);
+            Log.d(TAG, "updateAdaptersOnToDoUnchecking: " + e.toDo.getDescription());
+            notifyDataSetChanged();
+        }
+    }
 
 }

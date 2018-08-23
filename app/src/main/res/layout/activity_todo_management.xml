@@ -20,24 +20,12 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:text="Back to main"
+            android:text="To other settings"
+            android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/toDoManagementGoAddToDoButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:text="Add new todo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button3" />
 
         <TableLayout
             android:id="@+id/todoManagementInfoBox"
@@ -126,33 +114,34 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:background="@color/bottomBoxSepia">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/toDoListView"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:clipToPadding="false"
-            android:paddingBottom="84dp"
-            android:scrollbars="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toDoManagementGoAddToDoButton"
-            app:layout_constraintVertical_bias="0.054" />
+            android:layout_width="match_parent"
+            >
+        <android.support.design.widget.TabLayout
+            android:id="@+id/toDoManagementTabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMode="fixed"
+            app:tabGravity="fill" />
 
+        <android.support.v4.view.ViewPager
+            android:id="@+id/toDoManagementPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v4.view.ViewPager>
+        </LinearLayout>
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/addToDoFAB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom|right"
             android:layout_margin="16dp"
             android:backgroundTint="@color/HobbesPink"
             android:src="@drawable/ic_round_add_24px"
-            app:layout_anchor="@id/toDoListView"
+            app:layout_anchor="@id/toDoManagementPager"
             app:layout_anchorGravity="bottom|right|end" />
     </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

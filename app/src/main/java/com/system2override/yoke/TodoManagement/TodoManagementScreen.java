@@ -2,6 +2,9 @@ package com.system2override.yoke.TodoManagement;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -41,6 +44,11 @@ public class TodoManagementScreen extends AppCompatActivity {
     private TextView currentStreakValueView;
     private TextView longestStreakValueView;
     private Button goAddToDoButton;
+    private FloatingActionButton addNewToDo;
+
+    private TabLayout tabs;
+    private ViewPager viewPager;
+    private ToDoListPagerAdapter toDoListPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +60,17 @@ public class TodoManagementScreen extends AppCompatActivity {
         MyApplication.getBus().register(this);
         setContentView(R.layout.activity_todo_management);
 
+        initializeValueViews();
+
+        this.tabs = (TabLayout) findViewById(R.id.toDoManagementTabs);
+        this.viewPager = (ViewPager) findViewById(R.id.toDoManagementPager);
+        this.toDoListPagerAdapter = new ToDoListPagerAdapter(getSupportFragmentManager());
+
+        this.viewPager.setAdapter(this.toDoListPagerAdapter);
+        this.tabs.setupWithViewPager(this.viewPager);
+
+        /*
         HarnessDatabase db = MyApplication.getDb(this);
-        //List<Habit> habits = db.habitDao().getAllHabitsCompletedBefore(today);
         List<Habit> habits = db.habitDao().loadAllHabits();
         for (Habit h: habits) {
             incompletes.add((ToDoInterface) h);
@@ -62,7 +79,6 @@ public class TodoManagementScreen extends AppCompatActivity {
         Log.d(TAG, "onCreate: incompletes size " + incompletes.size());
 
         this.toDoListView = (RecyclerView) findViewById(R.id.toDoListView);
-        initializeValueViews();
 
         this.adapter = new ToDoListAdapter(this, incompletes);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -70,6 +86,7 @@ public class TodoManagementScreen extends AppCompatActivity {
         toDoListView.setItemAnimator(new DefaultItemAnimator());
         toDoListView.setAdapter(adapter);
         this.toDoListView.setLayoutManager(mLayoutManager);
+        */
 
         Button button = findViewById(R.id.button3);
         button.setOnClickListener(new View.OnClickListener() {
@@ -81,8 +98,8 @@ public class TodoManagementScreen extends AppCompatActivity {
             }
         });
 
-        goAddToDoButton = findViewById(R.id.toDoManagementGoAddToDoButton);
-        goAddToDoButton.setOnClickListener(new View.OnClickListener() {
+        addNewToDo = (FloatingActionButton) findViewById(R.id.addToDoFAB);
+        addNewToDo.setOnClickListener(new View.OnClickListener() {
                                                @Override
                                                public void onClick(View v) {
                                                    Intent i = new Intent(TodoManagementScreen.this, AddToDo.class);

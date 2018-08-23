@@ -22,11 +22,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".AppLimit.AppLimitScreen">
             <intent-filter>
@@ -35,7 +30,8 @@
         </activity>
         <activity android:name=".TodoManagement.TodoManagementScreen">
             <intent-filter>
-                <action android:name="com.system2override.yoke.TODO_MANAGEMENT_SCREEN" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".BannedAppManagement.BannedAppScreen">
@@ -68,8 +64,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".AppLimit.AppLimit" />
-        <activity android:name=".TodoManagement.TodoManagement" />
         <activity android:name=".TodoManagement.AddToDo"></activity>
     </application>
 
