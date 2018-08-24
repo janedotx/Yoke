@@ -14,4 +14,6 @@
     <string name="current_streak_label_text">YOUR CURRENT STREAK</string>
     <string name="toDoManagementLongestStreakHeader">LONGEST STREAK</string>
     <string name="toDoManagementAvailableTimeHeader">Time earned today</string>
+    <string name="toDoManagementActivityTitle">Your todos</string>
+    <string name="addToDoHeader">Add new todo</string>
 </resources>

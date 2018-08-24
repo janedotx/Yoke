@@ -2,9 +2,12 @@ package com.system2override.yoke.TodoManagement;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 import com.squareup.otto.Subscribe;
 import com.system2override.yoke.HarnessDatabase;
 import com.system2override.yoke.MainActivity;
+import com.system2override.yoke.ManagerService;
 import com.system2override.yoke.Models.RoomModels.Habit;
 import com.system2override.yoke.Models.Streaks;
 import com.system2override.yoke.Models.TimeBank;
@@ -54,12 +58,11 @@ public class TodoManagementScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: " + System.identityHashCode(this));
-        if (savedInstanceState != null) {
-            Log.d(TAG, "onCreate: bundle contents " + savedInstanceState.toString());
-        }
         MyApplication.getBus().register(this);
         setContentView(R.layout.activity_todo_management);
 
+        ActionBar bar = getSupportActionBar();
+        bar.setTitle(R.string.toDoManagementActivityTitle);
         initializeValueViews();
 
         this.tabs = (TabLayout) findViewById(R.id.toDoManagementTabs);
@@ -139,6 +142,7 @@ public class TodoManagementScreen extends AppCompatActivity {
     protected void onStart() {
         Log.d(TAG, "onStart: ");
         super.onStart();
+        startManagerService();
     }
 
     @Override
@@ -175,6 +179,18 @@ public class TodoManagementScreen extends AppCompatActivity {
     public void updateInfoViewValues(MidnightResetEvent e) {
         this.earnedTimeValueView.setText("0");
         Streaks streak = MyApplication.getStreaks();
+    }
+
+    // according to docs, this is idempotent
+    private void startManagerService() {
+        Intent intent = new Intent(this, ManagerService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            android.util.Log.d(TAG, "subscribeToSensor: about to start foreground service " + Long.toString(System.currentTimeMillis()));
+            startForegroundService(intent);
+        } else {
+            android.util.Log.d(TAG, "subscribeToSensor: about to start service " + Long.toString(System.currentTimeMillis()));
+            startService(intent);
+        }
     }
 
 }

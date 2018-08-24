@@ -1,6 +1,7 @@
 package com.system2override.yoke.TodoManagement;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -25,6 +26,9 @@ public class AddToDo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_to_do);
+
+        ActionBar bar = getSupportActionBar();
+        bar.setTitle(R.string.addToDoHeader);
 
         saveButton = findViewById(R.id.addToDoSaveButton);
         toDoEditText = findViewById(R.id.addToDoEditText);

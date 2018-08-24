@@ -152,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 //        checkForAccessFineLocation(this);
 //        checkForGoogleTasksPermission(this);
 
-        startManagerService();
 
     }
 
@@ -196,18 +195,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     }
     private void setupHabits() {
 
-    }
-
-    // according to docs, this is idempotent
-    private void startManagerService() {
-        Intent intent = new Intent(this, ManagerService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            android.util.Log.d(TAG, "subscribeToSensor: about to start foreground service " + Long.toString(System.currentTimeMillis()));
-            startForegroundService(intent);
-        } else {
-            android.util.Log.d(TAG, "subscribeToSensor: about to start service " + Long.toString(System.currentTimeMillis()));
-            startService(intent);
-        }
     }
 
     @Override
