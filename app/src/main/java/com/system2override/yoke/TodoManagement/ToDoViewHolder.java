@@ -15,6 +15,7 @@ public class ToDoViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     public TextView description;
     public CheckBox checkBox;
     public ToDoInterface todo;
+    public View toDoViewGroup;
     public Context context;
     public IToDoViewHolderClicks listener;
 
@@ -24,6 +25,8 @@ public class ToDoViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         this.checkBox = (CheckBox) view.findViewById(R.id.toDoCheckBox);
         this.context = context;
         this.listener = listener;
+        this.toDoViewGroup = view.findViewById(R.id.toDoViewGroup);
+
         this.description.setOnClickListener(this);
         this.checkBox.setOnClickListener(this);
     }

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/BaseToDoView"
-    android:background="@drawable/todo_style"
+    android:background="@drawable/todo_coloring"
+    android:id="@+id/toDoViewGroup"
     android:layout_width="match_parent">
 
     <TextView

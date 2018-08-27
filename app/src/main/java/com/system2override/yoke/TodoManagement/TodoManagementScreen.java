@@ -2,8 +2,14 @@ package com.system2override.yoke.TodoManagement;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -31,6 +37,7 @@ import com.system2override.yoke.MyApplication;
 import com.system2override.yoke.OttoMessages.MidnightResetEvent;
 import com.system2override.yoke.OttoMessages.StreakUpdateEvent;
 import com.system2override.yoke.OttoMessages.TimeBankEarnedTime;
+import com.system2override.yoke.OttoMessages.TimeBankUnearnedTime;
 import com.system2override.yoke.R;
 
 import java.util.ArrayList;
@@ -45,6 +52,7 @@ public class TodoManagementScreen extends AppCompatActivity {
     private List<ToDoInterface> completed;
 
     private TextView earnedTimeValueView;
+    private TextView remainingTimeValueView;
     private TextView currentStreakValueView;
     private TextView longestStreakValueView;
     private Button goAddToDoButton;
@@ -63,6 +71,8 @@ public class TodoManagementScreen extends AppCompatActivity {
 
         ActionBar bar = getSupportActionBar();
         bar.setTitle(R.string.toDoManagementActivityTitle);
+       // bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2c6f8e")));
+
         initializeValueViews();
 
         this.tabs = (TabLayout) findViewById(R.id.toDoManagementTabs);
@@ -114,9 +124,13 @@ public class TodoManagementScreen extends AppCompatActivity {
 
     private void initializeValueViews() {
 
-        this.earnedTimeValueView = findViewById(R.id.todoManagementAvailableTimeValue);
+        this.earnedTimeValueView = findViewById(R.id.todoManagementEarnedTimeValue);
+        this.remainingTimeValueView = findViewById(R.id.todoManagementAvailableTimeValue);
         TimeBank timeBank = MyApplication.getTimeBank();
-        this.earnedTimeValueView.setText(Long.toString(timeBank.getAvailableTime()));
+        this.earnedTimeValueView.setText(Long.toString(timeBank.getTotalEarnedTimeToday()));
+        long remainingTime = timeBank.getTimeRemaining();
+        if (remainingTime < 0L) { remainingTime = 0; }
+        this.remainingTimeValueView.setText(Long.toString(remainingTime));
 
         this.currentStreakValueView = findViewById(R.id.toDoManagementCurrentStreakValue);
         this.longestStreakValueView = findViewById(R.id.toDoManagementLongestStreakValue);
@@ -134,20 +148,18 @@ public class TodoManagementScreen extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        Log.d(TAG, "onResume: " + System.identityHashCode(this));
+        initializeValueViews();
         super.onResume();
     }
 
     @Override
     protected void onStart() {
-        Log.d(TAG, "onStart: ");
         super.onStart();
         startManagerService();
     }
 
     @Override
     protected void onStop() {
-        Log.d(TAG, "onStop: ");
         super.onStop();
     }
 
@@ -164,10 +176,22 @@ public class TodoManagementScreen extends AppCompatActivity {
     }
 
     @Subscribe
-    public void makeTimeAvailableChanges(TimeBankEarnedTime event) {
+    public void addEarnedTimeView(TimeBankEarnedTime event) {
         Log.d(TAG, "makeTimeAvailableChanges: ");
         TimeBank timeBank = MyApplication.getTimeBank();
         this.earnedTimeValueView.setText(Long.toString(timeBank.getTotalEarnedTimeToday()));
+        this.remainingTimeValueView.setText(Long.toString(timeBank.getTimeRemaining()));
+    }
+
+    @Subscribe
+    public void subtractEarnedTimeView(TimeBankUnearnedTime event) {
+        TimeBank timeBank = MyApplication.getTimeBank();
+        this.earnedTimeValueView.setText(Long.toString(timeBank.getTotalEarnedTimeToday()));
+        long timeRemaining = timeBank.getTimeRemaining();
+        if (timeRemaining < 0L) {
+            timeRemaining = 0L;
+        }
+        this.remainingTimeValueView.setText(Long.toString(timeRemaining));
     }
 
     @Subscribe
@@ -178,6 +202,7 @@ public class TodoManagementScreen extends AppCompatActivity {
     @Subscribe
     public void updateInfoViewValues(MidnightResetEvent e) {
         this.earnedTimeValueView.setText("0");
+        this.remainingTimeValueView.setText(Long.toString(MyApplication.getTimeBank().getInitialTime()));
         Streaks streak = MyApplication.getStreaks();
     }
 
@@ -192,5 +217,6 @@ public class TodoManagementScreen extends AppCompatActivity {
             startService(intent);
         }
     }
+
 
 }

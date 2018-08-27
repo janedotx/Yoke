@@ -13,7 +13,8 @@
     <string name="motivational_message">Hey doofus get back to work</string>
     <string name="current_streak_label_text">YOUR CURRENT STREAK</string>
     <string name="toDoManagementLongestStreakHeader">LONGEST STREAK</string>
-    <string name="toDoManagementAvailableTimeHeader">Time earned today</string>
+    <string name="toDoManagementRemainingTimeHeader">Time remaining</string>
+    <string name="toDoManagementEarnedTimeHeader">Time earned today</string>
     <string name="toDoManagementActivityTitle">Your todos</string>
     <string name="addToDoHeader">Add new todo</string>
 </resources>

@@ -7,6 +7,7 @@ import android.util.Log;
 import com.squareup.otto.Bus;
 import com.system2override.yoke.MyApplication;
 import com.system2override.yoke.OttoMessages.TimeBankEarnedTime;
+import com.system2override.yoke.OttoMessages.TimeBankUnearnedTime;
 
 public class TimeBank extends SharedPreferencesModel {
     private static final String TAG = "TimeBank";
@@ -79,6 +80,8 @@ public class TimeBank extends SharedPreferencesModel {
         this.editor.putLong(TIME_AVAILABLE_KEY, currentTime);
         this.editor.apply();
 
+        this.bus.post(new TimeBankUnearnedTime());
+
         return currentTime;
     }
 
@@ -92,6 +95,7 @@ public class TimeBank extends SharedPreferencesModel {
         long initialGrantTime = this.prefs.getLong(INITIAL_TIME_GRANT_KEY, 0L);
         this.editor.putLong(TIME_AVAILABLE_KEY, initialGrantTime);
         this.editor.apply();
+
 
     }
 
