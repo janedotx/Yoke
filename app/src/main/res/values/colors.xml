@@ -15,5 +15,5 @@
     <color name="HobbesBlush">#f094c2</color>
     <color name="HobbesOrange">#e28b43</color>
     <color name="HobbesLightGreen">#aed47c</color>
-    <color name="HobbesActionBar">#2c6f8e</color>
+    <color name="HobbesPrimaryAccent">#2c6f8e</color>
 </resources>

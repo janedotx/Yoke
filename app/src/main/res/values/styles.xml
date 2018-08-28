@@ -21,13 +21,16 @@
     </style>
 
     <style name="HobbesActionBarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/HobbesActionBar</item>
+        <item name="android:background">@color/HobbesPrimaryAccent</item>
     </style>
 
     <style name="HobbesAppTheme" parent="AppTheme">
         <item name="android:actionBarStyle">@style/HobbesActionBarStyle</item>
-        <item name="colorPrimary">@color/HobbesActionBar</item>
+        <item name="colorPrimary">@color/HobbesPrimaryAccent</item>
         <item name="colorPrimaryDark">@color/black_overlay</item>
+        <item name="colorControlNormal">@color/HobbesPrimaryAccent</item>
+        <item name="colorControlActivated">@color/HobbesPrimaryAccent</item>
+        <item name="colorControlHighlight">@color/HobbesPrimaryAccent</item>
     </style>
 
     <style name="BaseToDoView">
@@ -58,6 +61,11 @@
 
         <item name="android:layout_marginLeft">12dp</item>
         <item name="android:layout_marginRight">12dp</item>
+    </style>
+
+    <style name="addToDoSuggestion">
+        <item name="android:textColor">@color/HobbesPrimaryAccent</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
 

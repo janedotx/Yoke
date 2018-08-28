@@ -2,34 +2,23 @@ package com.system2override.yoke.TodoManagement;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
-import com.system2override.yoke.HarnessDatabase;
+import com.system2override.yoke.AddToDo.AddToDoScreen;
 import com.system2override.yoke.MainActivity;
 import com.system2override.yoke.ManagerService;
-import com.system2override.yoke.Models.RoomModels.Habit;
 import com.system2override.yoke.Models.Streaks;
 import com.system2override.yoke.Models.TimeBank;
 import com.system2override.yoke.Models.ToDoInterface;
@@ -115,7 +104,7 @@ public class TodoManagementScreen extends AppCompatActivity {
         addNewToDo.setOnClickListener(new View.OnClickListener() {
                                                @Override
                                                public void onClick(View v) {
-                                                   Intent i = new Intent(TodoManagementScreen.this, AddToDo.class);
+                                                   Intent i = new Intent(TodoManagementScreen.this, AddToDoScreen.class);
                                                    startActivity(i);
                                                }
                                            }
@@ -203,7 +192,7 @@ public class TodoManagementScreen extends AppCompatActivity {
     public void updateInfoViewValues(MidnightResetEvent e) {
         this.earnedTimeValueView.setText("0");
         this.remainingTimeValueView.setText(Long.toString(MyApplication.getTimeBank().getInitialTime()));
-        Streaks streak = MyApplication.getStreaks();
+        updateStreakValues();
     }
 
     // according to docs, this is idempotent
@@ -217,6 +206,5 @@ public class TodoManagementScreen extends AppCompatActivity {
             startService(intent);
         }
     }
-
 
 }

@@ -9,11 +9,14 @@ import com.system2override.yoke.Models.RoomModels.HabitDao;
 import com.system2override.yoke.Models.RoomModels.LocalTask;
 import com.system2override.yoke.Models.RoomModels.LocalTaskDao;
 import com.system2override.yoke.Models.RoomModels.MyTypeConverters;
+import com.system2override.yoke.Models.RoomModels.Suggestion;
+import com.system2override.yoke.Models.RoomModels.SuggestionDao;
 
-@Database(version = 8, entities = {LocalTask.class, Habit.class})
+@Database(version = 9, entities = {LocalTask.class, Habit.class, Suggestion.class})
 @TypeConverters({MyTypeConverters.class})
 public abstract class HarnessDatabase extends RoomDatabase {
     public abstract LocalTaskDao localTaskDao();
     public abstract HabitDao habitDao();
+    public abstract SuggestionDao suggestionDao();
 
 }

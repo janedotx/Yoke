@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 import com.system2override.yoke.HarnessDatabase;
 import com.system2override.yoke.Models.RoomModels.Habit;
 import com.system2override.yoke.MyApplication;
 import com.system2override.yoke.OttoMessages.StreakUpdateEvent;
+import com.system2override.yoke.OttoMessages.ToDoCreated;
 
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class Streaks extends SharedPreferencesModel {
     public Streaks(Context c, Bus bus) {
         super(c);
         this.bus = bus;
+        this.bus.register(this);
     }
 
     public boolean canAddStreak(List<Habit> habits) {
@@ -100,6 +103,21 @@ public class Streaks extends SharedPreferencesModel {
             setStreakCompletedToday(false);
         }
 
+        this.bus.post(new StreakUpdateEvent());
+    }
+
+    @Subscribe
+    public void onNewToDoCreation(ToDoCreated e) {
+        int currentStreak = getCurrentStreak();
+        int longestStreak = getLongestStreak();
+
+        if (getStreakCompletedToday()) {
+            setStreakCompletedToday(false);
+            if (longestStreak == currentStreak) {
+                setLongestStreak(longestStreak - 1);
+            }
+            setCurrentStreak(currentStreak - 1);
+        }
         this.bus.post(new StreakUpdateEvent());
     }
 

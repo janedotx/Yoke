@@ -5,40 +5,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".TodoManagement.AddToDo">
+    android:padding="19dp"
+    android:background="@color/topBoxSepia"
+    tools:context=".AddToDo.AddToDoScreen">
 
 
-    <!--
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Make this a daily habit"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <CheckBox
-        android:id="@+id/makeDailyHabitCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="29dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent" />
-        -->
 
-    <EditText
-        android:id="@+id/addToDoEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="19dp"
-        android:ems="10"
-        android:inputType="text"
-         />
+        <EditText
+            android:id="@+id/addToDoEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:ems="10"
+            android:textSize="16sp"
+            android:inputType="text"
+            android:background="@drawable/add_todo_edit_text_bottom_border"
+            android:maxLines="1"
+            android:paddingBottom="4dp"
+            android:hint="@string/addToDoHint"
+             />
 
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                        <TextView
+                            android:text="@string/addToDoSuggestionsLabel"
+                            android:textSize="16sp"
+                            android:textColor="@color/HobbesPrimaryAccent"
+                            ></TextView>
+
+                </TableRow>
+                <TableRow
+                        >
+                        <TextView
+                            >
+                        </TextView>
+
+                </TableRow>
+        </TableLayout>
+
+        <Button
+            android:id="@+id/addToDoSaveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button" />
 
 </LinearLayout>

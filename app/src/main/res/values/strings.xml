@@ -17,4 +17,6 @@
     <string name="toDoManagementEarnedTimeHeader">Time earned today</string>
     <string name="toDoManagementActivityTitle">Your todos</string>
     <string name="addToDoHeader">Add new todo</string>
+    <string name="addToDoHint">Type in your new todo here...</string>
+    <string name="addToDoSuggestionsLabel">Some todo ideas to get you started:</string>
 </resources>

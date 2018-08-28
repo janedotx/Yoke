@@ -9,6 +9,7 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 import com.system2override.yoke.Models.BannedApps;
 import com.system2override.yoke.Models.RoomModels.Habit;
+import com.system2override.yoke.Models.RoomModels.Suggestion;
 import com.system2override.yoke.Models.Streaks;
 import com.system2override.yoke.Models.TimeBank;
 
@@ -117,6 +118,17 @@ public class MyApplication extends Application {
         newHabit5.description = "cook";
 
         db.habitDao().insert(newHabit1, newHabit2, newHabit3, newHabit4, newHabit5);
+
+        Suggestion suggestion1 = new Suggestion();
+        suggestion1.text = "drink more water";
+
+        Suggestion suggestion2 = new Suggestion();
+        suggestion2.text = "go out dancing";
+
+        Suggestion suggestion3 = new Suggestion();
+        suggestion3.text = "clean the bathroom";
+
+        db.suggestionDao().insert(suggestion1, suggestion2, suggestion3);
 //        */
 
 

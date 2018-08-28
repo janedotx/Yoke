@@ -64,7 +64,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".TodoManagement.AddToDo"></activity>
+        <activity android:name=".AddToDo.AddToDoScreen"></activity>
     </application>
 
 </manifest>
