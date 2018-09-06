@@ -16,14 +16,20 @@ public interface SuggestionDao {
     void insert(Suggestion... suggestion);
 
     @Update
-    public void updateSuggestions(Habit... suggestions);
+    public void updateSuggestions(Suggestion... suggestions);
 
     @Update
-    public void updateSuggestions(List<Habit> suggestions);
+    public void updateSuggestions(List<Suggestion> suggestions);
+
+    @Update
+    public void update(Suggestion suggestion);
 
     @Query("SELECT * FROM Suggestions")
     public List<Suggestion> loadAllSuggestions();
 
     @Query("SELECT * FROM Suggestions where type = :type")
     public List<Suggestion> loadAllSuggestionsWithType(int type);
+
+    @Query("SELECT * FROM Suggestions where used = 0")
+    public List<Suggestion> loadAllUnusedSuggestions();
 }

@@ -28,7 +28,9 @@
                 <action android:name="com.system2override.yoke.APP_LIMIT_SCREEN" />
             </intent-filter>
         </activity>
-        <activity android:name=".TodoManagement.TodoManagementScreen">
+        <activity android:name=".TodoManagement.TodoManagementScreen"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -64,7 +66,12 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".AddToDo.AddToDoScreen"></activity>
+        <activity android:name=".ManageToDo.AddToDoScreen"
+            android:parentActivityName=".TodoManagement.TodoManagementScreen"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".ManageToDo.EditToDoScreen"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".TodoManagement.TodoManagementScreen"></activity>
     </application>
 
 </manifest>

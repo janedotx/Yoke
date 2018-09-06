@@ -25,6 +25,7 @@ public class Habit implements ToDoInterface {
     @ColumnInfo(name="description")
     public String description;
 
+    @Override
     public int getId() {
         return id;
     }
@@ -86,6 +87,7 @@ public class Habit implements ToDoInterface {
         return Integer.toString(getId()) + " " + description + " " + Boolean.toString(isCompleted());
     }
 
+    //ToDoInterface
     @Override
     public String getToDoType() { return this.getClass().getSimpleName(); }
 
@@ -102,5 +104,6 @@ public class Habit implements ToDoInterface {
         Log.d(TAG, "save: and completed is " + Boolean.toString(this.isCompleted()));
         db.habitDao().update(this);
     }
+
 
 }

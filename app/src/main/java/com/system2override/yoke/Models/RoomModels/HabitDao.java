@@ -28,6 +28,9 @@ public interface HabitDao {
     @Delete
     public void delete(Habit h);
 
+    @Query("DELETE FROM Habits WHERE id = :id")
+    public void delete(int id);
+
     @Delete
     public void delete(Habit... habits);
 

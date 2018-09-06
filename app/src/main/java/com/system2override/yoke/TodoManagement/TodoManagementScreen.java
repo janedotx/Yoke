@@ -2,21 +2,23 @@ package com.system2override.yoke.TodoManagement;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
-import com.system2override.yoke.AddToDo.AddToDoScreen;
+import com.system2override.yoke.ManageToDo.AddToDoScreen;
+import com.system2override.yoke.ManageToDo.ManageToDoScreen;
 import com.system2override.yoke.MainActivity;
 import com.system2override.yoke.ManagerService;
 import com.system2override.yoke.Models.Streaks;
@@ -34,8 +36,6 @@ import java.util.List;
 
 public class TodoManagementScreen extends AppCompatActivity {
     private static final String TAG = "TodoManagementScreen";
-    private RecyclerView toDoListView;
-    private ToDoListAdapter adapter;
 
     private List<ToDoInterface> incompletes = new ArrayList<>();
     private List<ToDoInterface> completed;
@@ -71,6 +71,17 @@ public class TodoManagementScreen extends AppCompatActivity {
         this.viewPager.setAdapter(this.toDoListPagerAdapter);
         this.tabs.setupWithViewPager(this.viewPager);
 
+        int[][] states = new int[][] {
+                new int[] { android.R.attr.state_enabled},
+                new int[] { android.R.attr.state_pressed}
+        };
+        int[] colors = new int[] {
+                ContextCompat.getColor(this, R.color.HobbesOrange),
+                ContextCompat.getColor(this, R.color.HobbesOrange)
+        };
+        ColorStateList fabColorList = new ColorStateList(states, colors);
+        findViewById(R.id.addToDoFAB).setBackgroundTintList(fabColorList);
+
         /*
         HarnessDatabase db = MyApplication.getDb(this);
         List<Habit> habits = db.habitDao().loadAllHabits();
@@ -104,8 +115,11 @@ public class TodoManagementScreen extends AppCompatActivity {
         addNewToDo.setOnClickListener(new View.OnClickListener() {
                                                @Override
                                                public void onClick(View v) {
-                                                   Intent i = new Intent(TodoManagementScreen.this, AddToDoScreen.class);
-                                                   startActivity(i);
+                                               Intent i = new Intent(TodoManagementScreen.this, AddToDoScreen.class);
+                                               Bundle b = new Bundle();
+                                               b.putString(ManageToDoScreen.ACTION_KEY, ManageToDoScreen.ADD_ACTION);
+                                               i.putExtras(b);
+                                               startActivity(i);
                                                }
                                            }
         );

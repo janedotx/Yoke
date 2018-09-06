@@ -2,6 +2,7 @@ package com.system2override.yoke;
 
 import android.app.Application;
 import android.arch.persistence.room.Room;
+import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
@@ -36,6 +37,9 @@ public class MyApplication extends Application {
 
     public static String MIDNIGHT_RESET_ACTION = "MIDNIGHT_RESET";
 
+    public static RoomDatabase.Builder<HarnessDatabase> databaseBuilder;
+    public static HarnessDatabase db;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -45,7 +49,7 @@ public class MyApplication extends Application {
         bannedApps = new BannedApps(this);
         streaks = new Streaks(this, bus);
         setupDB();
-        setupBannedApps();
+//        setupBannedApps();
 
 //        writeLogCat();
     }
@@ -64,8 +68,24 @@ public class MyApplication extends Application {
     }
 
     public static HarnessDatabase getDb(Context context) {
+//        /*
+        if (db == null) {
+            db = Room.databaseBuilder(context,
+                HarnessDatabase.class, BuildConfig.DATABASE_FILE)
+                    .fallbackToDestructiveMigration()
+                    .allowMainThreadQueries()
+                    .build();
+        }
+        return db;
+ //       */
+        /*
         return Room.databaseBuilder(context,
-                HarnessDatabase.class, BuildConfig.DATABASE_FILE).fallbackToDestructiveMigration().allowMainThreadQueries().build();
+                HarnessDatabase.class, BuildConfig.DATABASE_FILE)
+                    .fallbackToDestructiveMigration()
+                    .allowMainThreadQueries()
+                     .build();
+                     */
+
     }
 
     // bad to have this running while debugging, because logcat no longer prints to stdout and you can't
@@ -129,15 +149,8 @@ public class MyApplication extends Application {
         suggestion3.text = "clean the bathroom";
 
         db.suggestionDao().insert(suggestion1, suggestion2, suggestion3);
-//        */
-
-
-//  /*
-
-//        */
 
         GeneralDebugging.printDb(db);
-        db.close();
 
     }
 

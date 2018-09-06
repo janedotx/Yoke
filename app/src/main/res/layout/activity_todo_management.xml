@@ -167,7 +167,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom|right"
             android:layout_margin="16dp"
-            android:backgroundTint="@color/HobbesOrange"
             android:src="@drawable/ic_round_add_24px"
             app:layout_anchor="@id/toDoManagementPager"
             app:layout_anchorGravity="bottom|right|end" />

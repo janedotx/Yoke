@@ -43,6 +43,8 @@ public class LocalTask implements ToDoInterface {
     @ColumnInfo(name="parentID")
     public String parentID;
 
+    //ToDoInterface
+    @Override
     public int getId() {
         return id;
     }

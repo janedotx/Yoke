@@ -21,6 +21,11 @@ public class Suggestion {
 
     public int type = 0;
 
+    public Suggestion() {
+        this.type = 0;
+        this.used = false;
+    }
+
     public int getId() {
         return id;
     }
@@ -51,5 +56,10 @@ public class Suggestion {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return getText() + " " + Integer.toString(getType()) + " " + Boolean.toString(used);
     }
 }

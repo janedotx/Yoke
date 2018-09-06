@@ -1,30 +1,31 @@
 package com.system2override.yoke.TodoManagement;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
+import com.system2override.yoke.ManageToDo.EditToDoScreen;
+import com.system2override.yoke.ManageToDo.ManageToDoScreen;
 import com.system2override.yoke.HarnessDatabase;
 import com.system2override.yoke.Models.RoomModels.Habit;
 import com.system2override.yoke.Models.Streaks;
 import com.system2override.yoke.Models.TimeBank;
 import com.system2override.yoke.Models.ToDoInterface;
 import com.system2override.yoke.MyApplication;
-import com.system2override.yoke.OttoMessages.BlankMessage;
 import com.system2override.yoke.OttoMessages.MidnightResetEvent;
 import com.system2override.yoke.OttoMessages.ToDoCompletedEvent;
 import com.system2override.yoke.OttoMessages.ToDoCreated;
+import com.system2override.yoke.OttoMessages.ToDoDeleted;
+import com.system2override.yoke.OttoMessages.ToDoEdited;
 import com.system2override.yoke.OttoMessages.ToDoUncheckedEvent;
 import com.system2override.yoke.R;
 
@@ -51,22 +52,26 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
         return new ToDoViewHolder(v, this.context, new ToDoViewHolder.IToDoViewHolderClicks() {
             @Override
             public void onTextClick(TextView v, int position) {
-                Log.d(TAG, "onTextClick: " + Integer.toString(position));
                 ToDoInterface t = toDoList.get(position);
-                Log.d(TAG, "onTextClick: checkbox status should be " + Boolean.toString(t.isCompleted()));
 
+                Intent i = new Intent(ToDoListAdapter.this.context, EditToDoScreen.class);
+                Bundle b = new Bundle();
+                b.putInt(EditToDoScreen.ID_KEY, t.getId());
+                b.putInt(EditToDoScreen.ADAPTER_POSITION_KEY, position);
+                i.putExtras(b);
+
+                context.startActivity(i);
             }
 
             @Override
             public void onCheckBoxClick(CheckBox b, int position) {
-                Log.d(TAG, "onCheckBoxClick: " + Integer.toString(position));
                 ToDoInterface toDo = toDoList.get(position);
                 TimeBank timeBank = MyApplication.getTimeBank();
                 HarnessDatabase db = MyApplication.getDb(ToDoListAdapter.this.context);
                 if (b.isChecked()) {
                     toDo.setCompleted(true);
                     Log.d(TAG, "onCheckBoxClick: set completed worked? " + Boolean.toString(toDo.isCompleted()));
-                    // this woudl be a great place to use RxJava, set up this object as an observable
+                    // this would be a great place to use RxJava, set up this object as an observable
                     // and have the TimeBank subscribe to its changes but I don't know how to make
                     // that work and I don't feel inclined to learn at the moment
                     Log.d(TAG, "onCheckBoxClick: availableTime was " + Long.toString(timeBank.getAvailableTime()/ 1000L));
@@ -89,7 +94,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
                 List<Habit> habits = db.habitDao().loadAllHabits();
                 Streaks streak = MyApplication.getStreaks();
                 streak.updateStreakInformation(habits);
-                db.close();
                 ToDoListAdapter.this.notifyDataSetChanged();
                 Log.d(TAG, "notifyDataSetChanged: ");
 
@@ -152,8 +156,51 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
         if (this.tab == ToDoListFragment.INCOMPLETE_TODOS) {
             this.toDoList.add(e.toDo);
             Log.d(TAG, "updateAdaptersOnToDoUnchecking: " + e.toDo.getDescription());
+        }
+
+        if (this.tab == ToDoListFragment.COMPLETED_TODOS) {
+            for (int i = 0; i < this.toDoList.size(); i++) {
+                if (this.toDoList.get(i).getId() == e.toDo.getId()) {
+                    this.toDoList.remove(i);
+                    break;
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    @Subscribe
+    public void updateAdapterOnToDoCreation(ToDoCreated e) {
+        if (this.tab != ToDoListFragment.COMPLETED_TODOS) {
+            this.toDoList.add(e.todo);
             notifyDataSetChanged();
         }
     }
+
+    @Subscribe
+    public void updateAdapterOnToDoEdit(ToDoEdited e) {
+        int id = e.toDoId;
+
+        for (int i = 0; i < this.toDoList.size(); i++) {
+            if (toDoList.get(i).getId() == id) {
+                ToDoInterface todo = (ToDoInterface) MyApplication.getDb(this.context).habitDao().getById(id);
+                toDoList.add(i, todo);
+                break;
+            }
+        }
+    }
+
+//    /*
+    @Subscribe
+    public void updateAdapterOnToDoDeletion(ToDoDeleted e) {
+        for (int i = 0; i < this.toDoList.size(); i++) {
+            if (toDoList.get(i).getId() == e.toDoId) {
+                toDoList.remove(i);
+                break;
+            }
+        }
+
+    }
+//    */
 
 }
