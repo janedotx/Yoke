@@ -139,6 +139,12 @@ public class MyApplication extends Application {
 
         db.habitDao().insert(newHabit1, newHabit2, newHabit3, newHabit4, newHabit5);
 
+        for (int i = 0; i < 300;  i++) {
+            Habit brandNewHabit = new Habit();
+            brandNewHabit.description = "brandNewHabit " + Integer.toString(i);
+            db.habitDao().insert(brandNewHabit);
+        }
+
         Suggestion suggestion1 = new Suggestion();
         suggestion1.text = "drink more water";
 

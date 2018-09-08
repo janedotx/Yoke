@@ -16,4 +16,6 @@
     <color name="HobbesOrange">#e28b43</color>
     <color name="HobbesLightGreen">#aed47c</color>
     <color name="HobbesPrimaryAccent">#2c6f8e</color>
+    <color name="HobbesDarkTealAccent">#22576f</color>
+
 </resources>

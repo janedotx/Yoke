@@ -66,6 +66,10 @@ public class EditToDoScreen extends ManageToDoScreen {
         this.bus.post(new ToDoDeleted(this.toDoId));
     }
 
+    private void showDeleteConfirmationDialog() {
+
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

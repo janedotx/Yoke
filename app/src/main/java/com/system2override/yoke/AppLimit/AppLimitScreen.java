@@ -18,7 +18,6 @@ import java.util.List;
 
 public class AppLimitScreen extends AppCompatActivity implements AppLimitScreenView {
     private static final String TAG = "AppLimitScreen";
-    private AppLimitScreenPresenter presenter;
 
     private TextView streaksView;
     private TextView todoOneView;
