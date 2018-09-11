@@ -1,9 +1,12 @@
 package com.system2override.yoke.ManageToDo;
 
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.squareup.otto.Subscribe;
 import com.system2override.yoke.GeneralDebugging;
@@ -67,7 +70,26 @@ public class EditToDoScreen extends ManageToDoScreen {
     }
 
     private void showDeleteConfirmationDialog() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View deleteConfirmationView = inflater.inflate(R.layout.delete_dialog, null);
+        final AlertDialog deletionDialog = new AlertDialog.Builder(this).create();
+        deletionDialog.setView(deleteConfirmationView);
+        deleteConfirmationView.findViewById(R.id.deleteDialogYesButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteToDo();
+                finish();
+            }
+        });
 
+        deleteConfirmationView.findViewById(R.id.deleteDialogNoButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deletionDialog.dismiss();
+            }
+        });
+
+        deletionDialog.show();
     }
 
     @Override
@@ -77,12 +99,12 @@ public class EditToDoScreen extends ManageToDoScreen {
         if (id == android.R.id.home) {
             Log.d(TAG, "onOptionsItemSelected: home pressed");
             saveEdit();
+            finish();
         }
 
         if (id == R.id.edit_todo_menu_delete) {
-            deleteToDo();
+            showDeleteConfirmationDialog();
         }
-        finish();
         return super.onOptionsItemSelected(item);
     }
 

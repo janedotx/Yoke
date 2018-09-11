@@ -30,7 +30,7 @@
         <TableLayout
             android:id="@+id/todoManagementInfoBox"
             android:layout_width="241dp"
-            android:layout_height="136dp"
+            android:layout_height="140dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="22dp"
             android:background="@color/tealBackground"
@@ -40,8 +40,32 @@
             <TableRow
                 style="@style/toDoManagementInfoTableRow"
                 android:layout_width="match_parent"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/white_border_bottom">
+
+                <TextView
+                    android:id="@+id/todoManagementRemainingTimeHeader"
+                    android:layout_width="wrap_content"
+                    android:text="@string/toDoManagementRemainingTimeHeader"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="22dp" />
+
+                <TextView
+                    android:id="@+id/todoManagementAvailableTimeValue"
+                    style="@style/toDoManagementInfoValues"
+                    android:layout_width="wrap_content"
+                    android:text="TextView"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </TableRow>
+
+            <TableRow
+                style="@style/toDoManagementInfoTableRow"
+                android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="12dp">
 
                 <TextView
                     android:id="@+id/toDoManagementCurrentStreakHeader"
@@ -103,27 +127,6 @@
                     android:textSize="12sp" />
             </TableRow>
 
-            <TableRow
-                style="@style/toDoManagementInfoTableRow"
-                android:layout_width="match_parent">
-
-                <TextView
-                    android:id="@+id/todoManagementRemainingTimeHeader"
-                    android:layout_width="wrap_content"
-                    android:text="@string/toDoManagementRemainingTimeHeader"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    tools:layout_editor_absoluteX="16dp"
-                    tools:layout_editor_absoluteY="22dp" />
-
-                <TextView
-                    android:id="@+id/todoManagementAvailableTimeValue"
-                    style="@style/toDoManagementInfoValues"
-                    android:layout_width="wrap_content"
-                    android:text="TextView"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-            </TableRow>
 
         </TableLayout>
 

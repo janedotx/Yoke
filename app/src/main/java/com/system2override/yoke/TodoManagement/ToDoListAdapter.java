@@ -185,6 +185,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
             if (toDoList.get(i).getId() == id) {
                 ToDoInterface todo = (ToDoInterface) MyApplication.getDb(this.context).habitDao().getById(id);
                 toDoList.add(i, todo);
+                notifyDataSetChanged();
                 break;
             }
         }
@@ -196,6 +197,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
         for (int i = 0; i < this.toDoList.size(); i++) {
             if (toDoList.get(i).getId() == e.toDoId) {
                 toDoList.remove(i);
+                notifyDataSetChanged();
                 break;
             }
         }
