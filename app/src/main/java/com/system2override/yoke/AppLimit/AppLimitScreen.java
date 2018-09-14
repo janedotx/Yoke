@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -32,6 +34,16 @@ public class AppLimitScreen extends AppCompatActivity implements AppLimitScreenV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_limit_screen);
+
+        LinearLayout appLimitLayout = (LinearLayout) findViewById(R.id.app_limit_screen);
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View topBox = inflater.inflate(R.layout.incomplete_streak_top_box, null);
+        View bottomBox = inflater.inflate(R.layout.incomplete_streak_bottom_box, null);
+        appLimitLayout.addView(topBox);
+        appLimitLayout.addView(bottomBox);
+
+        /*
         appLimitTasks = new AppLimitTasks(MyApplication.getDb(this));
 
         setViews();
@@ -47,6 +59,7 @@ public class AppLimitScreen extends AppCompatActivity implements AppLimitScreenV
         });
 
         table = (TableLayout) findViewById(R.id.app_limit_todos_table);
+        */
     }
 
     private void setViews() {

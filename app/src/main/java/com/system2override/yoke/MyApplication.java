@@ -135,7 +135,7 @@ public class MyApplication extends Application {
         newHabit4.description = "sketch something";
 
         Habit newHabit5 = new Habit();
-        newHabit5.description = "cook";
+        newHabit5.description = "longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglong";
 
         db.habitDao().insert(newHabit1, newHabit2, newHabit3, newHabit4, newHabit5);
 

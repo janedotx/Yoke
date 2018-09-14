@@ -29,6 +29,15 @@ android {
         }
     }
     sourceSets {
+        main {
+            res.srcDirs =
+                    [
+                            'src/main/res/layouts/app_limits',
+                            'src/main/res/layouts',
+                            'src/main/res'
+                    ]
+        }
+
         // for testing migrations
         androidTest.assets.srcDirs +=
                 files("$projectDir/schemas".toString())
@@ -43,6 +52,7 @@ android {
             java.srcDirs += "$projectDir/src/sharedTest"
             resources.srcDirs += files("$projectDir/src/sharedTest/resources".toString())
         }
+
     }
     buildTypes {
 
