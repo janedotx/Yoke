@@ -3,6 +3,7 @@ package com.system2override.yoke.AppLimit;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,14 +28,23 @@ public class ToDoReminderAdapter extends RecyclerView.Adapter<ToDoReminderViewHo
     @Override
     public ToDoReminderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.todo, parent, false);
-        View checkbox = v.findViewById(R.id.toDoCheckBox);
-        parent.removeView(checkbox);
+        int sizeInDP = 10;
+
+        int marginInDp = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, sizeInDP, this.context.getResources()
+                        .getDisplayMetrics());
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+        params.setMargins(0, 0, 0, marginInDp);
+        v.requestLayout();
+
         return new ToDoReminderViewHolder(v, this.context);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ToDoReminderViewHolder holder, int position) {
-
+        ToDoInterface todo = this.toDoList.get(position);
+        holder.checkBox.setVisibility(View.GONE);
+        holder.description.setText(todo.getDescription());
     }
 
 

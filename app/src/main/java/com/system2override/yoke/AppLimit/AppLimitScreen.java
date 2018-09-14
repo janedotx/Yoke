@@ -3,6 +3,8 @@ package com.system2override.yoke.AppLimit;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,23 +14,24 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.system2override.yoke.MainActivity;
+import com.system2override.yoke.Models.RoomModels.Suggestion;
 import com.system2override.yoke.Models.ToDoInterface;
 import com.system2override.yoke.MyApplication;
 import com.system2override.yoke.R;
 
 import java.util.List;
 
-public class AppLimitScreen extends AppCompatActivity implements AppLimitScreenView {
+public class AppLimitScreen extends AppCompatActivity  {
     private static final String TAG = "AppLimitScreen";
-
-    private TextView streaksView;
-    private TextView todoOneView;
-    private TextView todoTwoView;
-    private TextView todoThreeView;
 
     private TableLayout table;
 
     private AppLimitTasks appLimitTasks;
+    private View topBox;
+    private View bottomBox;
+
+    private RecyclerView toDoRecyclerView;
+    private ToDoReminderAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +39,26 @@ public class AppLimitScreen extends AppCompatActivity implements AppLimitScreenV
         setContentView(R.layout.activity_app_limit_screen);
 
         LinearLayout appLimitLayout = (LinearLayout) findViewById(R.id.app_limit_screen);
+        this.appLimitTasks = new AppLimitTasks(MyApplication.getDb(this));
 
         LayoutInflater inflater = LayoutInflater.from(this);
-        View topBox = inflater.inflate(R.layout.incomplete_streak_top_box, null);
-        View bottomBox = inflater.inflate(R.layout.incomplete_streak_bottom_box, null);
+        switch(this.appLimitTasks.getType()) {
+            case AppLimitTasks.NO_STREAK:
+                topBox = inflater.inflate(R.layout.incomplete_streak_top_box, null);
+                bottomBox = inflater.inflate(R.layout.incomplete_streak_bottom_box, null);
+                break;
+            default:
+                topBox = inflater.inflate(R.layout.incomplete_streak_top_box, null);
+                bottomBox = inflater.inflate(R.layout.incomplete_streak_bottom_box, null);
+        }
         appLimitLayout.addView(topBox);
         appLimitLayout.addView(bottomBox);
+
+        toDoRecyclerView = (RecyclerView) findViewById(R.id.appLimitTodos);
+        toDoRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        this.adapter = new ToDoReminderAdapter(this, this.appLimitTasks.calculateToDos());
+        toDoRecyclerView.setAdapter(this.adapter);
 
         /*
         appLimitTasks = new AppLimitTasks(MyApplication.getDb(this));
@@ -62,28 +79,7 @@ public class AppLimitScreen extends AppCompatActivity implements AppLimitScreenV
         */
     }
 
-    private void setViews() {
-        this.streaksView = findViewById(R.id.streak_number);
-        this.todoOneView = findViewById(R.id.todo_one);
-        this.todoTwoView = findViewById(R.id.todo_two);
-        this.todoThreeView = findViewById(R.id.todo_three);
-    }
 
-    public void populateViews() {
-        // TODO implement streak stuff later
-        // TODO implement habit stuff
-        List<ToDoInterface> todos = this.appLimitTasks.getToDos();
-        if (todos.size() > 0) {
-
-            Log.d(TAG, "populateViews: todos " + Integer.toString(todos.size()));
-            Log.d(TAG, "populateViews: " + todos.get(0).getDescription());
-            Log.d(TAG, "populateViews: " + todos.get(1).getDescription());
-            Log.d(TAG, "populateViews: " + todos.get(2).getDescription());
-            this.todoOneView.setText(todos.get(0).getDescription());
-            this.todoTwoView.setText(todos.get(1).getDescription());
-            this.todoThreeView.setText(todos.get(2).getDescription());
-        }
-    }
 
     @Override
     protected void onDestroy() {
