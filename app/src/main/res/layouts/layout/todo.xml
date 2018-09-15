@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/BaseToDoView"
+    android:layout_height="69dp"
     android:background="@drawable/todo_coloring"
     android:id="@+id/toDoViewGroup"
     android:layout_width="match_parent">
@@ -11,12 +12,13 @@
         android:id="@+id/toDoDescription"
         style="@style/BaseToDoTextView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
+        android:left="8dp"
         android:orientation="vertical"
         android:text="TextView"
-        android:left="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/toDoCheckBox"
         app:layout_constraintHorizontal_bias="1.0"

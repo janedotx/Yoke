@@ -18,6 +18,7 @@ import com.system2override.yoke.Models.RoomModels.Suggestion;
 import com.system2override.yoke.Models.ToDoInterface;
 import com.system2override.yoke.MyApplication;
 import com.system2override.yoke.R;
+import com.system2override.yoke.TodoManagement.TodoManagementScreen;
 
 import java.util.List;
 
@@ -27,8 +28,7 @@ public class AppLimitScreen extends AppCompatActivity  {
     private TableLayout table;
 
     private AppLimitTasks appLimitTasks;
-    private View topBox;
-    private View bottomBox;
+    private View goToApp;
 
     private RecyclerView toDoRecyclerView;
     private ToDoReminderAdapter adapter;
@@ -36,12 +36,14 @@ public class AppLimitScreen extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_app_limit_screen);
+        setContentView(R.layout.incomplete_streak_screen);
+//        setContentView(R.layout.activity_app_limit_screen);
 
         LinearLayout appLimitLayout = (LinearLayout) findViewById(R.id.app_limit_screen);
         this.appLimitTasks = new AppLimitTasks(MyApplication.getDb(this));
 
         LayoutInflater inflater = LayoutInflater.from(this);
+        /*
         switch(this.appLimitTasks.getType()) {
             case AppLimitTasks.NO_STREAK:
                 topBox = inflater.inflate(R.layout.incomplete_streak_top_box, null);
@@ -50,9 +52,11 @@ public class AppLimitScreen extends AppCompatActivity  {
             default:
                 topBox = inflater.inflate(R.layout.incomplete_streak_top_box, null);
                 bottomBox = inflater.inflate(R.layout.incomplete_streak_bottom_box, null);
+
         }
         appLimitLayout.addView(topBox);
         appLimitLayout.addView(bottomBox);
+        */
 
         toDoRecyclerView = (RecyclerView) findViewById(R.id.appLimitTodos);
         toDoRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -60,23 +64,14 @@ public class AppLimitScreen extends AppCompatActivity  {
         this.adapter = new ToDoReminderAdapter(this, this.appLimitTasks.calculateToDos());
         toDoRecyclerView.setAdapter(this.adapter);
 
-        /*
-        appLimitTasks = new AppLimitTasks(MyApplication.getDb(this));
-
-        setViews();
-        populateViews();
-
-        Button button = findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.appLimitGoToApp).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(AppLimitScreen.this, MainActivity.class);
+                Intent i = new Intent(AppLimitScreen.this, TodoManagementScreen.class);
                 startActivity(i);
+                finish();
             }
         });
-
-        table = (TableLayout) findViewById(R.id.app_limit_todos_table);
-        */
     }
 
 

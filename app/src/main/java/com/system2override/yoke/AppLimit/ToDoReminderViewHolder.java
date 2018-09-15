@@ -19,7 +19,6 @@ public class ToDoReminderViewHolder  extends RecyclerView.ViewHolder {
     public ToDoReminderViewHolder(View view, Context context) {
         super(view);
         this.description = (TextView) view.findViewById(R.id.toDoDescription);
-        this.checkBox = (CheckBox) view.findViewById(R.id.toDoCheckBox);
         this.context = context;
         this.toDoViewGroup = view.findViewById(R.id.toDoViewGroup);
 
