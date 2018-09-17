@@ -36,33 +36,32 @@ public class AppLimitScreen extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.incomplete_streak_screen);
 //        setContentView(R.layout.activity_app_limit_screen);
 
-        LinearLayout appLimitLayout = (LinearLayout) findViewById(R.id.app_limit_screen);
         this.appLimitTasks = new AppLimitTasks(MyApplication.getDb(this));
 
-        LayoutInflater inflater = LayoutInflater.from(this);
-        /*
+//        /*
         switch(this.appLimitTasks.getType()) {
             case AppLimitTasks.NO_STREAK:
-                topBox = inflater.inflate(R.layout.incomplete_streak_top_box, null);
-                bottomBox = inflater.inflate(R.layout.incomplete_streak_bottom_box, null);
+                setContentView(R.layout.incomplete_streak_screen);
+                break;
+            case AppLimitTasks.ALL_COMPLETED:
+                setContentView(R.layout.test);
                 break;
             default:
-                topBox = inflater.inflate(R.layout.incomplete_streak_top_box, null);
-                bottomBox = inflater.inflate(R.layout.incomplete_streak_bottom_box, null);
+                setContentView(R.layout.incomplete_streak_screen);
+                break;
 
         }
-        appLimitLayout.addView(topBox);
-        appLimitLayout.addView(bottomBox);
-        */
+//        */
 
-        toDoRecyclerView = (RecyclerView) findViewById(R.id.appLimitTodos);
-        toDoRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        if (findViewById(R.id.appLimitTodos) != null) {
+            toDoRecyclerView = (RecyclerView) findViewById(R.id.appLimitTodos);
+            toDoRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            this.adapter = new ToDoReminderAdapter(this, this.appLimitTasks.calculateToDos());
+            toDoRecyclerView.setAdapter(this.adapter);
+        }
 
-        this.adapter = new ToDoReminderAdapter(this, this.appLimitTasks.calculateToDos());
-        toDoRecyclerView.setAdapter(this.adapter);
 
         findViewById(R.id.appLimitGoToApp).setOnClickListener(new View.OnClickListener() {
             @Override
