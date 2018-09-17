@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.system2override.yoke.ManageToDo.EditToDoScreen;
 import com.system2override.yoke.ManageToDo.ManageToDoScreen;
 import com.system2override.yoke.HarnessDatabase;
 import com.system2override.yoke.Models.RoomModels.Habit;
+import com.system2override.yoke.Models.RoomModels.LocalTask;
 import com.system2override.yoke.Models.Streaks;
 import com.system2override.yoke.Models.TimeBank;
 import com.system2override.yoke.Models.ToDoInterface;
@@ -114,11 +116,11 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
         holder.checkBox.setChecked(todo.isCompleted());
         // TODO
         // change this so the left border is green only if it's a one-off task
-        /*
-        if (todo.isCompleted()) {
+//        /*
+        if (todo instanceof LocalTask) {
             holder.toDoViewGroup.setBackground(ContextCompat.getDrawable(this.context, R.drawable.one_off_todo_coloring));
         }
-        */
+//        */
     }
 
     @Override

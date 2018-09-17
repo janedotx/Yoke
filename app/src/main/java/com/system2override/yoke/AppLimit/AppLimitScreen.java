@@ -15,10 +15,12 @@ import android.widget.TextView;
 
 import com.system2override.yoke.MainActivity;
 import com.system2override.yoke.Models.RoomModels.Suggestion;
+import com.system2override.yoke.Models.Streaks;
 import com.system2override.yoke.Models.ToDoInterface;
 import com.system2override.yoke.MyApplication;
 import com.system2override.yoke.R;
 import com.system2override.yoke.TodoManagement.TodoManagementScreen;
+import com.system2override.yoke.Utilities.RandomUtilities;
 
 import java.util.List;
 
@@ -36,24 +38,29 @@ public class AppLimitScreen extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_app_limit_screen);
 
         this.appLimitTasks = new AppLimitTasks(MyApplication.getDb(this));
 
-//        /*
+        Log.d(TAG, "onCreate: ");
+
+        // todo currently i'm ignoring the conditions where the localtasks are incomplete
         switch(this.appLimitTasks.getType()) {
             case AppLimitTasks.NO_STREAK:
                 setContentView(R.layout.incomplete_streak_screen);
                 break;
             case AppLimitTasks.ALL_COMPLETED:
-                setContentView(R.layout.test);
+                setContentView(R.layout.all_complete);
+                break;
+            case AppLimitTasks.STREAK_COMPLETED:
+                // this should be a different template
+                setContentView(R.layout.all_complete);
                 break;
             default:
                 setContentView(R.layout.incomplete_streak_screen);
                 break;
-
         }
-//        */
+
+        Log.d(TAG, "onCreate: type is " + Integer.toString(this.appLimitTasks.getType()));
 
         if (findViewById(R.id.appLimitTodos) != null) {
             toDoRecyclerView = (RecyclerView) findViewById(R.id.appLimitTodos);
@@ -63,6 +70,19 @@ public class AppLimitScreen extends AppCompatActivity  {
         }
 
 
+        View v =  findViewById(R.id.appLimitTodos);
+        if (v != null) {
+            this.toDoRecyclerView = (RecyclerView) v;
+            toDoRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+            this.adapter = new ToDoReminderAdapter(this, this.appLimitTasks.calculateToDos());
+            toDoRecyclerView.setAdapter(this.adapter);
+      }
+
+        setDailyStreakNumber();
+        setTimeSpentToday();
+        setTimeTillReset();
+
         findViewById(R.id.appLimitGoToApp).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,9 +91,34 @@ public class AppLimitScreen extends AppCompatActivity  {
                 finish();
             }
         });
+
+    }
+
+    private void setDailyStreakNumber() {
+        ((TextView) findViewById(R.id.appLimitDailyStreakNum))
+                .setText(Integer.toString(MyApplication.getStreaks().getCurrentStreak()));
     }
 
 
+    private void setTimeSpentToday() {
+        View v = findViewById(R.id.timeSpentTodayTime);
+        if (v != null) {
+            TextView timeSpentView = (TextView) v;
+            long time = MyApplication.getTimeBank().getSpentTime();
+            timeSpentView.setText(RandomUtilities.formatMSToHHMMSS(time));
+
+        }
+    }
+
+    private void setTimeTillReset() {
+        View v = findViewById(R.id.timeRemainingTillResetString);
+        if (v != null) {
+            TextView timeSpentView = (TextView) v;
+            long timeTillReset = RandomUtilities.getNextMidnight() - System.currentTimeMillis();
+            timeSpentView.setText(RandomUtilities.formatMSToHHMMSS(timeTillReset));
+
+        }
+    }
 
     @Override
     protected void onDestroy() {

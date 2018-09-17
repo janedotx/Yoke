@@ -30,6 +30,7 @@ import com.system2override.yoke.OttoMessages.StreakUpdateEvent;
 import com.system2override.yoke.OttoMessages.TimeBankEarnedTime;
 import com.system2override.yoke.OttoMessages.TimeBankUnearnedTime;
 import com.system2override.yoke.R;
+import com.system2override.yoke.Utilities.RandomUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,10 +132,10 @@ public class TodoManagementScreen extends AppCompatActivity {
         this.earnedTimeValueView = findViewById(R.id.todoManagementEarnedTimeValue);
         this.remainingTimeValueView = findViewById(R.id.todoManagementAvailableTimeValue);
         TimeBank timeBank = MyApplication.getTimeBank();
-        this.earnedTimeValueView.setText(formatMilliseconds(timeBank.getTotalEarnedTimeToday()));
+        this.earnedTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(timeBank.getTotalEarnedTimeToday()));
         long remainingTime = timeBank.getTimeRemaining();
         if (remainingTime < 0L) { remainingTime = 0; }
-        this.remainingTimeValueView.setText(formatMilliseconds(remainingTime));
+        this.remainingTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(remainingTime));
 
         this.currentStreakValueView = findViewById(R.id.toDoManagementCurrentStreakValue);
         this.longestStreakValueView = findViewById(R.id.toDoManagementLongestStreakValue);
@@ -183,19 +184,19 @@ public class TodoManagementScreen extends AppCompatActivity {
     public void addEarnedTimeView(TimeBankEarnedTime event) {
         Log.d(TAG, "makeTimeAvailableChanges: ");
         TimeBank timeBank = MyApplication.getTimeBank();
-        this.earnedTimeValueView.setText(formatMilliseconds(timeBank.getTotalEarnedTimeToday()));
-        this.remainingTimeValueView.setText(formatMilliseconds(timeBank.getTimeRemaining()));
+        this.earnedTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(timeBank.getTotalEarnedTimeToday()));
+        this.remainingTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(timeBank.getTimeRemaining()));
     }
 
     @Subscribe
     public void subtractEarnedTimeView(TimeBankUnearnedTime event) {
         TimeBank timeBank = MyApplication.getTimeBank();
-        this.earnedTimeValueView.setText(formatMilliseconds(timeBank.getTotalEarnedTimeToday()));
+        this.earnedTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(timeBank.getTotalEarnedTimeToday()));
         long timeRemaining = timeBank.getTimeRemaining();
         if (timeRemaining < 0L) {
             timeRemaining = 0L;
         }
-        this.remainingTimeValueView.setText(formatMilliseconds(timeRemaining));
+        this.remainingTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(timeRemaining));
     }
 
     @Subscribe
@@ -206,7 +207,7 @@ public class TodoManagementScreen extends AppCompatActivity {
     @Subscribe
     public void updateInfoViewValues(MidnightResetEvent e) {
         this.earnedTimeValueView.setText("00:00");
-        this.remainingTimeValueView.setText(formatMilliseconds(MyApplication.getTimeBank().getInitialTime()));
+        this.remainingTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(MyApplication.getTimeBank().getInitialTime()));
         updateStreakValues();
     }
 
@@ -220,15 +221,6 @@ public class TodoManagementScreen extends AppCompatActivity {
             android.util.Log.d(TAG, "subscribeToSensor: about to start service " + Long.toString(System.currentTimeMillis()));
             startService(intent);
         }
-    }
-
-    private String formatMilliseconds(long millis) {
-        long totalMinutes = TimeUnit.MILLISECONDS.toMinutes(millis);
-        return String.format("%02d:%02d",
-                totalMinutes,
-                TimeUnit.MILLISECONDS.toSeconds(millis) -
-                        TimeUnit.MINUTES.toSeconds(totalMinutes));
-
     }
 
 }

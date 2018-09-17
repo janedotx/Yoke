@@ -2,6 +2,7 @@ package com.system2override.yoke.AppLimit;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import com.system2override.yoke.Models.RoomModels.LocalTask;
 import com.system2override.yoke.Models.ToDoInterface;
 import com.system2override.yoke.R;
 
@@ -49,6 +51,9 @@ public class ToDoReminderAdapter extends RecyclerView.Adapter<ToDoReminderViewHo
     public void onBindViewHolder(@NonNull ToDoReminderViewHolder holder, int position) {
         ToDoInterface todo = this.toDoList.get(position);
         holder.description.setText(todo.getDescription());
+        if (todo instanceof LocalTask) {
+            holder.toDoViewGroup.setBackground(ContextCompat.getDrawable(this.context, R.drawable.one_off_todo_coloring));
+        }
     }
 
 

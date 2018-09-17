@@ -10,6 +10,7 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 import com.system2override.yoke.Models.BannedApps;
 import com.system2override.yoke.Models.RoomModels.Habit;
+import com.system2override.yoke.Models.RoomModels.LocalTask;
 import com.system2override.yoke.Models.RoomModels.Suggestion;
 import com.system2override.yoke.Models.Streaks;
 import com.system2override.yoke.Models.TimeBank;
@@ -139,11 +140,17 @@ public class MyApplication extends Application {
 
         db.habitDao().insert(newHabit1, newHabit2, newHabit3, newHabit4, newHabit5);
 
+        /*
         for (int i = 0; i < 300;  i++) {
             Habit brandNewHabit = new Habit();
             brandNewHabit.description = "brandNewHabit " + Integer.toString(i);
             db.habitDao().insert(brandNewHabit);
         }
+        */
+
+        LocalTask localTask = new LocalTask();
+        localTask.setDescription("im a fake imported task");
+        db.localTaskDao().insert(localTask);
 
         Suggestion suggestion1 = new Suggestion();
         suggestion1.text = "drink more water";

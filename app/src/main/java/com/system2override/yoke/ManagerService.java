@@ -74,12 +74,6 @@ public class ManagerService extends Service {
     }
 
     private void setDailyResetAlarm() {
-        /*
-        IntentFilter resetFilter = new IntentFilter(TimeBank.RESET_ACTION);
-        dailyResetReceiver = new DailyResetReceiver();
-        this.registerReceiver(dailyResetReceiver, resetFilter);
-        */
-
         Calendar calendar = Calendar.getInstance();
         long time = System.currentTimeMillis();
         Log.d(TAG, "setDailyResetAlarm: curtime " + Long.toString(time));
