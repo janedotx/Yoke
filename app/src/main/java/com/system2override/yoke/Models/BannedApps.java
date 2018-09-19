@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
+import com.google.android.gms.common.util.CrashUtils;
 import com.system2override.yoke.Models.SharedPreferencesHelper;
 import com.system2override.yoke.MyApplication;
 
@@ -30,8 +31,10 @@ public class BannedApps extends SharedPreferencesModel {
 
 
     public void setApps(Set<String> newApps) {
+        this.editor.clear();
         this.editor.putStringSet(BANNED_APPS_KEY, newApps);
-        this.editor.apply();
+        boolean set = this.editor.commit();
+        Log.d(TAG, "setApps: set successful? " + Boolean.toString(set));
     }
 
     public void removeApp(String app) {
@@ -93,7 +96,7 @@ public class BannedApps extends SharedPreferencesModel {
         Set<String> apps = getApps();
         Iterator<String> it = apps.iterator();
         while (it.hasNext()) {
-            Log.d(TAG, "onClick: bannedapp " + it.next());
+            Log.d(TAG, "bannedapp " + it.next());
 
         }
     }

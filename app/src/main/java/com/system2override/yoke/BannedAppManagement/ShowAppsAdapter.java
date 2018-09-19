@@ -45,12 +45,13 @@ public class ShowAppsAdapter extends RecyclerView.Adapter<ShowAppsViewHolder>{
                 Log.d(TAG, "onClick: ");
                 MyApplication.getBannedApps().printBannedApps();;
                 String appName = ShowAppsAdapter.this.applications.get(position).packageName;
+                Log.d(TAG, "onClick: appName clicked " + appName);
 
                 if (MyApplication.getBannedApps().getApps().contains(appName)) {
                     MyApplication.getBannedApps().removeApp(appName);
                     ((CheckBox)view.findViewById(R.id.singleAppCheckBox)).setChecked(false);
                 } else {
-                    if (MyApplication.getBannedApps().getApps().size() < 5) {
+                    if (MyApplication.getBannedApps().getApps().size() < MyApplication.BANNED_APPS_LIMIT) {
                         MyApplication.getBannedApps().addApp(appName);
                         ((CheckBox) view.findViewById(R.id.singleAppCheckBox)).setChecked(true);
                     }

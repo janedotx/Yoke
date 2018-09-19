@@ -20,6 +20,14 @@ public class Streaks extends SharedPreferencesModel {
     private static final String STREAK_COMPLETED_TODAY = "STREAK_COMPLETED_TODAY";
     private Bus bus;
 
+    private SharedPreferences getSharedPrefs() {
+        return this.context.getSharedPreferences(FILE, 0);
+    }
+
+    private SharedPreferences.Editor getEditor() {
+        return this.context.getSharedPreferences(FILE, 0).edit();
+    }
+
     public Streaks(Context c, Bus bus) {
         super(c);
         this.bus = bus;
@@ -45,7 +53,11 @@ public class Streaks extends SharedPreferencesModel {
         return this.prefs.getBoolean(STREAK_COMPLETED_TODAY, false);
     }
 
+    // TODO
+    // create new editor object each time, perhaps?
+    // seeing as how this doesn't survive an app force stop/restart at the moment
     public void setStreakCompletedToday(boolean completion) {
+        this.editor.clear();
         this.editor.putBoolean(STREAK_COMPLETED_TODAY, completion);
         this.editor.apply();
     }

@@ -26,22 +26,25 @@ public class RandomUtilities {
     }
 
     public static String formatMillisecondsToMMSS(long millis) {
-        return String.format("%02d:%02d",
+        return String.format("%02dm %02ds",
                 getTotalMinutes(millis), getSecondsField(millis));
     }
 
     public static String formatMillisecondsToMinutes(long millis) {
-        return String.format("%02d",
+        if ((int) millis == 0) {
+            return "0 m";
+        }
+        return String.format("%02d m",
                 getTotalMinutes(millis));
     }
 
     public static String formatMillisecondsToHHMM(long millis) {
-        return String.format("%02d:%02d",
+        return String.format("%02dh %02dm",
                 getHourField(millis), getMinuteField(millis));
     }
 
     public static String formatMSToHHMMSS(long millis) {
-        return String.format("%02d:%02d:%02d",
+        return String.format("%02dh %02dm %02ds",
                 getHourField(millis), getMinuteField(millis), getSecondsField(millis));
     }
 

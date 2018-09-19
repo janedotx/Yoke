@@ -69,6 +69,12 @@ public class BannedAppScreen extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
+
     private List<ApplicationInfo> getApplicationList() {
         PackageManager pm = getPackageManager();
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
