@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 import com.system2override.yoke.MyApplication;
+import com.system2override.yoke.OttoMessages.BannedAppAdded;
 import com.system2override.yoke.OttoMessages.BannedAppRemoved;
 import com.system2override.yoke.R;
 
@@ -69,7 +70,16 @@ public class SelectedAppIconAdapter  extends RecyclerView.Adapter<SelectedAppIco
 
     @Subscribe
     public void onBannedAppUnchecked(BannedAppRemoved event) {
-        this.applications.remove(event);
+        this.applications.remove(event.appInfo);
+        this.applications.add(null);
+        notifyDataSetChanged();
+    }
+
+    @Subscribe
+    public void onBannedAppChecked(BannedAppAdded event) {
+        int firstNull = this.applications.indexOf(null);
+        this.applications.remove(firstNull);
+        this.applications.add(firstNull, event.appInfo);
         notifyDataSetChanged();
     }
 }

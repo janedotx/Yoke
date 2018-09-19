@@ -1,9 +1,11 @@
 package com.system2override.yoke.OttoMessages;
 
-public class BannedAppAdded {
-    private String name;
+import android.content.pm.ApplicationInfo;
 
-    public BannedAppAdded(String name) {
-        this.name = name;
+public class BannedAppAdded {
+    public ApplicationInfo appInfo;
+
+    public BannedAppAdded(ApplicationInfo appInfo) {
+        this.appInfo = appInfo;
     }
 }
