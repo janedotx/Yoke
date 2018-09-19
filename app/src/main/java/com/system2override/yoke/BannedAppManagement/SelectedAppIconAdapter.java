@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.system2override.yoke.R;
 import java.util.List;
 
 public class SelectedAppIconAdapter  extends RecyclerView.Adapter<SelectedAppIconViewHolder> {
+    private static final String TAG = "SelectedAppIconAdapter";
     private List<ApplicationInfo> applications;
     private Context context;
     private PackageManager pm;
@@ -70,16 +72,31 @@ public class SelectedAppIconAdapter  extends RecyclerView.Adapter<SelectedAppIco
 
     @Subscribe
     public void onBannedAppUnchecked(BannedAppRemoved event) {
-        this.applications.remove(event.appInfo);
-        this.applications.add(null);
-        notifyDataSetChanged();
+        Log.d(TAG, "onBannedAppUnchecked: event " + event.appInfo.packageName);
+        int appIndex = -1;
+        for (int i = 0; i < this.applications.size(); i++) {
+            ApplicationInfo curAppInfo = this.applications.get(i);
+            if (curAppInfo == null) {
+                continue;
+            }
+            if (event.appInfo.packageName.equals(curAppInfo.packageName)){
+                appIndex = i;
+
+                this.applications.set(i, null);
+                notifyDataSetChanged();
+            }
+        }
+        if (appIndex == -1) {
+            Log.d(TAG, "onBannedAppUnchecked: something terrible happened");
+        }
+        Log.d(TAG, "onBannedAppUnchecked: appIndex " + Integer.toString(appIndex));
     }
 
     @Subscribe
     public void onBannedAppChecked(BannedAppAdded event) {
+        Log.d(TAG, "onBannedAppChecked: event " + event.appInfo.packageName);
         int firstNull = this.applications.indexOf(null);
-        this.applications.remove(firstNull);
-        this.applications.add(firstNull, event.appInfo);
+        this.applications.set(firstNull, event.appInfo);
         notifyDataSetChanged();
     }
 }
