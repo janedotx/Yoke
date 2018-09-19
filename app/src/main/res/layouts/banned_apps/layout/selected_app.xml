@@ -7,9 +7,11 @@
     >
 
     <ImageView
-        android:id="@+id/bannedAppIcon0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/bannedAppIcon"
+        android:layout_width="41dp"
+        android:layout_height="41dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
         android:src="@drawable/empty_app_icon"/>
 
 </android.support.constraint.ConstraintLayout>

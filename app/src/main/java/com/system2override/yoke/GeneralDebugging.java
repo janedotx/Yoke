@@ -34,6 +34,7 @@ public abstract class GeneralDebugging {
             Log.d(TAG, "printDb: suggestion " + s.toString());
         }
 
+        MyApplication.getBannedApps().printBannedApps();
         Log.d(TAG, "printDb: ----------");
 
     }

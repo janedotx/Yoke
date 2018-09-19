@@ -12,56 +12,56 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
-import com.google.android.gms.common.util.CrashUtils;
-import com.system2override.yoke.Models.BannedApps;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 import com.system2override.yoke.MyApplication;
+import com.system2override.yoke.OttoMessages.BannedAppRemoved;
 import com.system2override.yoke.R;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public class BannedAppAdapter extends RecyclerView.Adapter<BannedAppViewHolder>{
-    private static final String TAG = "BannedAppAdapter";
+public class ShowAppsAdapter extends RecyclerView.Adapter<ShowAppsViewHolder>{
+    private static final String TAG = "ShowAppsAdapter";
     private List<ApplicationInfo> applications;
     private Context context;
+    Bus bus;
 
-    public BannedAppAdapter(Context context, List<ApplicationInfo> list) {
+    public ShowAppsAdapter(Context context, List<ApplicationInfo> list, Bus bus) {
         this.applications = list;
         this.context = context;
+        this.bus = bus;
+        bus.register(this);
     }
 
     @NonNull
     @Override
-    public BannedAppViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ShowAppsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_detail, parent, false);
-        return new BannedAppViewHolder(v, this.context, new BannedAppViewHolder.BannedAppClickListener() {
+        return new ShowAppsViewHolder(v, this.context, new ShowAppsViewHolder.BannedAppClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Toast.makeText(BannedAppAdapter.this.context, "clikced me", Toast.LENGTH_LONG).show();
-                Log.d(TAG, "onClick: was fucking clicked");
-                String appName = BannedAppAdapter.this.applications.get(position).packageName;
+                Log.d(TAG, "onClick: ");
+                MyApplication.getBannedApps().printBannedApps();;
+                String appName = ShowAppsAdapter.this.applications.get(position).packageName;
 
                 if (MyApplication.getBannedApps().getApps().contains(appName)) {
                     MyApplication.getBannedApps().removeApp(appName);
                     ((CheckBox)view.findViewById(R.id.singleAppCheckBox)).setChecked(false);
                 } else {
-                    MyApplication.getBannedApps().addApp(appName);
-                    ((CheckBox)view.findViewById(R.id.singleAppCheckBox)).setChecked(true);
+                    if (MyApplication.getBannedApps().getApps().size() < 5) {
+                        MyApplication.getBannedApps().addApp(appName);
+                        ((CheckBox) view.findViewById(R.id.singleAppCheckBox)).setChecked(true);
+                    }
                 }
-
-                Set<String> apps = MyApplication.getBannedApps().getApps();
-                Iterator<String> it = apps.iterator();
-                while (it.hasNext()) {
-                    Log.d(TAG, "onClick: bannedapp " + it.next());
-
-                }
+                MyApplication.getBannedApps().printBannedApps();;
             }
         });
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BannedAppViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ShowAppsViewHolder holder, int position) {
         ApplicationInfo app = this.applications.get(position);
         ApplicationInfo appInfo = this.applications.get(position);
         PackageManager pm = this.context.getPackageManager();
@@ -86,6 +86,11 @@ public class BannedAppAdapter extends RecyclerView.Adapter<BannedAppViewHolder>{
         return this.applications.size();
     }
 
+    @Subscribe
+    public void onAppUnselected(BannedAppRemoved event) {
+        notifyDataSetChanged();
+
+    }
 
 }
 

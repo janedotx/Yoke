@@ -13,10 +13,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
-import com.system2override.yoke.MainActivity;
+import com.system2override.yoke.MyApplication;
 import com.system2override.yoke.R;
 
 import java.util.ArrayList;
@@ -26,8 +24,10 @@ import java.util.List;
 
 public class BannedAppScreen extends AppCompatActivity {
     private static final String TAG = "BannedAppScreen";
-    private BannedAppAdapter adapter;
-    private RecyclerView recyclerView;
+    private ShowAppsAdapter showAppsAdapter;
+    private SelectedAppIconAdapter selectedAppIconAdapter;
+    private RecyclerView showAppsRecyclerView;
+    private RecyclerView showSelectedAppIconsView;
     private ActionBar bar;
 
     @Override
@@ -37,12 +37,23 @@ public class BannedAppScreen extends AppCompatActivity {
         this.bar.setTitle(R.string.banned_app_screen_bar_header);
 
         setContentView(R.layout.activity_banned_apps_screen);
+
+        this.showSelectedAppIconsView = (RecyclerView) findViewById(R.id.bannedAppsIcons);
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        this.showSelectedAppIconsView.setLayoutManager(layoutManager);
+        this.selectedAppIconAdapter = new SelectedAppIconAdapter(this,
+                MyApplication.getBannedApps().getApplicationInfoObjectsWithNullPadding(),
+                MyApplication.getBus()
+        );
+        this.showSelectedAppIconsView.setAdapter(this.selectedAppIconAdapter);
+
         List<ApplicationInfo> applicationInfoList = getApplicationList();
-        this.recyclerView = (RecyclerView) findViewById(R.id.chooseAppsRecyclerView);
-        this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        this.recyclerView.setItemAnimator(new DefaultItemAnimator());
-        this.adapter = new BannedAppAdapter(this, applicationInfoList);
-        this.recyclerView.setAdapter(this.adapter);
+        this.showAppsRecyclerView = (RecyclerView) findViewById(R.id.chooseAppsRecyclerView);
+        this.showAppsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        this.showAppsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        this.showAppsAdapter = new ShowAppsAdapter(this, applicationInfoList, MyApplication.getBus());
+        this.showAppsRecyclerView.setAdapter(this.showAppsAdapter);
 
     }
 

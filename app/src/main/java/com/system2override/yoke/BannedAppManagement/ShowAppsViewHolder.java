@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.system2override.yoke.R;
 
-public class BannedAppViewHolder  extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class ShowAppsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     private Context context;
     public View singleAppView;
     private BannedAppClickListener listener;
@@ -19,7 +19,7 @@ public class BannedAppViewHolder  extends RecyclerView.ViewHolder implements Vie
     public TextView appText;
     public ImageView appImage;
 
-    public BannedAppViewHolder(View view, Context context, BannedAppClickListener listener) {
+    public ShowAppsViewHolder(View view, Context context, BannedAppClickListener listener) {
         super(view);
         this.context = context;
         this.singleAppView = view;

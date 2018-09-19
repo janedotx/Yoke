@@ -24,17 +24,10 @@
             android:layout_marginBottom="12dp"
             android:layout_marginStart="19dp"
             ></TextView>
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:orientation="horizontal">
-
-            <include layout="@layout/selected_app"/>
-            <include layout="@layout/selected_app"/>
-            <include layout="@layout/selected_app"/>
-            <include layout="@layout/selected_app"/>
-            <include layout="@layout/selected_app"/>
-        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/bannedAppsIcons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
     </LinearLayout>
     <TextView
         android:layout_width="wrap_content"
@@ -43,7 +36,7 @@
         android:textSize="12sp"
         android:layout_marginTop="12dp"
         android:layout_marginLeft="19dp"
-        android:text="Select an app you want to spend less time on."
+        android:text="Select up to five apps you want to spend less time on."
         android:layout_marginBottom="5dp"
         />
 
