@@ -36,6 +36,7 @@ import com.system2override.yoke.BroadcastReceivers.DailyResetReceiver;
 import com.system2override.yoke.BroadcastReceivers.PhoneScreenOffReceiver;
 import com.system2override.yoke.BroadcastReceivers.PhoneScreenOnReceiver;
 import com.system2override.yoke.Models.TimeBank;
+import com.system2override.yoke.Utilities.RandomUtilities;
 
 public class ManagerService extends Service {
     private static final String TAG = "ManagerService";
@@ -74,18 +75,9 @@ public class ManagerService extends Service {
     }
 
     private void setDailyResetAlarm() {
-        Calendar calendar = Calendar.getInstance();
-        long time = System.currentTimeMillis();
-        Log.d(TAG, "setDailyResetAlarm: curtime " + Long.toString(time));
-        calendar.setTimeInMillis(time);
-        // ensure this fires for the next upcoming midnight
-        calendar.add(Calendar.DAY_OF_YEAR, 1);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.AM_PM, Calendar.AM);
+        long nextMidnight = RandomUtilities.getNextMidnight();
 
-        Log.d(TAG, "setDailyResetAlarm: calendar.getTimeInMillis " + Long.toString(calendar.getTimeInMillis()));
+        Log.d(TAG, "setDailyResetAlarm: calendar.getTimeInMillis " + Long.toString(nextMidnight));
         Log.d(TAG, "setDailyResetAlarm: action " + TimeBank.RESET_ACTION);
 
         Intent resetIntent = new Intent(this, DailyResetReceiver.class);
@@ -96,7 +88,7 @@ public class ManagerService extends Service {
                                                                       resetIntent,
                                                                     PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        am.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 1000 * 60 * 60 * 24, pendingResetIntent);
+        am.setRepeating(AlarmManager.RTC, nextMidnight, 1000 * 60 * 60 * 24, pendingResetIntent);
     }
 
     private void registerReceivers() {

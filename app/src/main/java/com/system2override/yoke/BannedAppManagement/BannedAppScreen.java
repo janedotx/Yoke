@@ -35,6 +35,7 @@ public class BannedAppScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.bar = getSupportActionBar();
         this.bar.setTitle(R.string.banned_app_screen_bar_header);
+        this.bar.setDisplayHomeAsUpEnabled(true);
 
         setContentView(R.layout.activity_banned_apps_screen);
 
@@ -64,6 +65,7 @@ public class BannedAppScreen extends AppCompatActivity {
         if (id == android.R.id.home) {
             Log.d(TAG, "onOptionsItemSelected: home pressed");
             finish();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

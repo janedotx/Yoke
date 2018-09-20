@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+import com.system2override.yoke.Models.BannedApps;
 import com.system2override.yoke.MyApplication;
 import com.system2override.yoke.OttoMessages.BannedAppAdded;
 import com.system2override.yoke.OttoMessages.BannedAppRemoved;
@@ -56,7 +57,7 @@ public class ShowAppsAdapter extends RecyclerView.Adapter<ShowAppsViewHolder>{
                     adapter.bus.post(new BannedAppRemoved(adapter.applications.get(position)));
                 } else {
                     // checking case
-                    if (MyApplication.getBannedApps().getApps().size() < MyApplication.BANNED_APPS_LIMIT) {
+                    if (MyApplication.getBannedApps().getApps().size() < BannedApps.BANNED_APPS_LIMIT) {
                         MyApplication.getBannedApps().addApp(appName);
                         ((CheckBox) view.findViewById(R.id.singleAppCheckBox)).setChecked(true);
                         adapter.bus.post(new BannedAppAdded(adapter.applications.get(position)));

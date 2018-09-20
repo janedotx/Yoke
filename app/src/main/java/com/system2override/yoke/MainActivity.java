@@ -43,6 +43,7 @@ import com.squareup.otto.Subscribe;
 import com.system2override.yoke.BannedAppManagement.BannedAppScreen;
 import com.system2override.yoke.Models.BannedApps;
 import com.system2override.yoke.Models.RoomModels.Habit;
+import com.system2override.yoke.Models.Streaks;
 import com.system2override.yoke.Models.TimeBank;
 import com.system2override.yoke.OttoMessages.TimeBankEarnedTime;
 import com.system2override.yoke.TodoManagement.TodoManagementScreen;
@@ -139,6 +140,18 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                Intent i = new Intent(MainActivity.this, BannedAppScreen.class);
                startActivity(i);
            }
+        });
+
+        ((Button) findViewById(R.id.resetStreakButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimeBank timeBank = MyApplication.getTimeBank();
+                Streaks streak = MyApplication.getStreaks();
+
+                HarnessDatabase db = MyApplication.getDb(MainActivity.this);
+                timeBank.resetTime();
+                streak.endStreakDay();
+            }
         });
         setupTimeBank();
 

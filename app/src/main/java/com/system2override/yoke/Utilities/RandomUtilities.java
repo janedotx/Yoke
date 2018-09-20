@@ -60,4 +60,13 @@ public class RandomUtilities {
         calendar.set(Calendar.AM_PM, Calendar.AM);
         return calendar.getTimeInMillis();
     }
+
+    public static long getNext15Seconds() {
+        Calendar calendar = Calendar.getInstance();
+        long time = System.currentTimeMillis();
+        calendar.setTimeInMillis(time);
+        // ensure this fires for the next upcoming midnight
+        calendar.add(Calendar.SECOND, 15);
+        return calendar.getTimeInMillis();
+    }
 }

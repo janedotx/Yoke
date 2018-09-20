@@ -13,6 +13,11 @@ public class TimeBank extends SharedPreferencesModel {
     private static final String TAG = "TimeBank";
     public static final String RESET_ACTION = MyApplication.packageName + ".RESET";
 
+    // all these are in milliseconds
+    public static final long MAX_INITIAL_TIME = 2 * 60 * 60 * 1000;
+    public static final long MAX_REFRESH_DAILY_TIME = 15 * 60 * 1000;
+    public static final long MAX_REFRESH_ONE_OFF_TIME = 10 * 60 * 1000;
+
     private final String INITIAL_TIME_GRANT_KEY = "INITIAL_TIME_GRANT_KEY";
     private final String REWARD_GRANT_TIME_KEY = "REWARD_GRANT_TIME_KEY";
     private final String TIME_SPENT_KEY = "TIME_SPENT_BANNED_APPS_KEY";

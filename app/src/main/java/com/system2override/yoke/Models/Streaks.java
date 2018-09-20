@@ -13,6 +13,13 @@ import com.system2override.yoke.OttoMessages.ToDoCreated;
 
 import java.util.List;
 
+// i don't seem to need this.editor.clear() to get things to work as i expect, e.g. the streak
+// information survives a force stop/restart, though this is hard to test ATM since i don't
+// use a persistent database
+// just tried the midnight reset stuff (by setting the alarm to go off 15s after deployment)
+// and it seems to be working as expected.
+// i hate this.
+// i do not understand why the banned apps stuff wasn't working properly.
 public class Streaks extends SharedPreferencesModel {
     private static final String FILE = "STREAKS_FILE";
     private static final String CURRENT_STREAKS_KEY = "CURRENT_STREAKS_KEY";
@@ -55,9 +62,7 @@ public class Streaks extends SharedPreferencesModel {
 
     // TODO
     // create new editor object each time, perhaps?
-    // seeing as how this doesn't survive an app force stop/restart at the moment
     public void setStreakCompletedToday(boolean completion) {
-        this.editor.clear();
         this.editor.putBoolean(STREAK_COMPLETED_TODAY, completion);
         this.editor.apply();
     }

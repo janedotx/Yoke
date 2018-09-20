@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 public class BannedApps extends SharedPreferencesModel {
+    public static final int BANNED_APPS_LIMIT = 5;
     private final String TAG = "BannedApps";
     private final String FILE = "BANNED_FILE";
     private final String BANNED_APPS_KEY = "BANNED_APPS_KEY";
@@ -31,6 +32,8 @@ public class BannedApps extends SharedPreferencesModel {
 
 
     public void setApps(Set<String> newApps) {
+        // i don't know why this is necessary, but without it, the banned apps don't update properly
+        // and changes don't save properly.
         this.editor.clear();
         this.editor.putStringSet(BANNED_APPS_KEY, newApps);
         boolean set = this.editor.commit();
@@ -84,7 +87,7 @@ public class BannedApps extends SharedPreferencesModel {
             }
         }
 
-        for (int i = 0; i < MyApplication.BANNED_APPS_LIMIT - appNames.size(); i++) {
+        for (int i = 0; i < BANNED_APPS_LIMIT - appNames.size(); i++) {
             objs.add(null);
         }
         Log.d(TAG, "getApplicationInfoObjectsWithNullPadding: objs.size() " + Integer.toString(objs.size()));
