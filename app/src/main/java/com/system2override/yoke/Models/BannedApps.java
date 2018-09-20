@@ -32,12 +32,10 @@ public class BannedApps extends SharedPreferencesModel {
 
 
     public void setApps(Set<String> newApps) {
-        // i don't know why this is necessary, but without it, the banned apps don't update properly
-        // and changes don't save properly.
-        this.editor.clear();
+        this.editor.remove(BANNED_APPS_KEY);
+        this.editor.commit();
         this.editor.putStringSet(BANNED_APPS_KEY, newApps);
-        boolean set = this.editor.commit();
-        Log.d(TAG, "setApps: set successful? " + Boolean.toString(set));
+        this.editor.apply();
     }
 
     public void removeApp(String app) {
@@ -97,7 +95,12 @@ public class BannedApps extends SharedPreferencesModel {
     public void printBannedApps() {
         Log.d(TAG, "printBannedApps: ");
         Set<String> apps = getApps();
-        Iterator<String> it = apps.iterator();
+        printSet(apps);
+    }
+    
+    public void printSet(Set<String> set) {
+        Log.d(TAG, "printSet: ");
+        Iterator<String> it = set.iterator();
         while (it.hasNext()) {
             Log.d(TAG, "bannedapp " + it.next());
 

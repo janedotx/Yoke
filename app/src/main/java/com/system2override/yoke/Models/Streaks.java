@@ -27,14 +27,6 @@ public class Streaks extends SharedPreferencesModel {
     private static final String STREAK_COMPLETED_TODAY = "STREAK_COMPLETED_TODAY";
     private Bus bus;
 
-    private SharedPreferences getSharedPrefs() {
-        return this.context.getSharedPreferences(FILE, 0);
-    }
-
-    private SharedPreferences.Editor getEditor() {
-        return this.context.getSharedPreferences(FILE, 0).edit();
-    }
-
     public Streaks(Context c, Bus bus) {
         super(c);
         this.bus = bus;
