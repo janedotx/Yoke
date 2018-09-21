@@ -104,7 +104,7 @@ public class StreaksTest {
         streak.setLongestStreak(1);
         streak.updateStreakInformation(habits);
         assertFalse(streak.getStreakCompletedToday());
-        streak.endStreakDay(habits);
+        streak.endStreakDay();
         assertEquals(0, streak.getCurrentStreak());
 
         // case where all daily habits were completed, and current streak is not reset to zero
@@ -115,7 +115,7 @@ public class StreaksTest {
         List<Habit> habits2 = mTestDbWrapper.getDb().habitDao().loadAllHabits();
         assertTrue(streak.getStreakCompletedToday());
         assertEquals(1, streak.getLongestStreak());
-        streak.endStreakDay(habits2);
+        streak.endStreakDay();
         assertFalse(streak.getStreakCompletedToday());
         assertEquals(1, streak.getLongestStreak());
 

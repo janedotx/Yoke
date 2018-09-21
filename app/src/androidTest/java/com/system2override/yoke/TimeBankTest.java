@@ -27,8 +27,6 @@ public class TimeBankTest {
     @Before
     public void setUp() throws IOException {
         this.context = InstrumentationRegistry.getTargetContext();
-        mTestDbWrapper = new TestDbWrapper();
-        mTestDbWrapper.setUpFixtures();
         this.timeBank = new TimeBank(this.context, new Bus(ThreadEnforcer.ANY));
         timeBank.setInitialTime(1000);
         timeBank.setRewardTimeGrant(2000);
@@ -46,8 +44,8 @@ public class TimeBankTest {
     @Test
     public void testAddRewardGrant() {
         timeBank.earnTime();
-        long curAvailableTime = timeBank.getAvailableTime();
-        assertEquals(3000, curAvailableTime);
+        long curAvailableTime = timeBank.getEarnedTime();
+        assertEquals(2000, curAvailableTime);
     }
 
     @Test
@@ -65,35 +63,44 @@ public class TimeBankTest {
         assertEquals(1000L, curTime);
 
         timeBank.earnTime();
-        long curAvailableTime = timeBank.getAvailableTime();
+        long curAvailableTime = timeBank.getTotalTimeForToday();
         assertEquals(3000, curAvailableTime);
 
         timeBank.resetTime();
         assertEquals(0, timeBank.getSpentTime());
-        assertEquals(1000, timeBank.getAvailableTime());
+        assertEquals(1000, timeBank.getTotalTimeForToday());
 //        */
     }
 
     @Test
     public void testGetEarnedTime() {
-        assertEquals(0L, timeBank.getTotalEarnedTimeToday());
+        assertEquals(0L, timeBank.getEarnedTime());
         timeBank.earnTime();
-        assertEquals(2000L, timeBank.getTotalEarnedTimeToday());
+        assertEquals(2000L, timeBank.getEarnedTime());
         timeBank.earnTime();
-        assertEquals(4000L, timeBank.getTotalEarnedTimeToday());
+        assertEquals(4000L, timeBank.getEarnedTime());
 
         timeBank.resetTime();
-        assertEquals(0L, timeBank.getTotalEarnedTimeToday());
+        assertEquals(0L, timeBank.getEarnedTime());
 
     }
 
-    @After
-    public void tearDown() {
-        timeBank.resetTime();
-        try {
-            mTestDbWrapper.tearDown();
-        } catch (IOException e) {
-            System.out.println("DB unexpectedly not there!");
-        }
+    @Test
+    public void testGetTotalTimeForToday() {
+        assertEquals(1000L, timeBank.getTotalTimeForToday());
+        timeBank.earnTime();
+        assertEquals(3000L, timeBank.getTotalTimeForToday());
+
     }
+
+    @Test
+    public void getTimeRemaining() {
+        timeBank.earnTime();
+        timeBank.earnTime();
+        timeBank.earnTime();
+        timeBank.addSpentTime(3000);
+
+        assertEquals(5000L, timeBank.getTimeRemaining());
+    }
+
 }

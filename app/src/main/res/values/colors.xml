@@ -20,4 +20,9 @@
     <color name="HobbesFaintTeal">#398c94</color>
     <color name="HobbesGray">#999999</color>
 
+    <color name="seek_bar_background">#cdc39f</color>
+    <color name="seek_bar_progress">#2c6f8e</color>
+    <color name="seek_bar_secondary_progress">#2c6f8e</color>
+
+
 </resources>

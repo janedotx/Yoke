@@ -63,7 +63,6 @@ public class BannedAppScreen extends AppCompatActivity {
         int id = item.getItemId();
         Log.d(TAG, "onOptionsItemSelected: id  is " + Integer.toString(id));
         if (id == android.R.id.home) {
-            Log.d(TAG, "onOptionsItemSelected: home pressed");
             finish();
             return true;
         }

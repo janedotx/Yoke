@@ -132,7 +132,7 @@ public class TodoManagementScreen extends AppCompatActivity {
         this.earnedTimeValueView = findViewById(R.id.todoManagementEarnedTimeValue);
         this.remainingTimeValueView = findViewById(R.id.todoManagementAvailableTimeValue);
         TimeBank timeBank = MyApplication.getTimeBank();
-        this.earnedTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(timeBank.getTotalEarnedTimeToday()));
+        this.earnedTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(timeBank.getEarnedTime()));
         long remainingTime = timeBank.getTimeRemaining();
         if (remainingTime < 0L) { remainingTime = 0; }
         this.remainingTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(remainingTime));
@@ -184,14 +184,14 @@ public class TodoManagementScreen extends AppCompatActivity {
     public void addEarnedTimeView(TimeBankEarnedTime event) {
         Log.d(TAG, "makeTimeAvailableChanges: ");
         TimeBank timeBank = MyApplication.getTimeBank();
-        this.earnedTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(timeBank.getTotalEarnedTimeToday()));
+        this.earnedTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(timeBank.getEarnedTime()));
         this.remainingTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(timeBank.getTimeRemaining()));
     }
 
     @Subscribe
     public void subtractEarnedTimeView(TimeBankUnearnedTime event) {
         TimeBank timeBank = MyApplication.getTimeBank();
-        this.earnedTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(timeBank.getTotalEarnedTimeToday()));
+        this.earnedTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(timeBank.getEarnedTime()));
         long timeRemaining = timeBank.getTimeRemaining();
         if (timeRemaining < 0L) {
             timeRemaining = 0L;
@@ -206,7 +206,7 @@ public class TodoManagementScreen extends AppCompatActivity {
 
     @Subscribe
     public void updateInfoViewValues(MidnightResetEvent e) {
-        this.earnedTimeValueView.setText("00:00");
+        this.earnedTimeValueView.setText("0 m");
         this.remainingTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(MyApplication.getTimeBank().getInitialTime()));
         updateStreakValues();
     }

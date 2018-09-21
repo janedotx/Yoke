@@ -50,6 +50,7 @@ public class MyApplication extends Application {
         bannedApps = new BannedApps(this);
         streaks = new Streaks(this, bus);
         setupDB();
+        setupTimeBank();
 //        setupBannedApps();
 
 //        writeLogCat();
@@ -171,6 +172,14 @@ public class MyApplication extends Application {
         bannedApps.clearApps();
         bannedApps.addApp( "com.twitter.android");
         bannedApps.addApp( "com.instagram.android");
+    }
+
+    private void setupTimeBank() {
+//        timeBank.setInitialTime(30 * 60 * 1000);
+//        timeBank.setRewardTimeGrant(15 * 60 * 1000);
+        timeBank.setInitialTime(1 * 60 * 1000);
+        timeBank.setRewardTimeGrant(1 * 60 * 1000);
+        timeBank.resetTime();
     }
 
 }

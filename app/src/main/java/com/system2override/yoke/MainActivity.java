@@ -61,7 +61,6 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -169,33 +168,20 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     }
 
     private void setupTimeBank() {
-        final EditText initialTimeEditText = findViewById(R.id.mainInitialTimeEdit);
-        final EditText refreshTimeEditText = findViewById(R.id.mainRefreshTimeGrantEdit);
         this.timeAvailableView = findViewById(R.id.mainViewTimeAvailable);
         TimeBank timeBank = MyApplication.getTimeBank();
-        this.timeAvailableView.setText("Available time is " + Long.toString(timeBank.getAvailableTime()/1000L));
-        initialTimeEditText.setText(Long.toString(timeBank.getInitialTime()/1000));
-        refreshTimeEditText.setText(Long.toString(timeBank.getRewardTimeGrant()/1000));
+        this.timeAvailableView.setText("Available time is " + Long.toString(timeBank.getTotalTimeForToday()/1000L));
 
         Button initialButton = findViewById(R.id.initialTimeButtonSave);
         initialButton.setOnClickListener(new View.OnClickListener() {
                                              @Override
                                              public void onClick(View v) {
-                                                 String curTime = initialTimeEditText.getText().toString();
-                                                 MyApplication.getTimeBank().setInitialTime(Long.parseLong(curTime) * 1000);
+                                                 Intent i = new Intent(MainActivity.this, SetUsageLimitsScreen.class);
+                                                 startActivity(i);
                                              }
                                          }
         );
 
-
-        Button refreshButton = findViewById(R.id.refreshButtonSave);
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String refreshTime = refreshTimeEditText.getText().toString();
-                MyApplication.getTimeBank().setRewardTimeGrant(Long.parseLong(refreshTime) * 1000);
-            }
-        });
 
         Button resetTimeBank = findViewById(R.id.resetTimeBank);
         resetTimeBank.setOnClickListener(new View.OnClickListener() {
@@ -571,7 +557,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         long remainingTime = timeBank.getTimeRemaining();
         Log.d(TAG, "onResume: remaining time " + Long.toString(remainingTime));
         Log.d(TAG, "onResume: spent time " + Long.toString(timeBank.getSpentTime()));
-        Log.d(TAG, "onResume: available time " + Long.toString(timeBank.getAvailableTime()));
         TextView remainingTimeView = findViewById(R.id.mainTimeRemainingView);
         remainingTimeView.setText("Remaining time view is " + Long.toString(remainingTime/1000) + " seconds");
     }
@@ -580,6 +565,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     protected void updateTimeAvailableView(TimeBankEarnedTime event) {
         Log.d(TAG, "updateTimeAvailableView: ");
         TimeBank timeBank = MyApplication.getTimeBank();
-        this.timeAvailableView.setText("Available time is " + Long.toString(timeBank.getAvailableTime()));
+        this.timeAvailableView.setText("Available time is " + Long.toString(timeBank.getTotalTimeForToday()));
     }
 }

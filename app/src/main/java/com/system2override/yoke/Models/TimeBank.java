@@ -21,23 +21,14 @@ public class TimeBank extends SharedPreferencesModel {
     private final String INITIAL_TIME_GRANT_KEY = "INITIAL_TIME_GRANT_KEY";
     private final String REWARD_GRANT_TIME_KEY = "REWARD_GRANT_TIME_KEY";
     private final String TIME_SPENT_KEY = "TIME_SPENT_BANNED_APPS_KEY";
-    private final String TIME_AVAILABLE_KEY = "TIME_AVAILABLE_KEY";
+    private final String TIME_EARNED_KEY = "TIME_EARNED_KEY";
     public final String FILE = "TIME";
 
     private Bus bus;
-    private long availableTime;
-    private long spentTime;
-    private long initialTime;
-    private long rewardGrantTime;
 
     public TimeBank(Context context, Bus bus) {
         super(context);
         this.bus = bus;
-
-        this.availableTime = this.prefs.getLong(TIME_AVAILABLE_KEY, 0L);
-        this.spentTime = this.prefs.getLong(TIME_SPENT_KEY, 0L);
-        this.initialTime = this.prefs.getLong(INITIAL_TIME_GRANT_KEY, 0L);
-        this.rewardGrantTime = this.prefs.getLong(REWARD_GRANT_TIME_KEY, 0L);
     }
 
     // convenience methods for toppig up daily ration and all that
@@ -58,21 +49,20 @@ public class TimeBank extends SharedPreferencesModel {
         return this.prefs.getLong(TIME_SPENT_KEY, 0L);
     }
 
-    public long getAvailableTime() {
-        return prefs.getLong(TIME_AVAILABLE_KEY, 0L);
+    public long getEarnedTime() {
+        return prefs.getLong(TIME_EARNED_KEY, 0L);
     }
 
     public long earnTime() {
-        long refreshTime = this.prefs.getLong(REWARD_GRANT_TIME_KEY, 0l);
-        long currentTime = this.prefs.getLong(TIME_AVAILABLE_KEY, 0L);
-        currentTime += refreshTime;
-        this.editor.putLong(TIME_AVAILABLE_KEY, currentTime);
+        long earnedTime = this.prefs.getLong(TIME_EARNED_KEY, 0L);
+        earnedTime += getRewardTimeGrant();
+        this.editor.putLong(TIME_EARNED_KEY, earnedTime);
         this.editor.apply();
         Log.d(TAG, "earnTime: about to post");
 
         this.bus.post(new TimeBankEarnedTime());
 
-        return currentTime;
+        return earnedTime;
     }
     public void setAvailableTime(long time) {
     }
@@ -80,9 +70,9 @@ public class TimeBank extends SharedPreferencesModel {
     // careful with this method, don't let current time get negative--though does it really matter?
     public long unearnTime() {
         long refreshTime = this.prefs.getLong(REWARD_GRANT_TIME_KEY, 0l);
-        long currentTime = this.prefs.getLong(TIME_AVAILABLE_KEY, 0L);
+        long currentTime = this.prefs.getLong(TIME_EARNED_KEY, 0L);
         currentTime -= refreshTime;
-        this.editor.putLong(TIME_AVAILABLE_KEY, currentTime);
+        this.editor.putLong(TIME_EARNED_KEY, currentTime);
         this.editor.apply();
 
         this.bus.post(new TimeBankUnearnedTime());
@@ -95,10 +85,7 @@ public class TimeBank extends SharedPreferencesModel {
         this.editor.putLong(TIME_SPENT_KEY, 0);
         this.editor.apply();
 
-        // reset total available time to just the initial time
-
-        long initialGrantTime = this.prefs.getLong(INITIAL_TIME_GRANT_KEY, 0L);
-        this.editor.putLong(TIME_AVAILABLE_KEY, initialGrantTime);
+        this.editor.putLong(TIME_EARNED_KEY, 0);
         this.editor.apply();
 
 
@@ -122,12 +109,13 @@ public class TimeBank extends SharedPreferencesModel {
         return this.prefs.getLong(REWARD_GRANT_TIME_KEY, 0L);
     }
 
-    public long getTotalEarnedTimeToday() {
-        return getAvailableTime() - getInitialTime();
-    }
 
     public long getTimeRemaining() {
-        return getAvailableTime() - getSpentTime();
+        return getEarnedTime() + getInitialTime() - getSpentTime();
+    }
+
+    public long getTotalTimeForToday() {
+        return getEarnedTime() + getInitialTime();
     }
 
 }

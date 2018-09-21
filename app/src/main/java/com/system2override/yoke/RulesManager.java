@@ -28,7 +28,7 @@ public class RulesManager {
  //       Log.d(TAG, "processForegroundMessage: called me!");
         boolean inBadApp = MyApplication.getBannedApps().getApps().contains(currentAppMessage.getCurrentApp());
         TimeBank timeBank = MyApplication.getTimeBank();
-        long availableTime = timeBank.getAvailableTime();
+        long availableTime = timeBank.getTotalTimeForToday();
         long timeSpent = timeBank.getSpentTime();
 
         if (timeSpent >= availableTime && inBadApp) {

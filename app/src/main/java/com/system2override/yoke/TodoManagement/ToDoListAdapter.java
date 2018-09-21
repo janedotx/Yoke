@@ -76,7 +76,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
                     // this would be a great place to use RxJava, set up this object as an observable
                     // and have the TimeBank subscribe to its changes but I don't know how to make
                     // that work and I don't feel inclined to learn at the moment
-                    Log.d(TAG, "onCheckBoxClick: availableTime was " + Long.toString(timeBank.getAvailableTime()/ 1000L));
                     timeBank.earnTime();
                     if (ToDoListAdapter.this.tab == ToDoListFragment.INCOMPLETE_TODOS) {
                         toDoList.remove(position);
