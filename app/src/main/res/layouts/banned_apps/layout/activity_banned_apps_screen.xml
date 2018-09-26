@@ -10,17 +10,16 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_marginTop="24dp"
-        android:background="@color/HobbesPrimaryAccent"
+        android:background="@color/bottomBoxSepia"
         android:layout_width="match_parent"
         android:layout_height="85dp">
         <TextView
-            android:textColor="@color/HobbesPink"
+            android:textColor="@color/HobbesPrimaryAccent"
             android:textSize="12sp"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="Selected Apps"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:layout_marginStart="19dp"
             ></TextView>

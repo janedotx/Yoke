@@ -39,7 +39,7 @@ public class AppLimitScreen extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.appLimitTasks = new AppLimitTasks(MyApplication.getDb(this));
+        this.appLimitTasks = new AppLimitTasks(MyApplication.getDb());
 
         Log.d(TAG, "onCreate: ");
 

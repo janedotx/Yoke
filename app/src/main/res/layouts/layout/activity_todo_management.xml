@@ -1,177 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settingsDrawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".TodoManagement.TodoManagementScreen"
-    tools:layout_editor_absoluteY="81dp">
+    android:fitsSystemWindows="false">
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="185dp"
-        android:background="@color/topBoxSepia">
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:text="To other settings"
-            android:textSize="10sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TableLayout
-            android:id="@+id/todoManagementInfoBox"
-            android:layout_width="241dp"
-            android:layout_height="140dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="22dp"
-            android:background="@color/tealBackground"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TableRow
-                style="@style/toDoManagementInfoTableRow"
-                android:layout_width="match_parent"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/white_border_bottom">
-
-                <TextView
-                    android:id="@+id/todoManagementRemainingTimeHeader"
-                    android:layout_width="wrap_content"
-                    android:text="@string/toDoManagementRemainingTimeHeader"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    tools:layout_editor_absoluteX="16dp"
-                    tools:layout_editor_absoluteY="22dp" />
-
-                <TextView
-                    android:id="@+id/todoManagementAvailableTimeValue"
-                    style="@style/toDoManagementInfoValues"
-                    android:layout_width="wrap_content"
-                    android:text="TextView"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-            </TableRow>
-
-            <TableRow
-                style="@style/toDoManagementInfoTableRow"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="12dp">
-
-                <TextView
-                    android:id="@+id/toDoManagementCurrentStreakHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/current_streak_label_text"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/toDoManagementCurrentStreakValue"
-                    style="@style/toDoManagementInfoValues"
-                    android:text="TextView"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-            </TableRow>
-
-            <TableRow
-                style="@style/toDoManagementInfoTableRow"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/toDoManagementLongestStreakHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/toDoManagementLongestStreakHeader"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/toDoManagementLongestStreakValue"
-                    style="@style/toDoManagementInfoValues"
-                    android:layout_width="wrap_content"
-                    android:text="TextView"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-            </TableRow>
-
-            <TableRow
-                style="@style/toDoManagementInfoTableRow"
-                android:layout_width="match_parent">
-
-                <TextView
-                    android:id="@+id/todoManagementEarnedTimeHeader"
-                    android:layout_width="wrap_content"
-                    android:text="@string/toDoManagementEarnedTimeHeader"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    tools:layout_editor_absoluteX="16dp"
-                    tools:layout_editor_absoluteY="22dp" />
-
-                <TextView
-                    android:id="@+id/todoManagementEarnedTimeValue"
-                    style="@style/toDoManagementInfoValues"
-                    android:layout_width="wrap_content"
-                    android:text="TextView"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-            </TableRow>
-
-
-        </TableLayout>
-
-
-    </android.support.constraint.ConstraintLayout>
-
-    <android.support.design.widget.CoordinatorLayout
+    <LinearLayout
+        android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:background="@color/bottomBoxSepia">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/tealBackground"
+            android:theme="@style/HobbesActionBarStyle" />
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="9dp"
-            android:layout_marginRight="9dp"
-            >
-        <android.support.design.widget.TabLayout
-            android:id="@+id/toDoManagementTabs"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            app:tabIndicatorColor="@color/HobbesBlush"
-            android:layout_marginBottom="15dp"
-            app:tabPaddingTop="15dp"
-            app:tabIndicatorHeight="2dp"
-            app:tabMode="fixed"
-            app:tabGravity="center" />
+            android:orientation="vertical"
+            tools:context=".TodoManagement.TodoManagementScreen"
+            tools:layout_editor_absoluteY="81dp">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/toDoManagementPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="185dp"
+                android:background="@color/topBoxSepia">
 
-        </android.support.v4.view.ViewPager>
+                <Button
+                    android:id="@+id/button3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:text="To other settings"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TableLayout
+                    android:id="@+id/todoManagementInfoBox"
+                    android:layout_width="241dp"
+                    android:layout_height="140dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="22dp"
+                    android:background="@color/tealBackground"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TableRow
+                        style="@style/toDoManagementInfoTableRow"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/white_border_bottom">
+
+                        <TextView
+                            android:id="@+id/todoManagementRemainingTimeHeader"
+                            android:layout_width="wrap_content"
+                            android:text="@string/toDoManagementRemainingTimeHeader"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            tools:layout_editor_absoluteX="16dp"
+                            tools:layout_editor_absoluteY="22dp" />
+
+                        <TextView
+                            android:id="@+id/todoManagementAvailableTimeValue"
+                            style="@style/toDoManagementInfoValues"
+                            android:layout_width="wrap_content"
+                            android:text="TextView"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+                    </TableRow>
+
+                    <TableRow
+                        style="@style/toDoManagementInfoTableRow"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="12dp">
+
+                        <TextView
+                            android:id="@+id/toDoManagementCurrentStreakHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/current_streak_label_text"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/toDoManagementCurrentStreakValue"
+                            style="@style/toDoManagementInfoValues"
+                            android:text="TextView"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+                    </TableRow>
+
+                    <TableRow
+                        style="@style/toDoManagementInfoTableRow"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/toDoManagementLongestStreakHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/toDoManagementLongestStreakHeader"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/toDoManagementLongestStreakValue"
+                            style="@style/toDoManagementInfoValues"
+                            android:layout_width="wrap_content"
+                            android:text="TextView"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+                    </TableRow>
+
+                    <TableRow
+                        style="@style/toDoManagementInfoTableRow"
+                        android:layout_width="match_parent">
+
+                        <TextView
+                            android:id="@+id/todoManagementEarnedTimeHeader"
+                            android:layout_width="wrap_content"
+                            android:text="@string/toDoManagementEarnedTimeHeader"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            tools:layout_editor_absoluteX="16dp"
+                            tools:layout_editor_absoluteY="22dp" />
+
+                        <TextView
+                            android:id="@+id/todoManagementEarnedTimeValue"
+                            style="@style/toDoManagementInfoValues"
+                            android:layout_width="wrap_content"
+                            android:text="TextView"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+                    </TableRow>
+
+
+                </TableLayout>
+
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.design.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/bottomBoxSepia"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginRight="9dp"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/toDoManagementTabs"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_marginBottom="15dp"
+                        app:tabGravity="center"
+                        app:tabIndicatorColor="@color/HobbesBlush"
+                        app:tabIndicatorHeight="2dp"
+                        app:tabMode="fixed"
+                        app:tabPaddingTop="15dp" />
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/toDoManagementPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </android.support.v4.view.ViewPager>
+                </LinearLayout>
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/addToDoFAB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|bottom|right"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/ic_round_add_24px"
+                    app:layout_anchor="@id/toDoManagementPager"
+                    app:layout_anchorGravity="bottom|right|end" />
+            </android.support.design.widget.CoordinatorLayout>
         </LinearLayout>
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/addToDoFAB"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom|right"
-            android:layout_margin="16dp"
-            android:src="@drawable/ic_round_add_24px"
-            app:layout_anchor="@id/toDoManagementPager"
-            app:layout_anchorGravity="bottom|right|end" />
-    </android.support.design.widget.CoordinatorLayout>
-</LinearLayout>
+    </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        app:headerLayout="@layout/settings_drawer_header"
+        android:layout_width="304dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:itemIconTint="@color/HobbesOrange"
+        app:menu="@menu/main_settings_menu"></android.support.design.widget.NavigationView>
+</android.support.v4.widget.DrawerLayout>

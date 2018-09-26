@@ -21,7 +21,7 @@
     </style>
 
     <style name="HobbesActionBarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/HobbesPink</item>
+        <item name="android:background">@color/tealBackground</item>
     </style>
 
     <style name="HobbesAppTheme" parent="AppTheme">

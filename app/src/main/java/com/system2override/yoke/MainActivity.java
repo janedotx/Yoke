@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 TimeBank timeBank = MyApplication.getTimeBank();
                 Streaks streak = MyApplication.getStreaks();
 
-                HarnessDatabase db = MyApplication.getDb(MainActivity.this);
+                HarnessDatabase db = MyApplication.getDb();
                 timeBank.resetTime();
                 streak.endStreakDay();
             }

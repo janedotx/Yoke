@@ -36,7 +36,7 @@ public class EditToDoScreen extends ManageToDoScreen {
         this.bar.setTitle(R.string.editToDoHeader);
         this.toDoEditText.setHint("");
 
-        ToDoInterface todo = MyApplication.getDb(this).habitDao().getById(this.toDoId);
+        ToDoInterface todo = MyApplication.getDb().habitDao().getById(this.toDoId);
         this.toDoEditText.setText(todo.getDescription());
 
     }
@@ -49,7 +49,7 @@ public class EditToDoScreen extends ManageToDoScreen {
 
     private void saveEdit() {
         // update in db
-        HarnessDatabase dbConn = MyApplication.getDb(this);
+        HarnessDatabase dbConn = MyApplication.getDb();
         Habit habit = dbConn.habitDao().getById(this.toDoId);
         habit.description = toDoEditText.getText().toString();
         dbConn.habitDao().update(habit);
@@ -65,7 +65,7 @@ public class EditToDoScreen extends ManageToDoScreen {
     }
 
     private void deleteToDo() {
-        MyApplication.getDb(this).habitDao().delete(this.toDoId);
+        MyApplication.getDb().habitDao().delete(this.toDoId);
         this.bus.post(new ToDoDeleted(this.toDoId));
     }
 

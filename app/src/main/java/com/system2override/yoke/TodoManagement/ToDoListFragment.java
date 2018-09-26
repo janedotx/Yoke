@@ -77,7 +77,7 @@ public class ToDoListFragment extends Fragment {
         Activity activity = getActivity();
         View rootView = inflater.inflate(R.layout.todo_list_view, container, false);
         int tab = getArguments().getInt(TAB_NUMBER);
-        HarnessDatabase db = MyApplication.getDb(activity);
+        HarnessDatabase db = MyApplication.getDb();
 
         List<ToDoInterface> items = getToDoItems(tab, db);
         this.toDoListView = (RecyclerView) rootView.findViewById(R.id.toDoListView);

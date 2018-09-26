@@ -23,7 +23,7 @@ public class DailyResetReceiver extends BroadcastReceiver{
         Streaks streak = MyApplication.getStreaks();
 
         if (MyApplication.MIDNIGHT_RESET_ACTION.equals(intent.getAction())) {
-            HarnessDatabase db = MyApplication.getDb(context);
+            HarnessDatabase db = MyApplication.getDb();
             timeBank.resetTime();
             streak.endStreakDay();
 

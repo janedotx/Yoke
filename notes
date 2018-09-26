@@ -1,3 +1,9 @@
 sai's phone has android 9
 
 maximum 5 apps can be banned
+
+streak stuff seems to be working in the following situations:
+midnight reset (I saw 2/2)
+app redeploy to phone (no change in 2/2)
+force app restart (no change in 1/1)
+android random act of death (no change in 1/1)

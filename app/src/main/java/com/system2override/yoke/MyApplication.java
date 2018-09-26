@@ -4,6 +4,8 @@ import android.app.Application;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
 import com.squareup.otto.Bus;
@@ -49,12 +51,14 @@ public class MyApplication extends Application {
         timeBank = new TimeBank(this, bus);
         bannedApps = new BannedApps(this);
         streaks = new Streaks(this, bus);
-        setupDB();
-        setupTimeBank();
-//        setupBannedApps();
+        db =  Room.databaseBuilder(getApplicationContext(),
+                HarnessDatabase.class, BuildConfig.DATABASE_FILE)
+                    .allowMainThreadQueries()
+                    .build();
+        startManagerService();
 
-//        writeLogCat();
     }
+
 
     public static TimeBank getTimeBank() { return timeBank; }
     public static BannedApps getBannedApps() { return bannedApps; }
@@ -69,25 +73,8 @@ public class MyApplication extends Application {
         super.onLowMemory();
     }
 
-    public static HarnessDatabase getDb(Context context) {
-//        /*
-        if (db == null) {
-            db = Room.databaseBuilder(context,
-                HarnessDatabase.class, BuildConfig.DATABASE_FILE)
-                    .fallbackToDestructiveMigration()
-                    .allowMainThreadQueries()
-                    .build();
-        }
+    public static HarnessDatabase getDb() {
         return db;
- //       */
-        /*
-        return Room.databaseBuilder(context,
-                HarnessDatabase.class, BuildConfig.DATABASE_FILE)
-                    .fallbackToDestructiveMigration()
-                    .allowMainThreadQueries()
-                     .build();
-                     */
-
     }
 
     // bad to have this running while debugging, because logcat no longer prints to stdout and you can't
@@ -117,11 +104,9 @@ public class MyApplication extends Application {
     }
 
     private void setupDB() {
-        boolean success = this.deleteDatabase(BuildConfig.DATABASE_FILE);
 //        boolean success = this.deleteDatabase("db");
-        Log.d(TAG, "onStart: database successfully deleted " + Boolean.toString(success));
 
-        HarnessDatabase db = MyApplication.getDb(this);
+        HarnessDatabase db = MyApplication.getDb();
 
         //       /*
         Habit newHabit1 = new Habit();
@@ -175,11 +160,21 @@ public class MyApplication extends Application {
     }
 
     private void setupTimeBank() {
-//        timeBank.setInitialTime(30 * 60 * 1000);
-//        timeBank.setRewardTimeGrant(15 * 60 * 1000);
-        timeBank.setInitialTime(1 * 60 * 1000);
-        timeBank.setRewardTimeGrant(1 * 60 * 1000);
+        timeBank.setInitialTime(30 * 60 * 1000);
+        timeBank.setRewardTimeGrant(15 * 60 * 1000);
+//        timeBank.setInitialTime(1 * 60 * 1000);
+//        timeBank.setRewardTimeGrant(1 * 60 * 1000);
         timeBank.resetTime();
+    }
+
+    // according to docs, this is idempotent
+    private void startManagerService() {
+        Intent intent = new Intent(this, ManagerService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent);
+        } else {
+            startService(intent);
+        }
     }
 
 }

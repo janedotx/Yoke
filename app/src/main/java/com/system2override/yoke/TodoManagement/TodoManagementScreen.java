@@ -7,16 +7,21 @@ import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
+import com.system2override.yoke.BannedAppManagement.BannedAppScreen;
 import com.system2override.yoke.ManageToDo.AddToDoScreen;
 import com.system2override.yoke.ManageToDo.ManageToDoScreen;
 import com.system2override.yoke.MainActivity;
@@ -30,6 +35,7 @@ import com.system2override.yoke.OttoMessages.StreakUpdateEvent;
 import com.system2override.yoke.OttoMessages.TimeBankEarnedTime;
 import com.system2override.yoke.OttoMessages.TimeBankUnearnedTime;
 import com.system2override.yoke.R;
+import com.system2override.yoke.SetUsageLimitsScreen;
 import com.system2override.yoke.Utilities.RandomUtilities;
 
 import java.util.ArrayList;
@@ -52,17 +58,25 @@ public class TodoManagementScreen extends AppCompatActivity {
     private TabLayout tabs;
     private ViewPager viewPager;
     private ToDoListPagerAdapter toDoListPagerAdapter;
+    private DrawerLayout mDrawerLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate: " + System.identityHashCode(this));
         MyApplication.getBus().register(this);
         setContentView(R.layout.activity_todo_management);
 
-        ActionBar bar = getSupportActionBar();
-        bar.setTitle(R.string.toDoManagementActivityTitle);
-       // bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2c6f8e")));
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(android.graphics.Color.WHITE);
+
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setTitle(R.string.toDoManagementActivityTitle);
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.whitesubject);
+
+        mDrawerLayout = findViewById(R.id.settingsDrawerLayout);
 
         initializeValueViews();
 
@@ -83,25 +97,6 @@ public class TodoManagementScreen extends AppCompatActivity {
         };
         ColorStateList fabColorList = new ColorStateList(states, colors);
         findViewById(R.id.addToDoFAB).setBackgroundTintList(fabColorList);
-
-        /*
-        HarnessDatabase db = MyApplication.getDb(this);
-        List<Habit> habits = db.habitDao().loadAllHabits();
-        for (Habit h: habits) {
-            incompletes.add((ToDoInterface) h);
-            Log.d(TAG, "onCreate: loading this habit " + h.description + " " + h.isCompleted() + " " + h.getLastDateCompleted());
-        }
-        Log.d(TAG, "onCreate: incompletes size " + incompletes.size());
-
-        this.toDoListView = (RecyclerView) findViewById(R.id.toDoListView);
-
-        this.adapter = new ToDoListAdapter(this, incompletes);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        toDoListView.setLayoutManager(mLayoutManager);
-        toDoListView.setItemAnimator(new DefaultItemAnimator());
-        toDoListView.setAdapter(adapter);
-        this.toDoListView.setLayoutManager(mLayoutManager);
-        */
 
         Button button = findViewById(R.id.button3);
         button.setOnClickListener(new View.OnClickListener() {
@@ -154,13 +149,13 @@ public class TodoManagementScreen extends AppCompatActivity {
     @Override
     protected void onResume() {
         initializeValueViews();
+        mDrawerLayout.closeDrawer(GravityCompat.START);
         super.onResume();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        startManagerService();
     }
 
     @Override
@@ -178,6 +173,17 @@ public class TodoManagementScreen extends AppCompatActivity {
     protected void onDestroy() {
         Log.d(TAG, "onDestroy: ");
         super.onDestroy();
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Subscribe
@@ -211,16 +217,14 @@ public class TodoManagementScreen extends AppCompatActivity {
         updateStreakValues();
     }
 
-    // according to docs, this is idempotent
-    private void startManagerService() {
-        Intent intent = new Intent(this, ManagerService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            android.util.Log.d(TAG, "subscribeToSensor: about to start foreground service " + Long.toString(System.currentTimeMillis()));
-            startForegroundService(intent);
-        } else {
-            android.util.Log.d(TAG, "subscribeToSensor: about to start service " + Long.toString(System.currentTimeMillis()));
-            startService(intent);
-        }
+    public void launchUsageLimitScreen(MenuItem item) {
+        Intent i = new Intent(this, SetUsageLimitsScreen.class);
+        startActivity(i);
+    }
+
+    public void launchBannedAppsScreen(MenuItem item) {
+        Intent i = new Intent(this, BannedAppScreen.class);
+        startActivity(i);
     }
 
 }

@@ -50,7 +50,7 @@ public class ManageToDoScreen extends AppCompatActivity {
         suggestionsView = (RecyclerView) findViewById(R.id.addSuggestionRecyclerView);
         suggestionsView.setLayoutManager(new LinearLayoutManager(this));
 
-        List<Suggestion> suggestionList = MyApplication.getDb(this).suggestionDao().loadAllUnusedSuggestions();
+        List<Suggestion> suggestionList = MyApplication.getDb().suggestionDao().loadAllUnusedSuggestions();
         Log.d(TAG, "onCreate: num suggestions found " + Integer.toString(suggestionList.size()));
         this.adapter = new SuggestionsAdapter(this, suggestionList);
         suggestionsView.setAdapter(this.adapter);
@@ -62,7 +62,7 @@ public class ManageToDoScreen extends AppCompatActivity {
     }
 
     public void saveNewHabit() {
-        HarnessDatabase dbConn = MyApplication.getDb(this);
+        HarnessDatabase dbConn = MyApplication.getDb();
         String toDoText = toDoEditText.getText().toString();
         Habit habit = new Habit();
         habit.setDescription(toDoText);

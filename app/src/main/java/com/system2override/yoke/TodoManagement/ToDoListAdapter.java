@@ -69,7 +69,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
             public void onCheckBoxClick(CheckBox b, int position) {
                 ToDoInterface toDo = toDoList.get(position);
                 TimeBank timeBank = MyApplication.getTimeBank();
-                HarnessDatabase db = MyApplication.getDb(ToDoListAdapter.this.context);
+                HarnessDatabase db = MyApplication.getDb();
                 if (b.isChecked()) {
                     toDo.setCompleted(true);
                     Log.d(TAG, "onCheckBoxClick: set completed worked? " + Boolean.toString(toDo.isCompleted()));
@@ -132,7 +132,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
     @Subscribe
     public void updateToDoList(MidnightResetEvent e) {
         List<ToDoInterface> incompletes = new ArrayList<>();
-        HarnessDatabase db = MyApplication.getDb(this.context);
+        HarnessDatabase db = MyApplication.getDb();
         List<Habit> habits = db.habitDao().loadAllHabits();
         for (Habit h: habits) {
             incompletes.add((ToDoInterface) h);
@@ -184,7 +184,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
 
         for (int i = 0; i < this.toDoList.size(); i++) {
             if (toDoList.get(i).getId() == id) {
-                ToDoInterface todo = (ToDoInterface) MyApplication.getDb(this.context).habitDao().getById(id);
+                ToDoInterface todo = (ToDoInterface) MyApplication.getDb().habitDao().getById(id);
                 toDoList.add(i, todo);
                 notifyDataSetChanged();
                 break;
