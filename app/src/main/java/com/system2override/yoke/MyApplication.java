@@ -54,9 +54,10 @@ public class MyApplication extends Application {
         db =  Room.databaseBuilder(getApplicationContext(),
                 HarnessDatabase.class, BuildConfig.DATABASE_FILE)
                     .allowMainThreadQueries()
+                    .fallbackToDestructiveMigration()
                     .build();
         startManagerService();
-
+        setupDB();
     }
 
 
@@ -104,16 +105,18 @@ public class MyApplication extends Application {
     }
 
     private void setupDB() {
-//        boolean success = this.deleteDatabase("db");
+        boolean success = this.deleteDatabase("db");
 
         HarnessDatabase db = MyApplication.getDb();
 
         //       /*
         Habit newHabit1 = new Habit();
         newHabit1.description = "do pushups";
+        newHabit1.isDailyHabit = true;
 
         Habit newHabit2 = new Habit();
         newHabit2.description = "stretch";
+        newHabit1.isDailyHabit = true;
 
         Habit newHabit3 = new Habit();
         newHabit3.description = "do yoga";

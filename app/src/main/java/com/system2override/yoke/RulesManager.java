@@ -19,6 +19,7 @@ public class RulesManager {
 //        this.launcherIntent = new Intent("android.intent.action.MAIN");
 //        this.launcherIntent.addCategory("android.intent.category.HOME");
         this.launcherIntent = new Intent(this.context, AppLimitScreen.class);
+        this.launcherIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         MyApplication.getBus().register(this);
     }

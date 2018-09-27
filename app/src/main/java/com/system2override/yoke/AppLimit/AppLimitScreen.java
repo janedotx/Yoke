@@ -105,7 +105,7 @@ public class AppLimitScreen extends AppCompatActivity  {
         if (v != null) {
             TextView timeSpentView = (TextView) v;
             long time = MyApplication.getTimeBank().getSpentTime();
-            timeSpentView.setText(RandomUtilities.formatMSToHHMMSS(time));
+            timeSpentView.setText(RandomUtilities.formatMillisecondsToHHMM(time));
 
         }
     }

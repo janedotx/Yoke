@@ -118,6 +118,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
 //        /*
         if (!todo.getIsDailyHabit()) {
             holder.toDoViewGroup.setBackground(ContextCompat.getDrawable(this.context, R.drawable.one_off_todo_coloring));
+            holder.setIsRecyclable(false);
         }
 //        */
     }

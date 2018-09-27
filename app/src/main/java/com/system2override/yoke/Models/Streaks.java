@@ -34,9 +34,12 @@ public class Streaks extends SharedPreferencesModel {
     }
 
     public boolean canAddStreak(List<Habit> habits) {
+        if (habits.size() == 0) {
+            return false;
+        }
         boolean allDone = true;
         for (Habit h: habits) {
-            if (!h.completedOn(MyApplication.getTodayCalObj())) {
+            if (!h.isCompleted()) {
                 allDone = false;
             }
         }
