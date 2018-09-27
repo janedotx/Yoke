@@ -1,24 +1,19 @@
 package com.system2override.yoke;
 
 import android.app.ActivityManager;
-import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
 
-import com.squareup.otto.Subscribe;
 import com.system2override.yoke.OttoMessages.CurrentAppMessage;
 import com.system2override.yoke.OttoMessages.ForegroundMessage;
+import com.system2override.yoke.Utilities.UsageStatsHelper;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -52,7 +47,7 @@ public class ForegroundAppObserverThread extends Thread {
         this.context = context;
         this.rulesEnforcer = new RulesManager(this.context);
         this.lastApp = NULL;
-        this.usageStatsManager = getUsageStatsManager();
+        this.usageStatsManager = UsageStatsHelper.getUsageStatsManager(this.context);
         this.activityManager = (ActivityManager) this.context.getSystemService(Context.ACTIVITY_SERVICE);
         this.handler = new Handler() {
             public void handleMessage(Message message) {
@@ -77,18 +72,6 @@ public class ForegroundAppObserverThread extends Thread {
     public void run() {
         Looper.prepare();
         Looper.loop();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public UsageStatsManager getUsageStatsManager() {
-
-        if (android.os.Build.VERSION.SDK_INT == 21) {
-            return (UsageStatsManager) context.getSystemService("usagestats");
-
-        } else {
-            return (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
-        }
-
     }
 
     private String getForegroundApp() {

@@ -45,10 +45,8 @@ public class ShowAppsAdapter extends RecyclerView.Adapter<ShowAppsViewHolder>{
             @Override
             public void onClick(View view, int position) {
                 ShowAppsAdapter adapter = ShowAppsAdapter.this;
-                Log.d(TAG, "onClick: ");
                 MyApplication.getBannedApps().printBannedApps();;
                 String appName = ShowAppsAdapter.this.applications.get(position).packageName;
-                Log.d(TAG, "onClick: appName clicked " + appName);
 
                 // unchecking case
                 if (MyApplication.getBannedApps().getApps().contains(appName)) {

@@ -25,6 +25,7 @@
             ></TextView>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/bannedAppsIcons"
+            android:paddingBottom="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
     </LinearLayout>
@@ -38,6 +39,42 @@
         android:text="Select up to five apps you want to spend less time on."
         android:layout_marginBottom="5dp"
         />
+
+    <!--
+    <LinearLayout
+        android:id="@+id/bannedSortMenu"
+        android:layout_marginTop="7dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        android:layout_marginBottom="5dp"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="19dp"
+            android:textColor="@color/HobbesPrimaryAccent"
+            android:textSize="12sp"
+            android:text="Sort by "
+            />
+        <TextView
+            android:id="@+id/bannedAppSortType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/HobbesPrimaryAccent"
+            android:textSize="12sp"
+            android:text="alphabet"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/black_chevron"
+            android:tint="@color/HobbesPrimaryAccent" />
+
+    </LinearLayout>
+    !-->
 
     <include
         android:id="@+id/chooseAppsLayout"

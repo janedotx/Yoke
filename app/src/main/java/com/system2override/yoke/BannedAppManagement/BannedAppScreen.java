@@ -16,11 +16,13 @@ import android.view.MenuItem;
 
 import com.system2override.yoke.MyApplication;
 import com.system2override.yoke.R;
+import com.system2override.yoke.Utilities.UsageStatsHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class BannedAppScreen extends AppCompatActivity {
     private static final String TAG = "BannedAppScreen";
@@ -50,11 +52,31 @@ public class BannedAppScreen extends AppCompatActivity {
         this.showSelectedAppIconsView.setAdapter(this.selectedAppIconAdapter);
 
         List<ApplicationInfo> applicationInfoList = getApplicationList();
+        List<String> appStrings = getAppStrings(applicationInfoList);
+
         this.showAppsRecyclerView = (RecyclerView) findViewById(R.id.chooseAppsRecyclerView);
         this.showAppsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         this.showAppsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         this.showAppsAdapter = new ShowAppsAdapter(this, applicationInfoList, MyApplication.getBus());
         this.showAppsRecyclerView.setAdapter(this.showAppsAdapter);
+
+/*        List<String> apps = UsageStatsHelper.getAppsByTotalTime(this, 10, 1000 * 60 * 60 * 24 * 7, appStrings);
+        final PackageManager pm = getApplicationContext().getPackageManager();
+        for (String s: apps) {
+            ApplicationInfo ai;
+            try {
+                ai = pm.getApplicationInfo( s, 0);
+            } catch (final PackageManager.NameNotFoundException e) {
+                ai = null;
+            }
+            final String applicationName = (String) (ai != null ? pm.getApplicationLabel(ai) : "(unknown)");
+            Log.d(TAG, "onCreate: app " + applicationName + " " + s);
+        }
+        */
+        Map<Long, String> map = UsageStatsHelper.sortAppsByTime(UsageStatsHelper.getAppsByTotalTime(this, 1000 * 60 * 60 * 24 * 7));
+        for (Long key: map.keySet()) {
+            Log.d(TAG, "onCreate: "+ map.get(key).toString() + " " +  key );
+        }
 
     }
 
@@ -74,6 +96,15 @@ public class BannedAppScreen extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         finish();
+    }
+
+    private List<String> getAppStrings(List<ApplicationInfo> applicationInfoList) {
+        List<String> strings = new ArrayList<>();
+        for (ApplicationInfo applicationInfo: applicationInfoList) {
+            strings.add(applicationInfo.packageName);
+        }
+        return strings;
+
     }
 
     private List<ApplicationInfo> getApplicationList() {

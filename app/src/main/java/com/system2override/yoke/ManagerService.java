@@ -136,46 +136,6 @@ public class ManagerService extends Service {
 
     }
 
-    //todo add threadgroup and other thread checking code...
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void launchManagerThread() {
-        try {
-            Log.d(TAG, "launchManagerThread: trying to launch this fucking threads");
-
-            SharedPreferences settings =
-                    this.getApplicationContext().getSharedPreferences(TodoAppConstants.ACCOUNTS_FILE, Context.MODE_PRIVATE);
-            String accountName = settings.getString(TodoAppConstants.GTASKS_ACCCOUNT_NAME, null);
-
-            GoogleAccountCredential mCredential = GoogleAccountCredential.usingOAuth2(
-                    getApplicationContext(), Arrays.asList(GTASKS_SCOPES))
-                    .setBackOff(new ExponentialBackOff());
-
-            // should ask for authentication somehow...
-            mCredential.setSelectedAccountName(accountName);
-
-            HttpTransport transport = AndroidHttp.newCompatibleTransport();
-            JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-            com.google.api.services.tasks.Tasks mService = new com.google.api.services.tasks.Tasks.Builder(
-                    transport, jsonFactory, mCredential)
-                    .setApplicationName("Google Tasks API Android Quickstart")
-                    .build();
-
-            RulesManagerThread rulesManagerThread = new RulesManagerThread(this);
-            rulesManagerThread.setGoogleService(mService);
-            Thread.UncaughtExceptionHandler handler = rulesManagerThread.getUncaughtExceptionHandler();
-            if (!(handler instanceof DefaultUncaughtExceptionHandler)) {
-                rulesManagerThread.setUncaughtExceptionHandler(
-                        new DefaultUncaughtExceptionHandler(handler, this));
-            }
-            rulesManagerThread.start();
-
-        } catch (Exception e) {
-            Log.d(TAG, "onStartCommand: stats not gottten");
-            Log.d(TAG, "onStartCommand: " + Log.getStackTraceString(e));
-        }
-    }
-
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand: start");
