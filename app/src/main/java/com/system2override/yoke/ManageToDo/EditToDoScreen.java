@@ -42,6 +42,11 @@ public class EditToDoScreen extends ManageToDoScreen {
     }
 
     @Override
+    public void onClick(View v) {
+        super.onClick(v);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.edit_todo, menu);
         return true;

@@ -34,26 +34,33 @@ public interface HabitDao {
     @Delete
     public void delete(Habit... habits);
 
-    @Query("SELECT * FROM Habits")
+    // load all dailies
+    @Query("SELECT * FROM Habits where isDailyHabit = 1")
     public List<Habit> loadAllHabits();
 
-    @Query("SELECT * FROM Habits where lastDateCompleted >= :lastDateCompleted")
-    public List<Habit> getAllHabitsSince(String lastDateCompleted);
+    @Query("SELECT * from Habits where isDailyHabit = 0")
+    public List<Habit> loadAllOneOffs();
 
-    @Query("SELECT * FROM Habits where lastDateCompleted >= :lastDateCompleted LIMIT :limit")
-    public List<Habit> getAllHabitsSince(String lastDateCompleted, int limit);
+    @Query("SELECT * FROM Habits where isDailyHabit = 1 AND completed = 0  LIMIT :limit")
+    public List<Habit> loadNumIncompleteHabits(int limit);
 
-    @Query("SELECT * FROM Habits where lastDateCompleted < :lastDateCompleted LIMIT :limit")
-    public List<Habit> getAllHabitsBefore(String lastDateCompleted, int limit);
+    @Query("SELECT * from Habits where isDailyHabit = 0 LIMIT :limit")
+    public List<Habit> loadNumOneOffs(int limit);
 
-    @Query("SELECT * FROM Habits where lastDateCompleted < :lastDateCompleted")
-    public List<Habit> getAllHabitsCompletedBefore(String lastDateCompleted);
+    @Query("SELECT * FROM Habits where completed = 0 AND isDailyHabit = 1")
+    public List<Habit> loadAllIncompleteHabits();
 
-    @Query("SELECT * FROM Habits WHERE description = :description")
-    public List<Habit> getHabitsByMatchingDescription(String description);
+    @Query("SELECT * FROM Habits where completed = 1 AND isDailyHabit = 1")
+    public List<Habit> loadAllCompleteHabits();
 
-    @Query("SELECT * FROM Habits WHERE description = :description LIMIT 1")
-    public Habit getFirstHabitByMatchingDescription(String description);
+    @Query("SELECT * FROM Habits where completed = 0 AND isDailyHabit = 0")
+    public List<Habit> loadAllIncompleteOneOffs();
+
+    @Query("SELECT * FROM Habits where completed = 0 AND isDailyHabit = 0 LIMIT :limit")
+    public List<Habit> loadNumIncompleteOneOffs(int limit);
+
+    @Query("SELECT * FROM Habits where completed = 1 AND isDailyHabit = 0")
+    public List<Habit> loadAllCompleteOneOffs();
 
     @Query("SELECT * FROM Habits WHERE id = :id")
     public Habit getById(int id);

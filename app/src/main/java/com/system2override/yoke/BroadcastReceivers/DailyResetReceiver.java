@@ -24,13 +24,15 @@ public class DailyResetReceiver extends BroadcastReceiver{
 
         if (MyApplication.MIDNIGHT_RESET_ACTION.equals(intent.getAction())) {
             HarnessDatabase db = MyApplication.getDb();
+            List<Habit> habits = db.habitDao().loadAllHabits();
+            for (Habit h: habits) {
+                h.setCompleted(false);
+            }
+            db.habitDao().updateHabits(habits);
             timeBank.resetTime();
             streak.endStreakDay();
 
             MyApplication.getBus().post(new MidnightResetEvent());
-            Log.d(TAG, "onReceive: midnight reset happened");
-            Toast.makeText(context, "Midnight reset happened",
-                    Toast.LENGTH_LONG).show();
         }
     }
 }

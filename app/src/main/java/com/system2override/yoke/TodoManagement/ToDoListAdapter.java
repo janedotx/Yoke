@@ -116,7 +116,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
         // TODO
         // change this so the left border is green only if it's a one-off task
 //        /*
-        if (todo instanceof LocalTask) {
+        if (!todo.getIsDailyHabit()) {
             holder.toDoViewGroup.setBackground(ContextCompat.getDrawable(this.context, R.drawable.one_off_todo_coloring));
         }
 //        */

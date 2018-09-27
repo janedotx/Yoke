@@ -4,14 +4,17 @@ import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
 import com.system2override.yoke.Models.RoomModels.Habit;
+import com.system2override.yoke.Models.RoomModels.HabitDao;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -27,24 +30,34 @@ public class HabitInstrumentedTest {
     }
 
     @Test
-    public void testCompletedOn() {
-        Calendar todayObj = new GregorianCalendar();
-        todayObj.setTimeInMillis(System.currentTimeMillis());
+    public void testGetHabitsOnly() {
+        HabitDao dao = mTestDbWrapper.getDb().habitDao();
+        List<Habit> loadAllHabitsTest = dao.loadAllHabits();
+        assertEquals(4, loadAllHabitsTest.size());
 
-        String anHourAgo = Habit.convertMSToYYMMDD(System.currentTimeMillis() - 1000 * 60 * 60);
-        Habit newHabit = mTestDbWrapper.getDb().habitDao().getAllHabitsSince(anHourAgo).get(0);
-        assertEquals(true, newHabit.completedOn(todayObj));
+        List<Habit> allOneOffs = dao.loadAllOneOffs();
+        assertEquals(2, allOneOffs.size());
 
-        Habit oldHabit = mTestDbWrapper.getDb().habitDao().getFirstHabitByMatchingDescription("i was completed a million years ago");
-        assertEquals(false, oldHabit.completedOn(todayObj));
+        List<Habit> oneOneOffs = dao.loadNumOneOffs(1);
+        assertEquals(1, oneOneOffs.size());
 
-        int size = mTestDbWrapper.getDb().habitDao().loadAllHabits().size();
-        Log.d(TAG, "testCompletedToday: size " + Integer.toString(size));
+        List<Habit> numIncompleteHabits = dao.loadNumIncompleteHabits(1);
+        assertEquals(1, numIncompleteHabits.size());
 
-        Habit neverDoneHabit = mTestDbWrapper.getDb().habitDao().getFirstHabitByMatchingDescription("never");
-        assertEquals(false, neverDoneHabit.completedOn(todayObj));
-        assertEquals("", neverDoneHabit.getLastDateCompleted());
+        List<Habit> allIncompletes = dao.loadAllIncompleteHabits();
+        assertEquals(3, allIncompletes.size());
+
+        List<Habit> allCompleteHabits = dao.loadAllCompleteHabits();
+        assertEquals(1, allCompleteHabits.size());
+
+        List<Habit> allIncompleteOneOffs = dao.loadAllIncompleteOneOffs();
+        assertEquals(1, allIncompleteOneOffs.size());
+
+        List<Habit> loadAllCompleteOneOffs = dao.loadAllCompleteOneOffs();
+        assertEquals(1, loadAllCompleteOneOffs.size());
+
     }
+
 
 
 }

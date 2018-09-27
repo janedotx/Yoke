@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.system2override.yoke.HarnessDatabase;
 import com.system2override.yoke.Models.RoomModels.Habit;
+import com.system2override.yoke.Models.RoomModels.LocalTask;
 import com.system2override.yoke.Models.ToDoInterface;
 import com.system2override.yoke.MyApplication;
 import com.system2override.yoke.R;
@@ -45,27 +46,39 @@ public class ToDoListFragment extends Fragment {
 
     private List<ToDoInterface> getToDoItems(int tab, HarnessDatabase db) {
         List<ToDoInterface> items = new ArrayList<>();
-        List<Habit> habits = db.habitDao().loadAllHabits();
         switch(tab) {
             // all
             case 0:
+                List<Habit> habits = db.habitDao().loadAllHabits();
+                List<Habit> oneOffs = db.habitDao().loadAllOneOffs();
                 for (Habit h: habits) {
+                    items.add((ToDoInterface) h);
+                }
+                for (Habit h: oneOffs) {
                     items.add((ToDoInterface) h);
                 }
                 break;
             case 1:
-                for (Habit h: habits) {
-                    if (h.isCompleted()) {
-                        items.add((ToDoInterface) h);
-                    }
+                List<Habit> completedHabits = db.habitDao().loadAllCompleteHabits();
+                List<Habit> completedOneOffs = db.habitDao().loadAllCompleteOneOffs();
+                for (Habit h: completedHabits) {
+                    items.add((ToDoInterface) h);
                 }
+                for (Habit h: completedOneOffs) {
+                    items.add((ToDoInterface) h);
+                }
+
                 break;
             case 2:
-                for (Habit h: habits) {
-                    if (!h.isCompleted()) {
-                        items.add((ToDoInterface) h);
-                    }
+                List<Habit> incompleteHabits = db.habitDao().loadAllIncompleteHabits();
+                List<Habit> incompleteOneOffs = db.habitDao().loadAllIncompleteOneOffs();
+                for (Habit h: incompleteHabits) {
+                    items.add((ToDoInterface) h);
                 }
+                for (Habit h: incompleteOneOffs) {
+                    items.add((ToDoInterface) h);
+                }
+
         }
 
         return items;

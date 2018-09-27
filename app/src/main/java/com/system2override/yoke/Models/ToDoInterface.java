@@ -9,5 +9,6 @@ public interface ToDoInterface {
     public int getId();
     public void setCompleted(boolean b);
     public void save(HarnessDatabase db);
+    public boolean getIsDailyHabit();
 
 }

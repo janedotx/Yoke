@@ -26,7 +26,7 @@ public class AppLimitTasksTest {
     public void setupBeforeEach() {
         this.context = InstrumentationRegistry.getTargetContext();
         context.deleteDatabase(BuildConfig.DATABASE_FILE);
-        mDb = MyApplication.getDb(context);
+        mDb = MyApplication.getDb();
     }
 
     @Test

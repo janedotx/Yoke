@@ -22,8 +22,14 @@ public class Habit implements ToDoInterface {
     @ColumnInfo(name="lastDateCompleted")
     public String lastDateCompleted = "";
 
+    @ColumnInfo(name="completed")
+    public boolean completed;
+
     @ColumnInfo(name="description")
     public String description;
+
+    @ColumnInfo(name="isDailyHabit")
+    public boolean isDailyHabit;
 
     @Override
     public int getId() {
@@ -68,23 +74,29 @@ public class Habit implements ToDoInterface {
 
     @Override // ToDoInterface
     public boolean isCompleted() {
-        Calendar calObj = new GregorianCalendar();
-        calObj.setTimeInMillis(System.currentTimeMillis());
-        return completedOn(calObj);
+        return this.completed;
     }
 
     public void setCompleted(boolean completed) {
         Log.d(TAG, "setCompleted: ");
-        if (completed) {
-            this.setLastDateCompleted(Habit.convertMSToYYMMDD(System.currentTimeMillis()));
-        } else {
-            this.setLastDateCompleted("");
-        }
+        this.completed = completed;
+    }
+
+    public boolean getCompleted() {
+        return this.completed;
     }
 
     @Override
     public String toString() {
         return Integer.toString(getId()) + " " + description + " " + Boolean.toString(isCompleted());
+    }
+
+    public boolean isDailyHabit() {
+        return isDailyHabit;
+    }
+
+    public void setDailyHabit(boolean dailyHabit) {
+        isDailyHabit = dailyHabit;
     }
 
     //ToDoInterface
@@ -103,6 +115,10 @@ public class Habit implements ToDoInterface {
     public void save(HarnessDatabase db) {
         Log.d(TAG, "save: and completed is " + Boolean.toString(this.isCompleted()));
         db.habitDao().update(this);
+    }
+
+    public boolean getIsDailyHabit() {
+        return isDailyHabit;
     }
 
 

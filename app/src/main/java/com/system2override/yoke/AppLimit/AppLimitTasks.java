@@ -24,8 +24,8 @@ public class AppLimitTasks {
 
     public List<ToDoInterface> calculateToDos() {
         List<ToDoInterface> toDos = new ArrayList<>();
-        List<Habit> habits = this.db.habitDao().getAllHabitsBefore(Habit.convertMSToYYMMDD(System.currentTimeMillis()), 3);
-        List<LocalTask> localTasks = new ArrayList<>();
+        List<Habit> habits = this.db.habitDao().loadNumIncompleteHabits(3);
+        List<Habit> oneOffs = new ArrayList<>();
         if (habits.size() > 0) {
             this.type = NO_STREAK;
         }
@@ -35,15 +35,15 @@ public class AppLimitTasks {
         }
 
         if (habits.size() < 3) {
-            localTasks = this.db.localTaskDao().getSomeIncompletedTasks(3 - habits.size());
+            oneOffs = this.db.habitDao().loadNumIncompleteOneOffs(3 - habits.size());
         }
 
         for (Habit h: habits) {
             toDos.add(h);
         }
 
-        for (LocalTask l: localTasks) {
-            toDos.add(l);
+        for (Habit h: oneOffs) {
+            toDos.add(h);
         }
 
         if (toDos.size() == 0) {

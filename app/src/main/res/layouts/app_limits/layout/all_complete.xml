@@ -47,12 +47,14 @@ android:background="@color/bottomBoxSepia"
                 android:textSize="12sp"
                 style="@style/expositoryText"
                 android:text="But you have reached your usage limit for today."/>
-            <TextView
-                android:layout_marginTop="12dp"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:scaleType="fitStart"
                 android:layout_gravity="center"
-                android:background="@color/HobbesPink"/>
+                android:layout_marginTop="12dp"
+                android:src="@drawable/heart" />
 
             </LinearLayout>
 

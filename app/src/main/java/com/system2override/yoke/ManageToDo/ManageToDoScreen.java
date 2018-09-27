@@ -8,7 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.squareup.otto.Bus;
@@ -23,7 +25,7 @@ import com.system2override.yoke.R;
 
 import java.util.List;
 
-public class ManageToDoScreen extends AppCompatActivity {
+public class ManageToDoScreen extends AppCompatActivity implements View.OnClickListener {
     public static String ADD_ACTION = "add";
     public static String ACTION_KEY = "action";
     private static final String TAG = "ManageToDoScreen";
@@ -34,8 +36,9 @@ public class ManageToDoScreen extends AppCompatActivity {
     public SuggestionsAdapter adapter;
     public Suggestion usedSuggestion;
     public ActionBar bar;
-    // visibility has been set to "none" in the xml view file
-//    CheckBox dailyHabitCheckBox;
+
+    View makeDailyHabit;
+    CheckBox dailyHabitCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +59,20 @@ public class ManageToDoScreen extends AppCompatActivity {
         suggestionsView.setAdapter(this.adapter);
 
         toDoEditText = findViewById(R.id.addToDoEditText);
-//        dailyHabitCheckBox = findViewById(R.id.makeDailyHabitCheckBox);
+        makeDailyHabit = findViewById(R.id.makeDailyHabit);
+        makeDailyHabit.setOnClickListener(this);
+        dailyHabitCheckBox = findViewById(R.id.makeDailyHabitCheckBox);
 //        /*
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (dailyHabitCheckBox.isChecked()) {
+            dailyHabitCheckBox.setChecked(false);
+        } else {
+            dailyHabitCheckBox.setChecked(true);
+        }
     }
 
     public void saveNewHabit() {

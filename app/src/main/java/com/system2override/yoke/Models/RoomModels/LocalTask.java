@@ -10,7 +10,7 @@ import com.system2override.yoke.HarnessDatabase;
 import com.system2override.yoke.Models.ToDoInterface;
 
 @Entity(tableName = "LocalTasks")
-public class LocalTask implements ToDoInterface {
+public class LocalTask  {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
@@ -44,12 +44,11 @@ public class LocalTask implements ToDoInterface {
     public String parentID;
 
     //ToDoInterface
-    @Override
     public int getId() {
         return id;
     }
 
-    @Override // ToDoInterface
+    // ToDoInterface
     public boolean isCompleted() {
         return completed;
     }
@@ -79,12 +78,10 @@ public class LocalTask implements ToDoInterface {
         this.updatedAt = updatedAt;
     }
 
-    @Override
     public String getDescription() {
         return description;
     }
 
-    @Override
     public String getToDoType() { return this.getClass().getSimpleName(); }
 
     public void setDescription(String description) {
@@ -143,7 +140,9 @@ public class LocalTask implements ToDoInterface {
         this.updatedAt = new DateTime(ms).toStringRfc3339();
     }
 
-    public LocalTask() {}
+    public LocalTask() {
+        this.setCompleted(false);
+    }
 
     public LocalTask(Task task, String taskListId) {
 

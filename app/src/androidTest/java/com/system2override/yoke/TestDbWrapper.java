@@ -27,7 +27,7 @@ public class TestDbWrapper extends AndroidTestCase {
     public TestDbWrapper() {
         this.context = InstrumentationRegistry.getTargetContext();
         context.deleteDatabase(BuildConfig.DATABASE_FILE);
-        mDb = MyApplication.getDb(context);
+        mDb = MyApplication.getDb();
     }
 
     public void setUpFixtures() {
@@ -42,17 +42,31 @@ public class TestDbWrapper extends AndroidTestCase {
 
 
         Habit oldHabit = new Habit();
+        Habit oldOneOff = new Habit();
 
         oldHabit.lastDateCompleted = "2000-10-01";
+        oldHabit.isDailyHabit = true;
+        oldOneOff.lastDateCompleted = "2000-10-01";
         oldHabit.description = "i was completed a million years ago";
+        oldOneOff.description = "i was completed a million years ago";
         mDb.habitDao().insert(oldHabit);
+        mDb.habitDao().insert(oldOneOff);
 
         Habit newHabit = new Habit();
+        Habit newOneOff = new Habit();
+
         newHabit.lastDateCompleted = Habit.convertMSToYYMMDD(System.currentTimeMillis());
+        newHabit.isDailyHabit = true;
+        newHabit.completed = true;
+        newOneOff.completed = true;
+        newOneOff.lastDateCompleted = Habit.convertMSToYYMMDD(System.currentTimeMillis());
         newHabit.description = "i was just completed";
+        newOneOff.description = "i was just completed";
         mDb.habitDao().insert(newHabit);
+        mDb.habitDao().insert(newOneOff);
 
         Habit neverTouchedHabit = new Habit();
+        neverTouchedHabit.isDailyHabit = true;
         neverTouchedHabit.description = "never";
         mDb.habitDao().insert(neverTouchedHabit);
 
@@ -60,6 +74,7 @@ public class TestDbWrapper extends AndroidTestCase {
         yesterdayCalObj.setTimeInMillis(System.currentTimeMillis());
         yesterdayCalObj.add(Calendar.DAY_OF_YEAR, -1);
         Habit yesterdayHabit = new Habit();
+        yesterdayHabit.isDailyHabit = true;
         yesterdayHabit.description = "yesterday";
         yesterdayHabit.lastDateCompleted = Habit.convertMSToYYMMDD(yesterdayCalObj.getTimeInMillis());
         mDb.habitDao().insert(yesterdayHabit);
