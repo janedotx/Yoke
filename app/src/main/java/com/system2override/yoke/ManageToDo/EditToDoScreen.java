@@ -38,6 +38,7 @@ public class EditToDoScreen extends ManageToDoScreen {
 
         ToDoInterface todo = MyApplication.getDb().habitDao().getById(this.toDoId);
         this.toDoEditText.setText(todo.getDescription());
+        this.dailyHabitCheckBox.setChecked(todo.getIsDailyHabit());
 
     }
 
@@ -57,8 +58,14 @@ public class EditToDoScreen extends ManageToDoScreen {
         HarnessDatabase dbConn = MyApplication.getDb();
         Habit habit = dbConn.habitDao().getById(this.toDoId);
         habit.description = toDoEditText.getText().toString();
+
+        if (this.dailyHabitCheckBox.isChecked()) {
+            habit.setIsDailyHabit(true);
+        } else {
+            habit.setIsDailyHabit(false);
+        }
+
         dbConn.habitDao().update(habit);
-        GeneralDebugging.printDb(dbConn);
 
         this.bus.post(new ToDoEdited(this.toDoId, this.adapterPosition));
 

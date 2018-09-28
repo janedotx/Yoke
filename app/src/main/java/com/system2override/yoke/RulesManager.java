@@ -26,12 +26,13 @@ public class RulesManager {
 
     @com.squareup.otto.Subscribe
     public void processForegroundMessage(CurrentAppMessage currentAppMessage) {
- //       Log.d(TAG, "processForegroundMessage: called me!");
+        Log.d(TAG, "processForegroundMessage: called me!");
         boolean inBadApp = MyApplication.getBannedApps().getApps().contains(currentAppMessage.getCurrentApp());
         TimeBank timeBank = MyApplication.getTimeBank();
         long availableTime = timeBank.getTotalTimeForToday();
         long timeSpent = timeBank.getSpentTime();
 
+        Log.d(TAG, "processForegroundMessage in bad app: " + Boolean.toString(inBadApp));
         if (timeSpent >= availableTime && inBadApp) {
             this.context.startActivity(this.launcherIntent);
             return;

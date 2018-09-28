@@ -27,24 +27,25 @@ public class ToDoViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         this.listener = listener;
         this.toDoViewGroup = view.findViewById(R.id.toDoViewGroup);
 
-        this.description.setOnClickListener(this);
-        this.checkBox.setOnClickListener(this);
+        this.toDoViewGroup.setOnClickListener(this);
+        if (this.checkBox != null) {
+            this.checkBox.setOnClickListener(this);
+        }
     }
 
     @Override
     public void onClick(View view) {
-        Toast.makeText(context, "a click happened", Toast.LENGTH_SHORT).show();
         // or view.getId(), even better
         if (view instanceof CheckBox) {
             listener.onCheckBoxClick((CheckBox) view, getAdapterPosition());
         } else {
-            listener.onTextClick((TextView) view, getAdapterPosition());
+            listener.onTextClick( view, getAdapterPosition());
         }
 
     }
 
     public static interface IToDoViewHolderClicks {
-        public void onTextClick(TextView v, int position);
+        public void onTextClick(View v, int position);
         public void onCheckBoxClick(CheckBox b, int position);
     }
 }

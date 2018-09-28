@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 
 import com.system2override.yoke.OttoMessages.CurrentAppMessage;
 import com.system2override.yoke.OttoMessages.ForegroundMessage;
@@ -93,7 +94,7 @@ public class ForegroundAppObserverThread extends Thread {
             List<ActivityManager.RunningAppProcessInfo> tasks = this.activityManager.getRunningAppProcesses();
             currentApp = tasks.get(0).processName;
         }
-//        Log.d(TAG, "getForegroundApp: " + currentApp);
+        Log.d(TAG, "getForegroundApp: " + currentApp);
 
         return currentApp;
     }

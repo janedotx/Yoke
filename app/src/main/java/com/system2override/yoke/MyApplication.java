@@ -5,6 +5,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.util.Log;
 
@@ -51,13 +52,18 @@ public class MyApplication extends Application {
         timeBank = new TimeBank(this, bus);
         bannedApps = new BannedApps(this);
         streaks = new Streaks(this, bus);
+
+        // to delete db
+//        File file = new File(BuildConfig.DATABASE_FILE);
+//        boolean success = SQLiteDatabase.deleteDatabase(file);
+
         db =  Room.databaseBuilder(getApplicationContext(),
                 HarnessDatabase.class, BuildConfig.DATABASE_FILE)
                     .allowMainThreadQueries()
                     .fallbackToDestructiveMigration()
                     .build();
         startManagerService();
-        setupDB();
+//        setupDB();
     }
 
 
@@ -105,7 +111,6 @@ public class MyApplication extends Application {
     }
 
     private void setupDB() {
-        boolean success = this.deleteDatabase("db");
 
         HarnessDatabase db = MyApplication.getDb();
 
@@ -116,7 +121,7 @@ public class MyApplication extends Application {
 
         Habit newHabit2 = new Habit();
         newHabit2.description = "stretch";
-        newHabit1.isDailyHabit = true;
+        newHabit2.isDailyHabit = true;
 
         Habit newHabit3 = new Habit();
         newHabit3.description = "do yoga";
@@ -137,9 +142,6 @@ public class MyApplication extends Application {
         }
         */
 
-        LocalTask localTask = new LocalTask();
-        localTask.setDescription("im a fake imported task");
-        db.localTaskDao().insert(localTask);
 
         Suggestion suggestion1 = new Suggestion();
         suggestion1.text = "drink more water";

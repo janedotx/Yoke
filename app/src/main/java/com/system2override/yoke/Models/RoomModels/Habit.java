@@ -95,7 +95,7 @@ public class Habit implements ToDoInterface {
         return isDailyHabit;
     }
 
-    public void setDailyHabit(boolean dailyHabit) {
+    public void setIsDailyHabit(boolean dailyHabit) {
         isDailyHabit = dailyHabit;
     }
 

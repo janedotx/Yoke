@@ -18,6 +18,7 @@ import java.util.List;
 
 public class ToDoReminderAdapter extends RecyclerView.Adapter<ToDoReminderViewHolder>{
     private static final String TAG = "ToDoReminderAdapter";
+    private static final int TRUNCATE_LENGTH = 25;
     
     private List<ToDoInterface> toDoList;
     private Context context;
@@ -50,9 +51,15 @@ public class ToDoReminderAdapter extends RecyclerView.Adapter<ToDoReminderViewHo
     @Override
     public void onBindViewHolder(@NonNull ToDoReminderViewHolder holder, int position) {
         ToDoInterface todo = this.toDoList.get(position);
-        holder.description.setText(todo.getDescription());
-        if (todo instanceof LocalTask) {
+        String description = todo.getDescription();
+        if (description.length() > TRUNCATE_LENGTH) {
+            description = description.substring(0, TRUNCATE_LENGTH);
+            description += "...";
+        }
+        holder.description.setText(description);
+        if (!todo.getIsDailyHabit()) {
             holder.toDoViewGroup.setBackground(ContextCompat.getDrawable(this.context, R.drawable.one_off_todo_coloring));
+            holder.setIsRecyclable(false);
         }
     }
 

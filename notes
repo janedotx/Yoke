@@ -7,3 +7,5 @@ midnight reset (I saw 2/2)
 app redeploy to phone (no change in 2/2)
 force app restart (no change in 1/1)
 android random act of death (no change in 1/1)
+
+as soon as the usage settings permission is granted, the ManagerService can shoot the app limit screen

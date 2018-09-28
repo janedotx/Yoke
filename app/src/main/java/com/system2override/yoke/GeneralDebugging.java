@@ -15,7 +15,6 @@ public abstract class GeneralDebugging {
         Log.d(TAG, "printDb: ----------");
         Log.d(TAG, "printDb: about to print out this whole database");
         List<Habit> habits = db.habitDao().loadAllHabits();
-        List<LocalTask> localTasks = db.localTaskDao().loadAllLocalTasks();
         List<Suggestion> suggestions = db.suggestionDao().loadAllUnusedSuggestions();
 
         Log.d(TAG, "printDb: habits");
@@ -24,10 +23,6 @@ public abstract class GeneralDebugging {
         }
         Log.d(TAG, " ----------");
 
-        Log.d(TAG, "printDb: localtasks");
-        for (LocalTask l: localTasks) {
-            Log.d(TAG, "printDb: localtask " + l.toString());
-        }
 
         Log.d(TAG, "printDb: suggestions");
         for (Suggestion s: suggestions) {

@@ -75,22 +75,6 @@ public class ManageToDoScreen extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    public void saveNewHabit() {
-        HarnessDatabase dbConn = MyApplication.getDb();
-        String toDoText = toDoEditText.getText().toString();
-        Habit habit = new Habit();
-        habit.setDescription(toDoText);
-        int id = (int) dbConn.habitDao().insert(habit);
-        Habit newHabit = dbConn.habitDao().getById(id);
-        this.bus.post(new ToDoCreated(newHabit));
-
-        if (this.usedSuggestion != null) {
-            this.usedSuggestion.setUsed(true);
-            dbConn.suggestionDao().update(this.usedSuggestion);
-        }
-
-        finish();
-    }
 
     @Override
     protected void onStop() {
@@ -122,19 +106,6 @@ public class ManageToDoScreen extends AppCompatActivity implements View.OnClickL
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        /*
-        String action = getAction();
-        int id = item.getItemId();
-        if (id == R.id.add_todo_menu_save) {
-            saveNewHabit();
-        }
-
-        if (id == R.id.home) {
-            if (action == EDIT_ACTION) {
-
-            }
-        }
-        */
         return super.onOptionsItemSelected(item);
     }
 

@@ -26,7 +26,7 @@ public class RandomUtilities {
     }
 
     public static String formatMillisecondsToMMSS(long millis) {
-        return String.format("%02dm %02ds",
+        return String.format("%dm %ds",
                 getTotalMinutes(millis), getSecondsField(millis));
     }
 
@@ -34,17 +34,17 @@ public class RandomUtilities {
         if ((int) millis == 0) {
             return "0 m";
         }
-        return String.format("%02d m",
+        return String.format("%d m",
                 getTotalMinutes(millis));
     }
 
     public static String formatMillisecondsToHHMM(long millis) {
-        return String.format("%02dh %02dm",
+        return String.format("%dh %dm",
                 getHourField(millis), getMinuteField(millis));
     }
 
     public static String formatMSToHHMMSS(long millis) {
-        return String.format("%02dh %02dm %02ds",
+        return String.format("%dh %dm %ds",
                 getHourField(millis), getMinuteField(millis), getSecondsField(millis));
     }
 

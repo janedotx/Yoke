@@ -5,7 +5,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.squareup.otto.Subscribe;
+import com.system2override.yoke.HarnessDatabase;
+import com.system2override.yoke.Models.RoomModels.Habit;
+import com.system2override.yoke.MyApplication;
 import com.system2override.yoke.OttoMessages.SuggestionClickedEvent;
+import com.system2override.yoke.OttoMessages.ToDoCreated;
 import com.system2override.yoke.R;
 
 public class AddToDoScreen extends ManageToDoScreen {
@@ -34,5 +38,27 @@ public class AddToDoScreen extends ManageToDoScreen {
     public void onSuggestionClicked(SuggestionClickedEvent e) {
         this.toDoEditText.setText(e.suggestion.getText());
         this.usedSuggestion = e.suggestion;
+    }
+
+    public void saveNewHabit() {
+        HarnessDatabase dbConn = MyApplication.getDb();
+        String toDoText = toDoEditText.getText().toString();
+        Habit habit = new Habit();
+        habit.setDescription(toDoText);
+        int id = (int) dbConn.habitDao().insert(habit);
+        Habit newHabit = dbConn.habitDao().getById(id);
+        if (dailyHabitCheckBox.isChecked()) {
+            newHabit.setIsDailyHabit(true);
+        } else {
+            newHabit.setIsDailyHabit(false);
+        }
+        this.bus.post(new ToDoCreated(newHabit));
+
+        if (this.usedSuggestion != null) {
+            this.usedSuggestion.setUsed(true);
+            dbConn.suggestionDao().update(this.usedSuggestion);
+        }
+
+        finish();
     }
 }

@@ -16,14 +16,15 @@ wireup streaks thing so that the streak goes up/down if you've checked off every
 
 x change background of app icons on banned apps to dark sepia
 x make database permanent file
+x truncate text longer than 30 chars
+x implement one-offs
+x add dotted placeholder todo
 
 tutorial
 nahhh too much work -- sort bad apps by usage time in the banned app screen
 show app usage history only for bad apps
-add dotted placeholder todo
 show avg daily use before hobbes and avg daily usage after hobbes
-implement one-offs
-truncate text longer than 30 chars
+differential earn time
 use all images of grampa
 
 buy domain name
