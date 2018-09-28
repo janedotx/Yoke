@@ -50,6 +50,8 @@ public class MyApplication extends Application {
         bus = new Bus(ThreadEnforcer.ANY);
         packageName = getApplicationContext().getPackageName();
         timeBank = new TimeBank(this, bus);
+        timeBank.putDailyHabitTimeGrant(TimeBank.MAX_REFRESH_DAILY_TIME);
+        timeBank.putOneoffTimeGrant(TimeBank.MAX_REFRESH_ONE_OFF_TIME);
         bannedApps = new BannedApps(this);
         streaks = new Streaks(this, bus);
 
@@ -60,7 +62,7 @@ public class MyApplication extends Application {
         db =  Room.databaseBuilder(getApplicationContext(),
                 HarnessDatabase.class, BuildConfig.DATABASE_FILE)
                     .allowMainThreadQueries()
-                    .fallbackToDestructiveMigration()
+//                    .fallbackToDestructiveMigration()
                     .build();
         startManagerService();
 //        setupDB();

@@ -20,6 +20,8 @@ public class TimeBank extends SharedPreferencesModel {
 
     private final String INITIAL_TIME_GRANT_KEY = "INITIAL_TIME_GRANT_KEY";
     private final String REWARD_GRANT_TIME_KEY = "REWARD_GRANT_TIME_KEY";
+    private final String DAILY_GRANT_TIME_KEY = "DAILY_GRANT_TIME_KEY";
+    private final String ONEOFF_GRANT_TIME_KEY = "ONEOFF_GRANT_TIME_KEY";
     private final String TIME_SPENT_KEY = "TIME_SPENT_BANNED_APPS_KEY";
     private final String TIME_EARNED_KEY = "TIME_EARNED_KEY";
     public final String FILE = "TIME";
@@ -53,9 +55,13 @@ public class TimeBank extends SharedPreferencesModel {
         return prefs.getLong(TIME_EARNED_KEY, 0L);
     }
 
-    public long earnTime() {
+    public long earnTime(ToDoInterface todo) {
         long earnedTime = this.prefs.getLong(TIME_EARNED_KEY, 0L);
-        earnedTime += getRewardTimeGrant();
+        if (todo.getIsDailyHabit()) {
+            earnedTime += getDailyTimeGrant();
+        } else {
+            earnedTime += getOneoffTimeGrant();
+        }
         this.editor.putLong(TIME_EARNED_KEY, earnedTime);
         this.editor.apply();
         Log.d(TAG, "earnTime: about to post");
@@ -68,10 +74,13 @@ public class TimeBank extends SharedPreferencesModel {
     }
 
     // careful with this method, don't let current time get negative--though does it really matter?
-    public long unearnTime() {
-        long refreshTime = this.prefs.getLong(REWARD_GRANT_TIME_KEY, 0l);
+    public long unearnTime(ToDoInterface todo) {
         long currentTime = this.prefs.getLong(TIME_EARNED_KEY, 0L);
-        currentTime -= refreshTime;
+        if (todo.getIsDailyHabit()) {
+            currentTime -= getDailyTimeGrant();
+        } else {
+            currentTime -= getOneoffTimeGrant();
+        }
         this.editor.putLong(TIME_EARNED_KEY, currentTime);
         this.editor.apply();
 
@@ -105,10 +114,23 @@ public class TimeBank extends SharedPreferencesModel {
         this.editor.apply();
     }
 
-    public long getRewardTimeGrant() {
-        return this.prefs.getLong(REWARD_GRANT_TIME_KEY, 0L);
+    public long getDailyTimeGrant() {
+        return this.prefs.getLong(DAILY_GRANT_TIME_KEY, 0L);
     }
 
+    public void putDailyHabitTimeGrant(long time) {
+        this.editor.putLong(DAILY_GRANT_TIME_KEY, time);
+        this.editor.apply();
+    }
+
+    public long getOneoffTimeGrant() {
+        return this.prefs.getLong(ONEOFF_GRANT_TIME_KEY, 0L);
+    }
+
+    public void putOneoffTimeGrant(long time) {
+        this.editor.putLong(ONEOFF_GRANT_TIME_KEY, time);
+        this.editor.apply();
+    }
 
     public long getTimeRemaining() {
         return getEarnedTime() + getInitialTime() - getSpentTime();

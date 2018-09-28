@@ -56,11 +56,15 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
         MyApplication.getBus().register(this);
     }
 
+    private boolean isPlaceholderToDo(ToDoInterface todo) {
+        return todo.getDescription().equals(PLACEHOLDER_TODO_DESC);
+    }
+
     @NonNull
     @Override
     public ToDoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v;
-        if (!this.toDoList.get(0).getDescription().equals(PLACEHOLDER_TODO_DESC)) {
+        if (!isPlaceholderToDo(this.toDoList.get(0))) {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.todo, parent, false);
             return new ToDoViewHolder(v, this.context, new ToDoViewHolder.IToDoViewHolderClicks() {
                 @Override
@@ -87,14 +91,14 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
                         // this would be a great place to use RxJava, set up this object as an observable
                         // and have the TimeBank subscribe to its changes but I don't know how to make
                         // that work and I don't feel inclined to learn at the moment
-                        timeBank.earnTime();
+                        timeBank.earnTime(toDo);
                         if (ToDoListAdapter.this.tab == ToDoListFragment.INCOMPLETE_TODOS) {
                             toDoList.remove(position);
                         }
                         MyApplication.getBus().post(new ToDoCompletedEvent(toDo));
                     } else {
                         toDo.setCompleted(false);
-                        timeBank.unearnTime();
+                        timeBank.unearnTime(toDo);
                         if (ToDoListAdapter.this.tab == ToDoListFragment.COMPLETED_TODOS) {
                             toDoList.remove(position);
                         }
@@ -105,7 +109,10 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
                     // update streak information as necessary
                     List<Habit> habits = db.habitDao().loadAllHabits();
                     Streaks streak = MyApplication.getStreaks();
-                    streak.updateStreakInformation(habits);
+                    if (toDo.getIsDailyHabit()) {
+                        streak.updateStreakInformation(habits);
+                    }
+
                     ToDoListAdapter.this.notifyDataSetChanged();
                     Log.d(TAG, "notifyDataSetChanged: ");
 
@@ -116,7 +123,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
             return new ToDoViewHolder(v, this.context, new ToDoViewHolder.IToDoViewHolderClicks() {
                 @Override
                 public void onTextClick(View v, int position) {
-                    toDoList.remove(0);
+                    ToDoListAdapter.this.toDoList.remove(0);
                     notifyDataSetChanged();
                     Intent i = new Intent(ToDoListAdapter.this.context, AddToDoScreen.class);
                     ToDoListAdapter.this.context.startActivity(i);
@@ -137,6 +144,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
     public void onBindViewHolder(@NonNull ToDoViewHolder holder, int position) {
         ToDoInterface todo = this.toDoList.get(position);
         if (todo.getDescription().equals(PLACEHOLDER_TODO_DESC)) {
+            holder.setIsRecyclable(false);
             return;
         }
         String description = todo.getDescription();
@@ -151,7 +159,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
         // TODO
         // change this so the left border is green only if it's a one-off task
 //        /*
-        if (!todo.getIsDailyHabit()) {
+        if (!todo.getIsDailyHabit() ) {
             holder.toDoViewGroup.setBackground(ContextCompat.getDrawable(this.context, R.drawable.one_off_todo_coloring));
             holder.setIsRecyclable(false);
         }
@@ -210,6 +218,11 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
     public void updateAdapterOnToDoCreation(ToDoCreated e) {
         if (this.tab != ToDoListFragment.COMPLETED_TODOS) {
             this.toDoList.add(e.todo);
+            for (int i =0; i < this.toDoList.size(); i++) {
+                if (isPlaceholderToDo(this.toDoList.get(i))) {
+                    this.toDoList.remove(i);
+                }
+            }
             notifyDataSetChanged();
         }
     }
@@ -239,6 +252,16 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
             }
         }
 
+    }
+
+    @Subscribe
+    public void onToDoCreation(ToDoCreated e) {
+        /*
+        if (isPlaceholderToDo(this.toDoList.get(0))) {
+            this.toDoList.remove(0);
+            notifyDataSetChanged();
+        }
+        //*/
     }
 //    */
 

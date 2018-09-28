@@ -149,6 +149,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
                 HarnessDatabase db = MyApplication.getDb();
                 timeBank.resetTime();
+                timeBank.putOneoffTimeGrant(0);
+                timeBank.putDailyHabitTimeGrant(0);
                 streak.endStreakDay();
             }
         });

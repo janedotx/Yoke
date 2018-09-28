@@ -37,8 +37,13 @@ public class Streaks extends SharedPreferencesModel {
         if (habits.size() == 0) {
             return false;
         }
+
         boolean allDone = true;
         for (Habit h: habits) {
+            // filter out one-offs from consideration
+            if (!h.getIsDailyHabit()) {
+                continue;
+            }
             if (!h.isCompleted()) {
                 allDone = false;
             }
@@ -84,7 +89,7 @@ public class Streaks extends SharedPreferencesModel {
         int currentStreak = getCurrentStreak();
         int longestStreak = getLongestStreak();
 
-        if (canAddStreak(habits)) {
+        if (canAddStreak(habits) && !getStreakCompletedToday()) {
             currentStreak += 1;
             setCurrentStreak(currentStreak);
             setStreakCompletedToday(true);

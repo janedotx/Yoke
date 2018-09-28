@@ -1,5 +1,7 @@
 package com.system2override.yoke.AppLimit;
 
+import android.util.Log;
+
 import com.system2override.yoke.HarnessDatabase;
 import com.system2override.yoke.Models.RoomModels.Habit;
 import com.system2override.yoke.Models.RoomModels.LocalTask;
@@ -9,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppLimitTasks {
+    private static final String TAG = "AppLimitTasks";
+    
     public static final int NO_STREAK = 0;
     public static final int STREAK_COMPLETED = 1;
     public static final int ALL_COMPLETED = 2;
@@ -34,16 +38,15 @@ public class AppLimitTasks {
             this.type = STREAK_COMPLETED;
         }
 
-        if (habits.size() < 3) {
-            oneOffs = this.db.habitDao().loadNumIncompleteOneOffs(3 - habits.size());
-        }
-
         for (Habit h: habits) {
             toDos.add(h);
         }
 
-        for (Habit h: oneOffs) {
-            toDos.add(h);
+        if (habits.size() < 3) {
+            oneOffs = this.db.habitDao().loadNumIncompleteOneOffs(3 - habits.size());
+            for (Habit h: oneOffs) {
+                toDos.add(h);
+            }
         }
 
         if (toDos.size() == 0) {

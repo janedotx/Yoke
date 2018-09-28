@@ -52,8 +52,7 @@ public class AppLimitScreen extends AppCompatActivity  {
                 setContentView(R.layout.all_complete);
                 break;
             case AppLimitTasks.STREAK_COMPLETED:
-                // this should be a different template
-                setContentView(R.layout.all_complete);
+                setContentView(R.layout.complete_streak);
                 break;
             default:
                 setContentView(R.layout.incomplete_streak_screen);
