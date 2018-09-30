@@ -9,3 +9,5 @@ force app restart (no change in 1/1)
 android random act of death (no change in 1/1)
 
 as soon as the usage settings permission is granted, the ManagerService can shoot the app limit screen
+
+since we're having that checkmark in the UI to switch the type of a todo from daily to oneoff and skipping out on syncing with other todo apps for now, every todo is a Habit behind the scenes now.

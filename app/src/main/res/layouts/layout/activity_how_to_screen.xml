@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/topBoxSepia"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WelcomeScreen">
+
+    <include layout="@layout/vertical_grampa" />
+    <LinearLayout
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="31dp"
+        android:orientation="vertical"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:text="@string/howToText"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:background="@color/HobbesPrimaryAccent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+        </View>
+        <TextView
+            android:id="@+id/welcomeNextButton"
+            android:text="NEXT"
+            android:textColor="@color/HobbesPrimaryAccent"
+            android:textSize="16sp"
+            android:paddingBottom="40dp"
+            android:layout_gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

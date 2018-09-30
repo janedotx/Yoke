@@ -94,7 +94,7 @@ public class ForegroundAppObserverThread extends Thread {
             List<ActivityManager.RunningAppProcessInfo> tasks = this.activityManager.getRunningAppProcesses();
             currentApp = tasks.get(0).processName;
         }
-        Log.d(TAG, "getForegroundApp: " + currentApp);
+//        Log.d(TAG, "getForegroundApp: " + currentApp);
 
         return currentApp;
     }

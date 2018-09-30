@@ -12,6 +12,7 @@ import android.util.Log;
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 import com.system2override.yoke.Models.BannedApps;
+import com.system2override.yoke.Models.OneTimeData;
 import com.system2override.yoke.Models.RoomModels.Habit;
 import com.system2override.yoke.Models.RoomModels.LocalTask;
 import com.system2override.yoke.Models.RoomModels.Suggestion;
@@ -38,6 +39,7 @@ public class MyApplication extends Application {
     public static TimeBank timeBank;
     public static BannedApps bannedApps;
     public static Streaks streaks;
+    public static OneTimeData oneTimeData;
 
     public static String MIDNIGHT_RESET_ACTION = "MIDNIGHT_RESET";
 
@@ -54,6 +56,7 @@ public class MyApplication extends Application {
         timeBank.putOneoffTimeGrant(TimeBank.MAX_REFRESH_ONE_OFF_TIME);
         bannedApps = new BannedApps(this);
         streaks = new Streaks(this, bus);
+        oneTimeData = new OneTimeData(this);
 
         // to delete db
 //        File file = new File(BuildConfig.DATABASE_FILE);
@@ -72,6 +75,8 @@ public class MyApplication extends Application {
     public static TimeBank getTimeBank() { return timeBank; }
     public static BannedApps getBannedApps() { return bannedApps; }
     public static Streaks getStreaks() { return streaks; }
+
+    public static OneTimeData getOneTimeData() { return oneTimeData; }
 
     public static Bus getBus() {
         return bus;

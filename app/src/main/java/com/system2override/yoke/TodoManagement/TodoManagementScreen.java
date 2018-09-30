@@ -37,6 +37,7 @@ import com.system2override.yoke.OttoMessages.TimeBankUnearnedTime;
 import com.system2override.yoke.R;
 import com.system2override.yoke.SetUsageLimitsScreen;
 import com.system2override.yoke.Utilities.RandomUtilities;
+import com.system2override.yoke.WelcomeScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,9 +82,9 @@ public class TodoManagementScreen extends AppCompatActivity {
         initializeValueViews();
 
         this.tabs = (TabLayout) findViewById(R.id.toDoManagementTabs);
+
         this.viewPager = (ViewPager) findViewById(R.id.toDoManagementPager);
         this.toDoListPagerAdapter = new ToDoListPagerAdapter(getSupportFragmentManager());
-
         this.viewPager.setAdapter(this.toDoListPagerAdapter);
         this.tabs.setupWithViewPager(this.viewPager);
 
@@ -120,6 +121,13 @@ public class TodoManagementScreen extends AppCompatActivity {
                                                }
                                            }
         );
+
+        boolean b = MyApplication.getOneTimeData().getHasDoneTutorialKey();
+        Log.d(TAG, "onCreate: has done tutorial? " + Boolean.toString(b));
+        if (!b) {
+            MyApplication.getOneTimeData().setHasDoneTutorialKey(true);
+            startActivity(new Intent(this, WelcomeScreen.class));
+        }
     }
 
     private void initializeValueViews() {
@@ -151,6 +159,14 @@ public class TodoManagementScreen extends AppCompatActivity {
         initializeValueViews();
         mDrawerLayout.closeDrawer(GravityCompat.START);
         super.onResume();
+
+        /*
+        if (!MyApplication.getOneTimeData().getHasDoneTutorialKey()) {
+            Intent i = new Intent(this, WelcomeScreen.class);
+            startActivity(i);
+
+        }
+        */
     }
 
     @Override

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Yoke</string>
+    <string name="app_name">Hobbes</string>
     <string name="rules_manager_file">rules_manager_file</string>
     <string name="manager_service_name">ManagerService</string>
     <string name="manager_service_notification_channel">ManagerServiceNotificationChannel</string>
@@ -20,4 +20,5 @@
     <string name="addToDoHint">Type in your new todo here...</string>
     <string name="addToDoSuggestionsLabel">Some todo ideas to get you started:</string>
     <string name="editToDoHeader">Edit</string>
+    <string name="howToText">HOW IT WORKS\n\nYou\'ll choose the apps that you want to restrict your time on, such as Twitter. You\'ll start each day with some minutes that you can spend on Twitter or other restricted apps. Once you run out, Hobbes will display your todo list. You can earn more time by doing todos.\n\nFirst, though, Hobbes will need your permission to access usage stats, so he can tell when you've run out of time on a restricted app. You will be shown a screen to change your phone settings.</string>
 </resources>
