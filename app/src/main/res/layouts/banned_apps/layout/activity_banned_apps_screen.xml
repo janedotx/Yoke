@@ -75,17 +75,26 @@
 
     </LinearLayout>
     !-->
-
-    <include
-        android:id="@+id/chooseAppsLayout"
-        layout="@layout/content_choose_apps"
+    <LinearLayout
+        android:weightSum="1"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_height="match_parent">
+        <include
+            android:id="@+id/chooseAppsLayout"
+            layout="@layout/content_choose_apps"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+        />
 
+        <TextView
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="40dp"
+            android:text="NEXT"/>
+    </LinearLayout>
 </LinearLayout>

@@ -24,5 +24,7 @@
     <color name="seek_bar_progress">#2c6f8e</color>
     <color name="seek_bar_secondary_progress">#2c6f8e</color>
 
+    <color name="usage_bar_background">#a29a7d</color>
+    <color name="total_usage_bar_background">#c0b797</color>
 
 </resources>

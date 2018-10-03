@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_marginTop="15dp"
+    android:layout_height="65dp"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <ImageView
+        android:id="@+id/usageHistoryAppIcon"
+        android:layout_width="41dp"
+        android:layout_height="41dp"
+        android:layout_gravity="center_vertical"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/placeholder"
+        android:layout_marginRight="41dp"
+ />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/appUsageHistoryBarLabel"
+            android:textColor="@color/HobbesPrimaryAccent"
+            android:text="I am an app"
+            android:textSize="12sp"
+            android:layout_marginBottom="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="@dimen/usage_history_bar_width"
+            android:layout_height="20dp"
+            android:background="@color/usage_bar_background"
+            >
+
+            <View
+                android:background="@color/HobbesPrimaryAccent"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/singleAppUsageHistoryBar">
+
+            </View>
+            <View
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                />
+            <TextView
+                android:id="@+id/appUsageHistoryBarTime"
+                android:gravity="right"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:text="24h 15m"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:layout_width="@dimen/usage_history_bar_time_width"
+                android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+</LinearLayout>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.system2override.yoke">
+    package="com.system2override.hobbes">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -24,7 +24,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".AppLimit.AppLimitScreen">
             <intent-filter>
-                <action android:name="com.system2override.yoke.APP_LIMIT_SCREEN" />
+                <action android:name="com.system2override.hobbes.APP_LIMIT_SCREEN" />
             </intent-filter>
         </activity>
         <activity
@@ -39,7 +39,7 @@
         </activity>
         <activity android:name=".BannedAppManagement.BannedAppScreen">
             <intent-filter>
-                <action android:name="com.system2override.yoke.BANNED_APP_SCREEN" />
+                <action android:name="com.system2override.hobbes.BANNED_APP_SCREEN" />
             </intent-filter>
         </activity>
 
@@ -47,7 +47,7 @@
             android:name=".ManagerService"
             android:stopWithTask="false">
             <intent-filter>
-                <action android:name="com.system2override.yoke.ManagerSrvice" />
+                <action android:name="com.system2override.hobbes.ManagerSrvice" />
             </intent-filter>
         </service>
 
@@ -63,9 +63,10 @@
             android:exported="true"
             android:label="DailyResetReceiver">
             <intent-filter>
-                <action android:name="com.system2override.yoke.RESET" />
+                <action android:name="com.system2override.hobbes.RESET" />
             </intent-filter>
         </receiver>
+
         <activity
             android:name=".ManageToDo.AddToDoScreen"
             android:parentActivityName=".TodoManagement.TodoManagementScreen"
@@ -76,18 +77,24 @@
             android:screenOrientation="portrait" />
         <activity android:name=".SetUsageLimitsScreen">
             <intent-filter>
-                <action android:name="com.system2override.yoke.SetUsageLimitsScreen" />
+                <action android:name="com.system2override.hobbes.SetUsageLimitsScreen" />
             </intent-filter>
         </activity>
         <activity android:name=".WelcomeScreen" />
         <activity
             android:name=".HowToScreen"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="com.system2override.yoke.HowToScreen" />
+                <action android:name="com.system2override.hobbes.HowToScreen" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".UsageHistory.UsageHistoryScreen"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.system2override.hobbes.UsageHistoryScreen" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
