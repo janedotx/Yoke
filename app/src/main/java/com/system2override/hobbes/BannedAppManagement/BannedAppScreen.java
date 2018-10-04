@@ -58,7 +58,9 @@ public class BannedAppScreen extends AppCompatActivity {
         List<ApplicationInfo> applicationInfoList = RandomUtilities.getApplicationList(getPackageManager());
         Map<String, ApplicationInfo> applicationInfoMap = new HashMap<>();
         for (ApplicationInfo applicationInfo: applicationInfoList) {
-            applicationInfoMap.put(applicationInfo.packageName, applicationInfo);
+            if (applicationInfo != null) {
+                applicationInfoMap.put(applicationInfo.packageName, applicationInfo);
+            }
         }
 
         List<Map.Entry<Long, String>> appsTimeMap = UsageStatsHelper.convertSortedMapToList(
@@ -68,7 +70,7 @@ public class BannedAppScreen extends AppCompatActivity {
         this.showAppsRecyclerView = (RecyclerView) findViewById(R.id.chooseAppsRecyclerView);
         this.showAppsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         this.showAppsRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        this.showAppsAdapter = new ShowAppsAdapter(this, applicationInfoList, MyApplication.getBus());
+        this.showAppsAdapter = new ShowAppsAdapter(this, appsTimeMap, applicationInfoMap, MyApplication.getBus());
         this.showAppsRecyclerView.setAdapter(this.showAppsAdapter);
 
         View next = findViewById(R.id.nextBar);

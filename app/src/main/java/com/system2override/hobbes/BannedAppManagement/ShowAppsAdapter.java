@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,17 +23,22 @@ import com.system2override.hobbes.R;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class ShowAppsAdapter extends RecyclerView.Adapter<ShowAppsViewHolder>{
     private static final String TAG = "ShowAppsAdapter";
-    private List<ApplicationInfo> applications;
+    private Map<String, ApplicationInfo> applications;
+    private PackageManager pm;
+    private  List<Map.Entry<Long, String>> appsTimeList;
     private Context context;
     Bus bus;
 
-    public ShowAppsAdapter(Context context, List<ApplicationInfo> list, Bus bus) {
-        this.applications = list;
+    public ShowAppsAdapter(Context context,  List<Map.Entry<Long, String>> appsTimeList, Map<String, ApplicationInfo> applications, Bus bus) {
+        this.applications = applications;
+        this.appsTimeList = appsTimeList;
         this.context = context;
+        this.pm = this.context.getPackageManager();
         this.bus = bus;
         bus.register(this);
     }
@@ -70,17 +76,23 @@ public class ShowAppsAdapter extends RecyclerView.Adapter<ShowAppsViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ShowAppsViewHolder holder, int position) {
-        ApplicationInfo app = this.applications.get(position);
-        ApplicationInfo appInfo = this.applications.get(position);
-        PackageManager pm = this.context.getPackageManager();
-        String singleAppPackageName = appInfo.packageName;
-        
-        holder.appText.setText(pm.getApplicationLabel(appInfo));
-        try {
-            holder.appImage.setImageDrawable(pm.getApplicationIcon(singleAppPackageName));
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.d(TAG, "onBindViewHolder: failure to draw icon");
+        String singleAppPackageName = this.appsTimeList.get(position).getValue();
+        ApplicationInfo appInfo = this.applications.get(singleAppPackageName);
+
+        Log.d(TAG, "onBindViewHolder: is this null? appInfo " + Boolean.toString(appInfo == null));
+        if (appInfo != null) {
+            holder.appText.setText(this.pm.getApplicationLabel(appInfo));
+        } else {
+            holder.appText.setText(singleAppPackageName);
         }
+
+        try {
+            holder.appImage.setImageDrawable(this.pm.getApplicationIcon(singleAppPackageName));
+        } catch (PackageManager.NameNotFoundException e) {
+            holder.appImage
+                    .setImageDrawable(ResourcesCompat.getDrawable(this.context.getResources(), R.drawable.empty_app_icon, null));
+        }
+
         if (MyApplication.getBannedApps().getApps().contains(singleAppPackageName)) {
             Log.d(TAG, "onBindViewHolder: banned apps contains " + singleAppPackageName);
             holder.checkBox.setChecked(true);
@@ -91,7 +103,7 @@ public class ShowAppsAdapter extends RecyclerView.Adapter<ShowAppsViewHolder>{
 
     @Override
     public int getItemCount() {
-        return this.applications.size();
+        return this.appsTimeList.size();
     }
 
     @Subscribe

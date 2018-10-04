@@ -59,7 +59,9 @@ public class UsageHistoryScreen extends AppCompatActivity {
         List<ApplicationInfo> applicationInfoList = RandomUtilities.getApplicationList(getPackageManager());
         Map<String, ApplicationInfo> applicationInfoMap = new HashMap<>();
         for (ApplicationInfo applicationInfo: applicationInfoList) {
-            applicationInfoMap.put(applicationInfo.packageName, applicationInfo);
+            if (applicationInfo != null) {
+                applicationInfoMap.put(applicationInfo.packageName, applicationInfo);
+            }
         }
 
         List<Map.Entry<Long, String>> appsTimeMap = UsageStatsHelper.convertSortedMapToList(
