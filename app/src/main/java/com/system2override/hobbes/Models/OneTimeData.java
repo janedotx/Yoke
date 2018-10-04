@@ -11,6 +11,7 @@ public class OneTimeData extends SharedPreferencesModel{
     private final String HAS_DONE_TUTORIAL_KEY = "HAS_DONE_TUTORIAL_KEY";
     private final String TIME_INSTALLED_KEY = "TIME_INSTALLED_KEY";
     private final String AVERAGE_DAILY_USE = "AVERAGE_DAILY_USE";
+    private final String FIRST_INSTALL_COMPLETE = "FIRST_INSTALL_COMPLETE";
 
     public OneTimeData(Context context) {
         super(context);
@@ -45,7 +46,12 @@ public class OneTimeData extends SharedPreferencesModel{
         return this.prefs.getLong(TIME_INSTALLED_KEY, 0);
     }
 
-    public boolean firstInstallIncomplete() {
-        return (this.prefs.getLong(TIME_INSTALLED_KEY, 0) == 0);
+    public boolean getFirstInstallIncomplete() {
+        return this.prefs.getBoolean(FIRST_INSTALL_COMPLETE, true);
+    }
+
+    public void setFirstInstallIncomplete(boolean b) {
+        this.editor.putBoolean(FIRST_INSTALL_COMPLETE, b);
+        this.editor.apply();
     }
 }

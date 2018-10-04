@@ -50,8 +50,10 @@ public class UsageHistoryScreen extends AppCompatActivity {
         this.bar.setTitle("Usage history");
         this.bar.setDisplayHomeAsUpEnabled(true);
 
-        if (MyApplication.getOneTimeData().firstInstallIncomplete()) {
+        if (MyApplication.getOneTimeData().getFirstInstallIncomplete()) {
             setBeforeHobbesUsage();
+            MyApplication.getOneTimeData().setFirstInstallIncomplete(false);
+            Log.d(TAG, "onCreate: setting before hobbes usage");
         }
 
         List<ApplicationInfo> applicationInfoList = RandomUtilities.getApplicationList(getPackageManager());
@@ -76,7 +78,6 @@ public class UsageHistoryScreen extends AppCompatActivity {
 
         View next = findViewById(R.id.nextBar);
         if (MyApplication.inTutorial()) {
-            Log.d(TAG, "onCreate: in tutorial");
             next.setVisibility(View.VISIBLE);
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -86,7 +87,6 @@ public class UsageHistoryScreen extends AppCompatActivity {
                 }
             });
         } else {
-            Log.d(TAG, "onCreate: not in tutorial");
             next.setVisibility(View.GONE);
         }
     }

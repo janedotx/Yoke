@@ -111,15 +111,6 @@ public class TodoManagementScreen extends AppCompatActivity {
     }
 
     private void setOnClickListeners() {
-        Button button = findViewById(R.id.button3);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(TodoManagementScreen.this, MainActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
 
         addNewToDo = (FloatingActionButton) findViewById(R.id.addToDoFAB);
         addNewToDo.setOnClickListener(new View.OnClickListener() {
@@ -268,6 +259,7 @@ public class TodoManagementScreen extends AppCompatActivity {
     }
 
     public void launchTutorial(MenuItem item) {
+        MyApplication.getOneTimeData().setHasDoneTutorialKey(false);
         Intent i = new Intent(this, WelcomeScreen.class);
         startActivity(i);
     }

@@ -97,7 +97,9 @@
                 <action android:name="com.system2override.hobbes.UsageHistoryScreen" />
             </intent-filter>
         </activity>
-        <activity android:name=".AfterHowToScreen"></activity>
+        <activity android:name=".AfterHowToScreen"
+            android:screenOrientation="portrait"
+            ></activity>
     </application>
 
 </manifest>
