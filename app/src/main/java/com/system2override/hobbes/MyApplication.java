@@ -76,7 +76,7 @@ public class MyApplication extends Application {
                     .build();
         startManagerService();
 //        setupDB();
-//        firstTimeSetup();
+        firstTimeSetup();
     }
 
 
@@ -179,16 +179,18 @@ public class MyApplication extends Application {
         timeBank.resetTime();
     }
 
-    public void ifFirstTimeSetup() {
+    public void firstTimeSetup() {
         if (oneTimeData.getTimeOfHobbesInstall() == 0) {
             setUpSuggestions();
             oneTimeData.setTimeOfHobbesInstall(System.currentTimeMillis());
+            // set the time to be backdated 24 hours from the actual time of install, for testing purposes
+//            oneTimeData.setTimeOfHobbesInstall(System.currentTimeMillis() - UsageStatsHelper.DAY_IN_MS - 1);
 
         }
     }
 
     public static boolean inTutorial() {
-        return oneTimeData.getHasDoneTutorialKey();
+        return !oneTimeData.getHasDoneTutorialKey();
     }
 
     // according to docs, this is idempotent

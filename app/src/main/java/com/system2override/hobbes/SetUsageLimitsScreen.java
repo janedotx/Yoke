@@ -1,13 +1,18 @@
 package com.system2override.hobbes;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.system2override.hobbes.BannedAppManagement.BannedAppScreen;
 import com.system2override.hobbes.Models.TimeBank;
+
+import java.util.Set;
 
 public class SetUsageLimitsScreen extends AppCompatActivity {
 
@@ -23,6 +28,21 @@ public class SetUsageLimitsScreen extends AppCompatActivity {
 
         setContentView(R.layout.activity_set_usage_limits_screen);
         TimeBank timeBank = MyApplication.getTimeBank();
+
+
+        View next = findViewById(R.id.nextBar);
+        if (MyApplication.inTutorial()) {
+            next.setVisibility(View.VISIBLE);
+            next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(SetUsageLimitsScreen.this, BannedAppScreen.class);
+                    startActivity(i);
+                }
+            });
+        } else {
+            next.setVisibility(View.GONE);
+        }
 
         setUsageLimitMinutes = findViewById(R.id.setUsageLimitMinutes);
         SeekBar seekBar = findViewById(R.id.setInitialTimeSeekBar);

@@ -36,6 +36,7 @@ import com.system2override.hobbes.OttoMessages.TimeBankEarnedTime;
 import com.system2override.hobbes.OttoMessages.TimeBankUnearnedTime;
 import com.system2override.hobbes.R;
 import com.system2override.hobbes.SetUsageLimitsScreen;
+import com.system2override.hobbes.UsageHistory.UsageHistoryScreen;
 import com.system2override.hobbes.Utilities.RandomUtilities;
 import com.system2override.hobbes.Utilities.UsageStatsHelper;
 import com.system2override.hobbes.WelcomeScreen;
@@ -70,11 +71,13 @@ public class TodoManagementScreen extends AppCompatActivity {
         MyApplication.getBus().register(this);
         setContentView(R.layout.activity_todo_management);
 //        /*
-        Map<String, Long> map = UsageStatsHelper.getAppsByTotalTime(this, UsageStatsHelper.WEEK_IN_MS);
-        long totalTime = UsageStatsHelper.sumTotalTimeOverInterval(map);
-        Log.d(TAG, "firstTimeSetup: totaltime " + totalTime);
-        MyApplication.getOneTimeData().setAverageDailyUsageOverall(totalTime/7);
-        Log.d(TAG, "firstTimeSetup: daily average over last week is " + Long.toString(MyApplication.getOneTimeData().getAverageDailyUsageOverall()));
+        if (MyApplication.getOneTimeData().getAverageDailyUsageOverall() == 0L) {
+            Map<String, Long> map = UsageStatsHelper.getAppsByTotalTime(this, UsageStatsHelper.WEEK_IN_MS, System.currentTimeMillis());
+            long totalTime = UsageStatsHelper.sumTotalTimeOverInterval(map);
+            Log.d(TAG, "firstTimeSetup: totaltime " + totalTime);
+            MyApplication.getOneTimeData().setAverageDailyUsageOverall(totalTime / 7);
+            Log.d(TAG, "firstTimeSetup: daily average over last week is " + Long.toString(MyApplication.getOneTimeData().getAverageDailyUsageOverall()));
+        }
 //        */
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -97,17 +100,17 @@ public class TodoManagementScreen extends AppCompatActivity {
         this.viewPager.setAdapter(this.toDoListPagerAdapter);
         this.tabs.setupWithViewPager(this.viewPager);
 
-        int[][] states = new int[][] {
-                new int[] { android.R.attr.state_enabled},
-                new int[] { android.R.attr.state_pressed}
-        };
-        int[] colors = new int[] {
-                ContextCompat.getColor(this, R.color.HobbesOrange),
-                ContextCompat.getColor(this, R.color.HobbesOrange)
-        };
-        ColorStateList fabColorList = new ColorStateList(states, colors);
-        findViewById(R.id.addToDoFAB).setBackgroundTintList(fabColorList);
+        setFABcolor();
+        setOnClickListeners();
 
+        boolean b = MyApplication.getOneTimeData().getHasDoneTutorialKey();
+        Log.d(TAG, "onCreate: has done tutorial? " + Boolean.toString(b));
+        if (!b) {
+            startActivity(new Intent(this, WelcomeScreen.class));
+        }
+    }
+
+    private void setOnClickListeners() {
         Button button = findViewById(R.id.button3);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,22 +123,30 @@ public class TodoManagementScreen extends AppCompatActivity {
 
         addNewToDo = (FloatingActionButton) findViewById(R.id.addToDoFAB);
         addNewToDo.setOnClickListener(new View.OnClickListener() {
-                                               @Override
-                                               public void onClick(View v) {
-                                               Intent i = new Intent(TodoManagementScreen.this, AddToDoScreen.class);
-                                               Bundle b = new Bundle();
-                                               b.putString(ManageToDoScreen.ACTION_KEY, ManageToDoScreen.ADD_ACTION);
-                                               i.putExtras(b);
-                                               startActivity(i);
-                                               }
-                                           }
+                                          @Override
+                                          public void onClick(View v) {
+                                              Intent i = new Intent(TodoManagementScreen.this, AddToDoScreen.class);
+                                              Bundle b = new Bundle();
+                                              b.putString(ManageToDoScreen.ACTION_KEY, ManageToDoScreen.ADD_ACTION);
+                                              i.putExtras(b);
+                                              startActivity(i);
+                                          }
+                                      }
         );
 
-        boolean b = MyApplication.getOneTimeData().getHasDoneTutorialKey();
-        Log.d(TAG, "onCreate: has done tutorial? " + Boolean.toString(b));
-        if (!b) {
-            startActivity(new Intent(this, WelcomeScreen.class));
-        }
+    }
+
+    private void setFABcolor() {
+        int[][] states = new int[][] {
+                new int[] { android.R.attr.state_enabled},
+                new int[] { android.R.attr.state_pressed}
+        };
+        int[] colors = new int[] {
+                ContextCompat.getColor(this, R.color.HobbesOrange),
+                ContextCompat.getColor(this, R.color.HobbesOrange)
+        };
+        ColorStateList fabColorList = new ColorStateList(states, colors);
+        findViewById(R.id.addToDoFAB).setBackgroundTintList(fabColorList);
     }
 
     private void initializeValueViews() {
@@ -248,6 +259,16 @@ public class TodoManagementScreen extends AppCompatActivity {
 
     public void launchBannedAppsScreen(MenuItem item) {
         Intent i = new Intent(this, BannedAppScreen.class);
+        startActivity(i);
+    }
+
+    public void launchUsageHistoryScreen(MenuItem item) {
+        Intent i = new Intent(this, UsageHistoryScreen.class);
+        startActivity(i);
+    }
+
+    public void launchTutorial(MenuItem item) {
+        Intent i = new Intent(this, WelcomeScreen.class);
         startActivity(i);
     }
 

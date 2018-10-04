@@ -21,6 +21,7 @@ public class OneTimeData extends SharedPreferencesModel{
     }
 
     public void setHasDoneTutorialKey(boolean tutorial) {
+        Log.d(TAG, "setHasDoneTutorialKey: " + Boolean.toString(tutorial));
         this.editor.putBoolean(HAS_DONE_TUTORIAL_KEY, tutorial);
         this.editor.apply();
     }

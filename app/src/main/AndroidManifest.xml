@@ -80,7 +80,9 @@
                 <action android:name="com.system2override.hobbes.SetUsageLimitsScreen" />
             </intent-filter>
         </activity>
-        <activity android:name=".WelcomeScreen" />
+        <activity
+            android:name=".WelcomeScreen"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HowToScreen"
             android:screenOrientation="portrait">
@@ -95,6 +97,7 @@
                 <action android:name="com.system2override.hobbes.UsageHistoryScreen" />
             </intent-filter>
         </activity>
+        <activity android:name=".AfterHowToScreen"></activity>
     </application>
 
 </manifest>

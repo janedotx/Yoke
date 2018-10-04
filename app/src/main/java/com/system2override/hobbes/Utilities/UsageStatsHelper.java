@@ -20,6 +20,9 @@ public class UsageStatsHelper {
     // 1000 * 60 * 60 * 24 * 7
     public static final long WEEK_IN_MS = 604800000;
     public static final long DAY_IN_MS = 86400000;
+    public static final long TWELVE_HOURS_IN_MS = 1000 * 60 * 60 * 12;
+    public static final long EIGHT_HOURS_IN_MS = 1000 * 60 * 60 * 8;
+    public static final long SIX_HOURS_IN_MS = 1000 * 60 * 60 * 6;
 
     private static final String TAG = "UsageStatsHelper";
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -34,25 +37,24 @@ public class UsageStatsHelper {
 
     }
     // 1000 * 60 * 60 * 24 * 7
-    public static Map<String, Long> getAppsByTotalTime(Context context, long interval) {
+    public static Map<String, Long> getAppsByTotalTime(Context context, long interval, long end) {
         UsageStatsManager usageStatsManager = getUsageStatsManager(context);
         Log.d(TAG, "getAppsByTotalTime: ");
         ArrayList<String>  arrayList = new ArrayList<>();
         if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            long time = System.currentTimeMillis();
-            List<UsageStats> appList = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_WEEKLY,  time - interval, time);
+            List<UsageStats> appList = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST,  end - interval, end);
             if (appList != null && appList.size() > 0) {
                 Map<String, Long> packageTimesMap = new HashMap<String, Long>();
                 for (UsageStats usageStats : appList) {
                     String packageName = usageStats.getPackageName();
                     Long curValue = packageTimesMap.get(packageName);
                     long timeInForeground = usageStats.getTotalTimeInForeground();
-
                     if (curValue == null) {
                         packageTimesMap.put(usageStats.getPackageName(), timeInForeground);
                     } else {
                         long oldTime = curValue.longValue();
                         oldTime += timeInForeground;
+                        Log.d(TAG, "getAppsByTotalTime: " + packageName + " " + oldTime);
                         packageTimesMap.put(packageName, oldTime);
                     }
                 }

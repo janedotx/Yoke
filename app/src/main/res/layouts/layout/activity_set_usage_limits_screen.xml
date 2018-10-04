@@ -36,7 +36,7 @@
                 android:textSize="20sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Customize your app time limits here"
+                android:text="Customize your daily time limit"
                 />
             <TextView
                 android:textColor="@color/white"
@@ -44,7 +44,7 @@
                 android:textSize="12sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="You can choose how much time you're allowed to spend each day on time-wasting apps, before you'll be required to do something on your to do list. The maximum is 60 minutes."
+                android:text="You can choose how much time you're allowed to spend each day on time-wasting apps, before you'll be required to finish a todo."
                 />
         </LinearLayout>
 
@@ -94,5 +94,19 @@
         android:progress="30"
         android:progressDrawable="@drawable/seek_bar"
         android:thumb="@drawable/seek_thumb" />
+    <View
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        />
+    <LinearLayout
+        android:gravity="bottom"
+        android:id="@+id/nextBar"
+        android:layout_marginRight="31dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <include
+            layout="@layout/next_button"/>
+    </LinearLayout>
 
 </LinearLayout>

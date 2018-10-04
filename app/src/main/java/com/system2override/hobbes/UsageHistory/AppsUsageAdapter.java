@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import com.system2override.hobbes.R;
 import com.system2override.hobbes.Utilities.RandomUtilities;
+import com.system2override.hobbes.Utilities.UsageStatsHelper;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class AppsUsageAdapter extends RecyclerView.Adapter<AppsUsageViewHolder> 
     private PackageManager pm;
     private  List<Map.Entry<Long, String>> appsTimeList;
     private int barWidth;
-    private long barTime = 1000 * 60 * 60 * 6;
+    private long barTime = UsageStatsHelper.SIX_HOURS_IN_MS;
     private final float scale;
 
     public AppsUsageAdapter(Context context, List<Map.Entry<Long, String>> appsTimeList, Map<String, ApplicationInfo> applications) {
@@ -52,7 +53,8 @@ public class AppsUsageAdapter extends RecyclerView.Adapter<AppsUsageViewHolder> 
         // see comment in UsageStatsHelper for why this is -1. it's because the default behavior of
         // SortedTreeMap is to go from smallest to biggest, so without this, the first app would have
         // had 0 ms of use
-        long time = ((Long) appTimeEntry.getKey()).longValue() * -1;
+        // oh also the map contains the sum over the past week so we need to divide by seven
+        long time = ((Long) appTimeEntry.getKey()).longValue() * -1 / 7;
         ApplicationInfo appInfo = this.applications.get(packageName);
 
         if (appInfo == null) {
@@ -70,7 +72,6 @@ public class AppsUsageAdapter extends RecyclerView.Adapter<AppsUsageViewHolder> 
 
         holder.appTimeTextView.setText(RandomUtilities.formatMillisecondsToHHMM(time));
         int appBarLength = (int) (this.barWidth * ((double)time / (double) this.barTime));
-        Log.d(TAG, "onBindViewHolder: appbarlength of app " + packageName + " is " + Integer.toString(appBarLength));
         if (appBarLength > this.barWidth) {
             appBarLength = this.barWidth;
         }

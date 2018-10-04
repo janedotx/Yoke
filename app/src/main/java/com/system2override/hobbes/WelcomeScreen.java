@@ -17,7 +17,7 @@ public class WelcomeScreen extends AppCompatActivity implements View.OnClickList
 
         setContentView(R.layout.activity_welcome_screen);
 
-        View next = findViewById(R.id.welcomeNextButton);
+        View next = findViewById(R.id.nextButton);
         next.setOnClickListener(this);
 
     }
@@ -25,6 +25,5 @@ public class WelcomeScreen extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         startActivity(new Intent(this, HowToScreen.class));
-        finish();
     }
 }

@@ -20,7 +20,7 @@
             android:paddingBottom="10dp"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
-            android:text="WELCOME\n\nAre you ready to reclaim your time from your phone?\n\nHobbes will help you spend your time the way you actually want to, and get more done in the real world."
+            android:text="WELCOME\n\nAre you ready to reclaim your time from your phone?\n\nHobbes will help you spend your time the way you actually want to, and get more done in the real world.\n\nAll of your data remains on your phone and inaccessible to the Hobbes developers."
             android:textSize="14sp"
             android:textColor="@color/white"
             android:background="@color/HobbesPrimaryAccent"
@@ -32,14 +32,6 @@
             android:layout_weight="1"
             >
         </View>
-        <TextView
-            android:id="@+id/welcomeNextButton"
-            android:text="NEXT"
-            android:textColor="@color/HobbesPrimaryAccent"
-            android:textSize="16sp"
-            android:paddingBottom="40dp"
-            android:layout_gravity="right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <include layout="@layout/next_button"/>
     </LinearLayout>
 </LinearLayout>

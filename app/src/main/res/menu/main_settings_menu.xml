@@ -14,4 +14,18 @@
         android:title="Apps to limit"
         android:onClick="launchBannedAppsScreen"
         ></item>
+    <item
+        android:id="@+id/usageHistorySetting"
+        android:title="Usage history"
+        android:icon="@drawable/timelapse"
+        android:iconTint="@color/HobbesOrange"
+        android:onClick="launchUsageHistoryScreen"
+        />
+    <item
+        android:id="@+id/viewTutorialSetting"
+        android:title="View tutorial"
+        android:icon="@drawable/outline_replay_black_24dp"
+        android:iconTint="@color/HobbesOrange"
+        android:onClick="launchTutorial"
+        />
 </menu>

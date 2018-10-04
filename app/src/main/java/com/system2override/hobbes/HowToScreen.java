@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.system2override.hobbes.TodoManagement.TodoManagementScreen;
+import com.system2override.hobbes.UsageHistory.UsageHistoryScreen;
 
 import static android.app.AppOpsManager.OPSTR_GET_USAGE_STATS;
 
@@ -39,9 +40,8 @@ public class HowToScreen extends AppCompatActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
         if (!hasNoUsageStatsPermission(this)) {
-            Log.d(TAG, "onResume: permission has been granted");
-            startActivity( new Intent(this, TodoManagementScreen.class));
-        };
+            startActivity(new Intent(this, AfterHowToScreen.class));
+        }
     }
 
     @Override

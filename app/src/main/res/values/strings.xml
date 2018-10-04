@@ -20,5 +20,5 @@
     <string name="addToDoHint">Type in your new todo here...</string>
     <string name="addToDoSuggestionsLabel">Some todo ideas to get you started:</string>
     <string name="editToDoHeader">Edit</string>
-    <string name="howToText">HOW IT WORKS\n\nYou\'ll choose the apps that you want to restrict your time on, such as Twitter. You\'ll start each day with some minutes that you can spend on Twitter or other restricted apps. Once you run out, Hobbes will display your todo list. You can earn more time by doing todos.\n\nFirst, though, Hobbes will need your permission to access usage stats, so he can tell when you've run out of time on a restricted app. You will be shown a screen to change your phone settings.</string>
+    <string name="howToText">HOW IT WORKS\n\nChoose the apps you want to use less, such as Twitter. You\'ll start each day with some minutes that you can spend on Twitter or other restricted apps. Once you\'re out, Hobbes will show your todo list. Earn more time by doing todos.\n\nHobbes will need your permission to access usage stats.</string>
 </resources>
