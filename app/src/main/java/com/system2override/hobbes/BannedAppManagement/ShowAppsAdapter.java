@@ -51,20 +51,21 @@ public class ShowAppsAdapter extends RecyclerView.Adapter<ShowAppsViewHolder>{
             @Override
             public void onClick(View view, int position) {
                 ShowAppsAdapter adapter = ShowAppsAdapter.this;
+                String singleAppPackageName = adapter.appsTimeList.get(position).getValue();
+                ApplicationInfo appInfo = adapter.applications.get(singleAppPackageName);
                 MyApplication.getBannedApps().printBannedApps();;
-                String appName = ShowAppsAdapter.this.applications.get(position).packageName;
 
                 // unchecking case
-                if (MyApplication.getBannedApps().getApps().contains(appName)) {
-                    MyApplication.getBannedApps().removeApp(appName);
+                if (MyApplication.getBannedApps().getApps().contains(singleAppPackageName)) {
+                    MyApplication.getBannedApps().removeApp(singleAppPackageName);
                     ((CheckBox)view.findViewById(R.id.singleAppCheckBox)).setChecked(false);
-                    adapter.bus.post(new BannedAppRemoved(adapter.applications.get(position)));
+                    adapter.bus.post(new BannedAppRemoved(appInfo));
                 } else {
                     // checking case
                     if (MyApplication.getBannedApps().getApps().size() < BannedApps.BANNED_APPS_LIMIT) {
-                        MyApplication.getBannedApps().addApp(appName);
+                        MyApplication.getBannedApps().addApp(singleAppPackageName);
                         ((CheckBox) view.findViewById(R.id.singleAppCheckBox)).setChecked(true);
-                        adapter.bus.post(new BannedAppAdded(adapter.applications.get(position)));
+                        adapter.bus.post(new BannedAppAdded(appInfo));
                     } else {
                         ((CheckBox) view.findViewById(R.id.singleAppCheckBox)).setChecked(false);
                     }

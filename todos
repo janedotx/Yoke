@@ -51,3 +51,14 @@ How it works
 You'll choose the apps that you want to restrict your time on. For example, you might want to limit your time on Twitter. Every day, you'll start out with some minutes that you can spend on Twitter and other restricted apps. Once you run out, Hobbes will display your todo list. You can earn more time by doing todos.
 
 First, though, Hobbes will need your permission to access usage stats. This is so Hobbes can tell when you've run out of time on a restricted app.
+------
+sai give me the tutorial dialog box (todo management screen)
+hamburger menu "view tutorial" will display banner again on todo management screen
+splash screen
+logo
+
+animation for new screens as they appear
+fix adding banned apps bug
+make font size larger for welcome and how to screens, and need scroll indicator, make scrollable
+fix margins
+10px above Next button

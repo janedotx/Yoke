@@ -39,9 +39,11 @@ public class HowToScreen extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
+        /*
         if (!hasNoUsageStatsPermission(this)) {
             startActivity(new Intent(this, AfterHowToScreen.class));
         }
+        */
     }
 
     @Override
@@ -58,9 +60,10 @@ public class HowToScreen extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if (hasNoUsageStatsPermission(this)) {
+            startActivity( new Intent(this, AfterHowToScreen.class));
             startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
         } else {
-            startActivity( new Intent(this, TodoManagementScreen.class));
+            startActivity( new Intent(this, AfterHowToScreen.class));
         }
 
     }
