@@ -19,42 +19,17 @@ import com.system2override.hobbes.UsageHistory.UsageHistoryScreen;
 
 import static android.app.AppOpsManager.OPSTR_GET_USAGE_STATS;
 
-public class HowToScreen extends AppCompatActivity implements View.OnClickListener {
+public class HowToScreen extends OnboardingActivity implements View.OnClickListener {
     private static final String TAG = "HowToScreen";
     private ActionBar bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_how_to_screen);
 
-        View next = findViewById(R.id.welcomeNextButton);
-        next.setOnClickListener(this);
+        this.next.setOnClickListener(this);
+        this.textView.setText(R.string.howToText);
 
-        this.bar = getSupportActionBar();
-        this.bar.setDisplayHomeAsUpEnabled(true);
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        /*
-        if (!hasNoUsageStatsPermission(this)) {
-            startActivity(new Intent(this, AfterHowToScreen.class));
-        }
-        */
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            finish();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

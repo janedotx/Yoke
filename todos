@@ -52,13 +52,16 @@ You'll choose the apps that you want to restrict your time on. For example, you 
 
 First, though, Hobbes will need your permission to access usage stats. This is so Hobbes can tell when you've run out of time on a restricted app.
 ------
+x fix adding banned apps bug
+
 sai give me the tutorial dialog box (todo management screen)
 hamburger menu "view tutorial" will display banner again on todo management screen
 splash screen
 logo
 
 animation for new screens as they appear
-fix adding banned apps bug
+https://stackoverflow.com/questions/26431017/how-to-achieve-right-to-left-animation-to-start-the-activity
+
 make font size larger for welcome and how to screens, and need scroll indicator, make scrollable
-fix margins
+fix margins (centering welcome screen text)
 10px above Next button

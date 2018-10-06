@@ -59,7 +59,6 @@ public class ManagerService extends Service {
         super.onCreate();
         MyApplication.getBus().register(this);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            android.util.Log.d(TAG, "onCreate: about to make this notification");
             if (Build.VERSION.SDK_INT >= 26) {
                 foregroundForOreoAndUp();
             }
@@ -76,9 +75,6 @@ public class ManagerService extends Service {
 
     private void setDailyResetAlarm() {
         long nextMidnight = RandomUtilities.getNextMidnight();
-
-        Log.d(TAG, "setDailyResetAlarm: calendar.getTimeInMillis " + Long.toString(nextMidnight));
-        Log.d(TAG, "setDailyResetAlarm: action " + TimeBank.RESET_ACTION);
 
         Intent resetIntent = new Intent(this, DailyResetReceiver.class);
         resetIntent.setAction(MyApplication.MIDNIGHT_RESET_ACTION);

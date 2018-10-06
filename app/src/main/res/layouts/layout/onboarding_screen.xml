@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:background="@color/topBoxSepia"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".WelcomeScreen">
+
+<include layout="@layout/vertical_grampa" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/next_button_margin_right"
+        android:layout_padddingLeft="31dp"
+        android:layout_marginTop="12dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/onboardingText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/next_button_margin_right"
+            android:layout_marginTop="@dimen/next_button_margin_right"
+            android:layout_marginEnd="@dimen/next_button_margin_right"
+            android:layout_marginStart="30dp"
+            android:background="@color/HobbesPrimaryAccent"
+            android:padding="20dp"
+            android:text="WELCOME"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/include"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="@dimen/next_button_margin_right"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+</LinearLayout>
