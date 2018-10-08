@@ -17,7 +17,7 @@ android:layout_height="wrap_content">
     android:scaleType="fitCenter"
     android:src="@drawable/grandpa_hobbes"
     android:layout_gravity="bottom"
-    android:layout_width="147dp"
+    android:layout_width="120dp"
     android:layout_marginLeft="18dp"
     android:layout_height="wrap_content" />
 </LinearLayout>

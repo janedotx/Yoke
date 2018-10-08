@@ -3,7 +3,6 @@ package com.system2override.hobbes.TodoManagement;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -11,12 +10,17 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -24,8 +28,7 @@ import com.squareup.otto.Subscribe;
 import com.system2override.hobbes.BannedAppManagement.BannedAppScreen;
 import com.system2override.hobbes.ManageToDo.AddToDoScreen;
 import com.system2override.hobbes.ManageToDo.ManageToDoScreen;
-import com.system2override.hobbes.MainActivity;
-import com.system2override.hobbes.ManagerService;
+import com.system2override.hobbes.Models.OneTimeData;
 import com.system2override.hobbes.Models.Streaks;
 import com.system2override.hobbes.Models.TimeBank;
 import com.system2override.hobbes.Models.ToDoInterface;
@@ -44,7 +47,6 @@ import com.system2override.hobbes.WelcomeScreen;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class TodoManagementScreen extends AppCompatActivity {
     private static final String TAG = "TodoManagementScreen";
@@ -103,10 +105,14 @@ public class TodoManagementScreen extends AppCompatActivity {
         setFABcolor();
         setOnClickListeners();
 
-        boolean b = MyApplication.getOneTimeData().getHasDoneTutorialKey();
-        Log.d(TAG, "onCreate: has done tutorial? " + Boolean.toString(b));
+        OneTimeData oneTimeData = MyApplication.getOneTimeData();
+        boolean b = oneTimeData.getHasDoneOnboardingKey();
         if (!b) {
             startActivity(new Intent(this, WelcomeScreen.class));
+        }
+
+        if (!oneTimeData.getHasDoneTutorialKey()) {
+            showTutorialFirstBanner();
         }
     }
 
@@ -171,7 +177,7 @@ public class TodoManagementScreen extends AppCompatActivity {
         super.onResume();
 
         /*
-        if (!MyApplication.getOneTimeData().getHasDoneTutorialKey()) {
+        if (!MyApplication.getOneTimeData().getHasDoneOnboardingKey()) {
             Intent i = new Intent(this, WelcomeScreen.class);
             startActivity(i);
 
@@ -231,6 +237,65 @@ public class TodoManagementScreen extends AppCompatActivity {
         this.remainingTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(timeRemaining));
     }
 
+
+    private void showTutorialSecondBanner() {
+        String explanation = "The second kind of todo is meant for one-time tasks.\n\n" +
+                "Finishing a one-time task does not affect your streak number.\n\n" +
+                "For each one-time task you check off, you earn 5 more minutes of time.\n\n" +
+                "You can have as many one-time tasks as you want.";
+
+        String buttonText = "DONE";
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View tutorialBannerView = inflater.inflate(R.layout.tutorial_banner, null);
+        ((TextView) tutorialBannerView.findViewById(R.id.tutorialText)).setText(explanation);
+        ((TextView) tutorialBannerView.findViewById(R.id.tutorialButton)).setText(buttonText);
+        final AlertDialog tutorialBannerDialog = new AlertDialog.Builder(this).create();
+        tutorialBannerDialog.setView(tutorialBannerView);
+
+        Window window = tutorialBannerDialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+
+        wlp.gravity = Gravity.TOP;
+        window.setAttributes(wlp);
+        tutorialBannerView.findViewById(R.id.tutorialButton).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                tutorialBannerDialog.dismiss();
+                MyApplication.getOneTimeData().setHasDoneTutorialKey(true);
+            }
+        });
+        tutorialBannerDialog.show();
+    }
+
+    private void showTutorialFirstBanner() {
+        String explanation = "Hobbes supports two kinds of todos. The first is meant for building daily habits.\n\n" +
+                "When you check off every single daily habit, your streak number goes up for the day. " +
+                "If you don't finish all your daily habits, your streak number will reset to zero.\n\n" +
+                "For each daily habit you check off, you earn 15 more minutes of time.\n\n" +
+                "You can have at most five daily habits.";
+        String buttonText = "NEXT";
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View tutorialBannerView = inflater.inflate(R.layout.tutorial_banner, null);
+        ((TextView) tutorialBannerView.findViewById(R.id.tutorialText)).setText(explanation);
+        ((TextView) tutorialBannerView.findViewById(R.id.tutorialButton)).setText(buttonText);
+        final AlertDialog tutorialBannerDialog = new AlertDialog.Builder(this).create();
+        tutorialBannerDialog.setView(tutorialBannerView);
+
+        Window window = tutorialBannerDialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+
+        wlp.gravity = Gravity.TOP;
+        window.setAttributes(wlp);
+        tutorialBannerView.findViewById(R.id.tutorialButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tutorialBannerDialog.dismiss();
+                showTutorialSecondBanner();
+            }
+        });
+        tutorialBannerDialog.show();
+    }
+
     @Subscribe
     public void updateStreak(StreakUpdateEvent event) {
         updateStreakValues();
@@ -260,8 +325,7 @@ public class TodoManagementScreen extends AppCompatActivity {
 
     public void launchTutorial(MenuItem item) {
         MyApplication.getOneTimeData().setHasDoneTutorialKey(false);
-        Intent i = new Intent(this, WelcomeScreen.class);
-        startActivity(i);
+        showTutorialFirstBanner();
     }
 
 }

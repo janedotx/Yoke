@@ -3,37 +3,22 @@ package com.system2override.hobbes;
 import android.app.Application;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
-import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.util.Log;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
-import com.system2override.hobbes.Models.AfterHobbesAppData;
 import com.system2override.hobbes.Models.BannedApps;
 import com.system2override.hobbes.Models.BeforeHobbesAppData;
 import com.system2override.hobbes.Models.OneTimeData;
 import com.system2override.hobbes.Models.RoomModels.Habit;
-import com.system2override.hobbes.Models.RoomModels.LocalTask;
 import com.system2override.hobbes.Models.RoomModels.Suggestion;
 import com.system2override.hobbes.Models.Streaks;
 import com.system2override.hobbes.Models.TimeBank;
-import com.system2override.hobbes.Utilities.UsageStatsHelper;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Map;
 
 public class MyApplication extends Application {
     private static final String TAG = "MyApplication";
@@ -190,7 +175,7 @@ public class MyApplication extends Application {
     }
 
     public static boolean inTutorial() {
-        return !oneTimeData.getHasDoneTutorialKey();
+        return !oneTimeData.getHasDoneOnboardingKey();
     }
 
     // according to docs, this is idempotent

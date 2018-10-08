@@ -15,27 +15,42 @@ tools:context=".WelcomeScreen">
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginEnd="@dimen/next_button_margin_right"
-        android:layout_padddingLeft="31dp"
+        android:paddingLeft="15dp"
         android:layout_marginTop="12dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/onboardingText"
+        <ScrollView
+
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/next_button_margin_right"
-            android:layout_marginTop="@dimen/next_button_margin_right"
-            android:layout_marginEnd="@dimen/next_button_margin_right"
-            android:layout_marginStart="30dp"
-            android:background="@color/HobbesPrimaryAccent"
-            android:padding="20dp"
-            android:text="WELCOME"
-            android:textColor="@color/white"
-            android:textSize="18sp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="12dp"
+            android:scrollbarFadeDuration="0"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
             app:layout_constraintBottom_toTopOf="@+id/include"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
+            <TextView
+                android:includeFontPadding="true"
+                android:id="@+id/onboardingText"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/next_button_margin_right"
+                android:layout_marginEnd="@dimen/next_button_margin_right"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="@dimen/next_button_margin_right"
+                android:background="@color/HobbesPrimaryAccent"
+                android:isScrollContainer="true"
+                android:padding="20dp"
+                android:scrollbars="vertical"
+                android:text="WELCOME"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/include"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </ScrollView>
 
         <include
             android:id="@+id/include"

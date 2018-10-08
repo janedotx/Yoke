@@ -122,11 +122,9 @@ public class ManagerService extends Service {
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.placeholder)
-                .setContentTitle("Manager Service in the house")
-                .setTicker("Yoke is watching you")
+                .setContentTitle("Hobbes is running")
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setWhen(System.currentTimeMillis())
-                .setContentText("here i yam").build();
+                .setWhen(System.currentTimeMillis()).build();
 
         startForeground(MANAGER_SERVICE_ID, notification);
 

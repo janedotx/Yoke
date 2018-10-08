@@ -33,9 +33,9 @@ public class WelcomeScreen extends OnboardingActivity implements View.OnClickLis
                 "Wind blows through the desolation, keening with the sound of ten\n" +
                 "million dead souls.  It scurries the ashes into drifts, stark\n" +
                 "white in the moonlight against the charred rubble.\n" +
-                "A TITLE CARD FADES IN:");
-        */
-//        this.textView.setText("WELCOME\n\nAre you ready to reclaim your time from your phone?\n\nHobbes will help you spend your time the way you actually want to, and get more done in the real world.\n\nAll of your data remains on your phone and inaccessible to the Hobbes developers.");
+                "A TITLE CARD FADES IN:\n\n");
+//        */
+        this.textView.setText("WELCOME\n\nAre you ready to reclaim your time from your phone?\n\nHobbes will help you spend your time the way you actually want to, and get more done in the real world.\n\nAll of your data remains on your phone and inaccessible to the Hobbes developers.\n\n");
         this.bar.setDisplayHomeAsUpEnabled(false);
 
     }

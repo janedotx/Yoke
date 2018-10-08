@@ -16,7 +16,7 @@ public class AfterHowToScreen extends OnboardingActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.textView.setText("Now that you granted Hobbes permission to access usage stats, he will show you what your current phone usage habits are. After that, you will configure how much time you want to start each day with, and which apps you want to limit time on. Finally, you will create some todos.\n\nThere are two kinds of todos: daily habits, and one-off tasks.");
+        this.textView.setText("Now that you granted Hobbes permission to access usage stats, he will show you what your current phone usage habits are. After that, you will configure how much time you want to start each day with, and which apps you want to limit time on. Finally, you will create some todos.\n\n");
         this.next.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {

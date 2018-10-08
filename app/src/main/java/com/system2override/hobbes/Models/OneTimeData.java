@@ -8,6 +8,7 @@ public class OneTimeData extends SharedPreferencesModel{
 
     private final String FILE = "ONE_TIME_FILE";
 
+    private final String HAS_DONE_ONBOARDING_KEY = "HAS_DONE_ONBOARDING_KEY";
     private final String HAS_DONE_TUTORIAL_KEY = "HAS_DONE_TUTORIAL_KEY";
     private final String TIME_INSTALLED_KEY = "TIME_INSTALLED_KEY";
     private final String AVERAGE_DAILY_USE = "AVERAGE_DAILY_USE";
@@ -15,6 +16,16 @@ public class OneTimeData extends SharedPreferencesModel{
 
     public OneTimeData(Context context) {
         super(context);
+    }
+
+    public boolean getHasDoneOnboardingKey() {
+        return this.prefs.getBoolean(HAS_DONE_ONBOARDING_KEY, false);
+    }
+
+    public void setHasDoneOnboardingKey(boolean tutorial) {
+        Log.d(TAG, "setHasDoneOnboardingKey: " + Boolean.toString(tutorial));
+        this.editor.putBoolean(HAS_DONE_ONBOARDING_KEY, tutorial);
+        this.editor.apply();
     }
 
     public boolean getHasDoneTutorialKey() {

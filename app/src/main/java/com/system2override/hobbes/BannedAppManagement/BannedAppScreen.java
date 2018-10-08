@@ -80,7 +80,7 @@ public class BannedAppScreen extends AppCompatActivity {
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MyApplication.getOneTimeData().setHasDoneTutorialKey(true);
+                    MyApplication.getOneTimeData().setHasDoneOnboardingKey(true);
                     Log.d(TAG, "onCreate: in tutorial, clicked, tutorial should be false now");
                     Intent i = new Intent(BannedAppScreen.this, TodoManagementScreen.class);
                     startActivity(i);

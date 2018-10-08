@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/HobbesPrimaryAccent"
-        android:textSize="12sp"
+        android:textSize="16sp"
         android:layout_marginTop="12dp"
         android:layout_marginLeft="19dp"
         android:text="Select up to five apps you want to spend less time on."

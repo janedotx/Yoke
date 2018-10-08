@@ -20,5 +20,5 @@
     <string name="addToDoHint">Type in your new todo here...</string>
     <string name="addToDoSuggestionsLabel">Some todo ideas to get you started:</string>
     <string name="editToDoHeader">Edit</string>
-    <string name="howToText">HOW IT WORKS\n\nChoose the apps you want to use less, such as Twitter. You\'ll start each day with some minutes that you can spend on Twitter or other restricted apps. Once you\'re out, Hobbes will show your todo list. Earn more time by doing todos.\n\nHobbes will need your permission to access usage stats.</string>
+    <string name="howToText">HOW IT WORKS\n\nChoose the apps you want to use less, such as Twitter. You\'ll start each day with some minutes that you can spend on Twitter or other restricted apps. Once you\'re out, Hobbes will show your todo list. Earn more time by doing todos.\n\nHobbes will need your permission to access usage stats.\n\n</string>
 </resources>

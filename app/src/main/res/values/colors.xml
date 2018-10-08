@@ -15,11 +15,14 @@
     <color name="HobbesBlush">#f094c2</color>
     <color name="HobbesOrange">#e28b43</color>
     <color name="HobbesLightGreen">#aed47c</color>
+    <color name="HobbesBannerGreen">#98cc72</color>
+    <color name="HobbesBannerBorder">#81ae61</color>
     <color name="HobbesPrimaryAccent">#2c6f8e</color>
     <color name="HobbesDarkTealAccent">#22576f</color>
     <color name="HobbesFaintTeal">#398c94</color>
     <color name="HobbesGray">#999999</color>
     <color name="HobbesCardinal">#c41e3a</color>
+
 
     <color name="seek_bar_background">#cdc39f</color>
     <color name="seek_bar_progress">#2c6f8e</color>
