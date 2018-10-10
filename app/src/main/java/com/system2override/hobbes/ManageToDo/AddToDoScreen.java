@@ -45,13 +45,15 @@ public class AddToDoScreen extends ManageToDoScreen {
         String toDoText = toDoEditText.getText().toString();
         Habit habit = new Habit();
         habit.setDescription(toDoText);
+        if (dailyHabitCheckBox.isChecked()) {
+            habit.setIsDailyHabit(true);
+        } else {
+            habit.setIsDailyHabit(false);
+        }
+
         int id = (int) dbConn.habitDao().insert(habit);
         Habit newHabit = dbConn.habitDao().getById(id);
-        if (dailyHabitCheckBox.isChecked()) {
-            newHabit.setIsDailyHabit(true);
-        } else {
-            newHabit.setIsDailyHabit(false);
-        }
+
         this.bus.post(new ToDoCreated(newHabit));
 
         if (this.usedSuggestion != null) {

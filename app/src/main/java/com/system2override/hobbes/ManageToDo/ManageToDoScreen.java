@@ -15,12 +15,9 @@ import android.widget.EditText;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
-import com.system2override.hobbes.HarnessDatabase;
-import com.system2override.hobbes.Models.RoomModels.Habit;
 import com.system2override.hobbes.Models.RoomModels.Suggestion;
 import com.system2override.hobbes.MyApplication;
 import com.system2override.hobbes.OttoMessages.SuggestionClickedEvent;
-import com.system2override.hobbes.OttoMessages.ToDoCreated;
 import com.system2override.hobbes.R;
 
 import java.util.List;
@@ -50,13 +47,17 @@ public class ManageToDoScreen extends AppCompatActivity implements View.OnClickL
 
         this.bar = getSupportActionBar();
 
-        suggestionsView = (RecyclerView) findViewById(R.id.addSuggestionRecyclerView);
-        suggestionsView.setLayoutManager(new LinearLayoutManager(this));
-
         List<Suggestion> suggestionList = MyApplication.getDb().suggestionDao().loadAllUnusedSuggestions();
-        Log.d(TAG, "onCreate: num suggestions found " + Integer.toString(suggestionList.size()));
-        this.adapter = new SuggestionsAdapter(this, suggestionList);
-        suggestionsView.setAdapter(this.adapter);
+        suggestionsView = (RecyclerView) findViewById(R.id.addSuggestionRecyclerView);
+        if (suggestionList.size() > 0) {
+            this.adapter = new SuggestionsAdapter(this, suggestionList);
+            suggestionsView.setAdapter(this.adapter);
+            suggestionsView.setLayoutManager(new LinearLayoutManager(this));
+            suggestionsView.setVisibility(View.VISIBLE);
+        } else {
+            suggestionsView.setVisibility(View.INVISIBLE);
+        }
+
 
         toDoEditText = findViewById(R.id.addToDoEditText);
         makeDailyHabit = findViewById(R.id.makeDailyHabit);
