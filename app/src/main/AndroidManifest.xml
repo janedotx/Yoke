@@ -21,9 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/HobbesAppTheme">
         <activity android:name=".MainActivity" />
-        <activity android:name=".AppLimit.AppLimitScreen"
-            android:screenOrientation="portrait"
-            >
+        <activity
+            android:name=".AppLimit.AppLimitScreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.system2override.hobbes.APP_LIMIT_SCREEN" />
             </intent-filter>
@@ -38,9 +38,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BannedAppManagement.BannedAppScreen"
-            android:screenOrientation="portrait"
-            >
+        <activity
+            android:name=".BannedAppManagement.BannedAppScreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.system2override.hobbes.BANNED_APP_SCREEN" />
             </intent-filter>
@@ -78,12 +78,22 @@
             android:name=".ManageToDo.EditToDoScreen"
             android:parentActivityName=".TodoManagement.TodoManagementScreen"
             android:screenOrientation="portrait" />
-        <activity android:name=".SetUsageLimitsScreen"
-            android:screenOrientation="portrait"
-            >
+        <activity
+            android:name=".SetUsageLimitsScreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.system2override.hobbes.SetUsageLimitsScreen" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".SplashScreen"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.SPLASH" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+
         </activity>
         <activity
             android:name=".WelcomeScreen"
@@ -102,9 +112,11 @@
                 <action android:name="com.system2override.hobbes.UsageHistoryScreen" />
             </intent-filter>
         </activity>
-        <activity android:name=".AfterHowToScreen"
-            android:screenOrientation="portrait"
-            ></activity>
+        <activity
+            android:name=".AfterHowToScreen"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.system2override.yoke.SplashScreen" />
+        <activity android:name=".HobbesScreen"></activity>
     </application>
 
 </manifest>

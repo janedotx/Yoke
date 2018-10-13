@@ -34,8 +34,10 @@ public class WelcomeScreen extends OnboardingActivity implements View.OnClickLis
                 "million dead souls.  It scurries the ashes into drifts, stark\n" +
                 "white in the moonlight against the charred rubble.\n" +
                 "A TITLE CARD FADES IN:\n\n");
-//        */
-        this.textView.setText("WELCOME\n\nAre you ready to reclaim your time from your phone?\n\nHobbes will help you spend your time the way you actually want to, and get more done in the real world.\n\nAll of your data remains on your phone and inaccessible to the Hobbes developers.\n\n");
+ //       */
+        this.textView.setText("WELCOME\n\nAre you ready to reclaim your time from your phone?\n\n" +
+                "Hobbes will help you spend your time the way you actually want to, by helping you get more done in the real world.\n\n"
+                + "All of your data remains on your phone and will always be inaccessible to the Hobbes developers. Your privacy is guaranteed.\n\n");
         this.bar.setDisplayHomeAsUpEnabled(false);
 
     }

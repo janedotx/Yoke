@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.system2override.hobbes.HobbesScreen;
 import com.system2override.hobbes.Models.BeforeHobbesAppData;
 import com.system2override.hobbes.Models.OneTimeData;
 import com.system2override.hobbes.MyApplication;
@@ -30,7 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class UsageHistoryScreen extends AppCompatActivity {
+public class UsageHistoryScreen extends HobbesScreen {
     private static final String TAG = "UsageHistoryScreen";
     private final int INSUFFICIENT_TIME = 1;
     private final int LESS_THAN_A_WEEK = 2;

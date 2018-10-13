@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.system2override.hobbes.HobbesScreen;
 import com.system2override.hobbes.MainActivity;
 import com.system2override.hobbes.Models.RoomModels.Suggestion;
 import com.system2override.hobbes.Models.Streaks;
@@ -24,7 +25,7 @@ import com.system2override.hobbes.Utilities.RandomUtilities;
 
 import java.util.List;
 
-public class AppLimitScreen extends AppCompatActivity  {
+public class AppLimitScreen extends HobbesScreen {
     private static final String TAG = "AppLimitScreen";
 
     private TableLayout table;

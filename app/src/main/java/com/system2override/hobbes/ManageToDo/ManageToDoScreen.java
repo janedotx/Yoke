@@ -15,6 +15,7 @@ import android.widget.EditText;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+import com.system2override.hobbes.HobbesScreen;
 import com.system2override.hobbes.Models.RoomModels.Suggestion;
 import com.system2override.hobbes.MyApplication;
 import com.system2override.hobbes.OttoMessages.SuggestionClickedEvent;
@@ -22,7 +23,7 @@ import com.system2override.hobbes.R;
 
 import java.util.List;
 
-public class ManageToDoScreen extends AppCompatActivity implements View.OnClickListener {
+public class ManageToDoScreen extends HobbesScreen implements View.OnClickListener {
     public static String ADD_ACTION = "add";
     public static String ACTION_KEY = "action";
     private static final String TAG = "ManageToDoScreen";

@@ -54,14 +54,11 @@ First, though, Hobbes will need your permission to access usage stats. This is s
 ------
 x fix adding banned apps bug
 x make font size larger for welcome and how to screens, and need scroll indicator, make scrollable
-
-sai give me the tutorial dialog box (todo management screen)
-hamburger menu "view tutorial" will display banner again on todo management screen
-splash screen
-logo
-
-animation for new screens as they appear
+x sai give me the tutorial dialog box (todo management screen)
+x hamburger menu "view tutorial" will display banner again on todo management screen
+x logo
+x splash screen
+x animation for new screens as they appear
 https://stackoverflow.com/questions/26431017/how-to-achieve-right-to-left-animation-to-start-the-activity
 
-fix margins (centering welcome screen text)
-10px above Next button
+notification icon change

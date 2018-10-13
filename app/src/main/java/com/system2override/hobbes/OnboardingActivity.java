@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-public class OnboardingActivity extends AppCompatActivity {
+public class OnboardingActivity extends HobbesScreen {
     public ActionBar bar;
     public View next;
     public TextView textView;

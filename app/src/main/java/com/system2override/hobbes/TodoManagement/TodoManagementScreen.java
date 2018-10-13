@@ -1,6 +1,7 @@
 package com.system2override.hobbes.TodoManagement;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.support.design.widget.FloatingActionButton;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 import com.system2override.hobbes.BannedAppManagement.BannedAppScreen;
+import com.system2override.hobbes.HobbesScreen;
 import com.system2override.hobbes.ManageToDo.AddToDoScreen;
 import com.system2override.hobbes.ManageToDo.ManageToDoScreen;
 import com.system2override.hobbes.Models.OneTimeData;
@@ -39,6 +41,7 @@ import com.system2override.hobbes.OttoMessages.TimeBankEarnedTime;
 import com.system2override.hobbes.OttoMessages.TimeBankUnearnedTime;
 import com.system2override.hobbes.R;
 import com.system2override.hobbes.SetUsageLimitsScreen;
+import com.system2override.hobbes.SplashScreen;
 import com.system2override.hobbes.UsageHistory.UsageHistoryScreen;
 import com.system2override.hobbes.Utilities.RandomUtilities;
 import com.system2override.hobbes.Utilities.UsageStatsHelper;
@@ -48,7 +51,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class TodoManagementScreen extends AppCompatActivity {
+public class TodoManagementScreen extends HobbesScreen {
     private static final String TAG = "TodoManagementScreen";
 
     private List<ToDoInterface> incompletes = new ArrayList<>();
@@ -108,7 +111,7 @@ public class TodoManagementScreen extends AppCompatActivity {
         OneTimeData oneTimeData = MyApplication.getOneTimeData();
         boolean b = oneTimeData.getHasDoneOnboardingKey();
         if (!b) {
-            startActivity(new Intent(this, WelcomeScreen.class));
+            startActivity(new Intent(this, SplashScreen.class));
         }
 
         if (!oneTimeData.getHasDoneTutorialKey()) {
@@ -249,14 +252,18 @@ public class TodoManagementScreen extends AppCompatActivity {
         final View tutorialBannerView = inflater.inflate(R.layout.tutorial_banner, null);
         ((TextView) tutorialBannerView.findViewById(R.id.tutorialText)).setText(explanation);
         ((TextView) tutorialBannerView.findViewById(R.id.tutorialButton)).setText(buttonText);
-        final AlertDialog tutorialBannerDialog = new AlertDialog.Builder(this).create();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                MyApplication.getOneTimeData().setHasDoneTutorialKey(true);
+            }
+        });
+
+        final AlertDialog tutorialBannerDialog = builder.create();
         tutorialBannerDialog.setView(tutorialBannerView);
 
-        Window window = tutorialBannerDialog.getWindow();
-        WindowManager.LayoutParams wlp = window.getAttributes();
-
-        wlp.gravity = Gravity.TOP;
-        window.setAttributes(wlp);
         tutorialBannerView.findViewById(R.id.tutorialButton).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -278,14 +285,17 @@ public class TodoManagementScreen extends AppCompatActivity {
         final View tutorialBannerView = inflater.inflate(R.layout.tutorial_banner, null);
         ((TextView) tutorialBannerView.findViewById(R.id.tutorialText)).setText(explanation);
         ((TextView) tutorialBannerView.findViewById(R.id.tutorialButton)).setText(buttonText);
-        final AlertDialog tutorialBannerDialog = new AlertDialog.Builder(this).create();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                showTutorialSecondBanner();
+            }
+        });
+        final AlertDialog tutorialBannerDialog = builder.create();
         tutorialBannerDialog.setView(tutorialBannerView);
 
-        Window window = tutorialBannerDialog.getWindow();
-        WindowManager.LayoutParams wlp = window.getAttributes();
-
-        wlp.gravity = Gravity.TOP;
-        window.setAttributes(wlp);
         tutorialBannerView.findViewById(R.id.tutorialButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
