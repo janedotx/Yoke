@@ -12,16 +12,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -45,7 +41,6 @@ import com.system2override.hobbes.SplashScreen;
 import com.system2override.hobbes.UsageHistory.UsageHistoryScreen;
 import com.system2override.hobbes.Utilities.RandomUtilities;
 import com.system2override.hobbes.Utilities.UsageStatsHelper;
-import com.system2override.hobbes.WelcomeScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,10 +82,9 @@ public class TodoManagementScreen extends HobbesScreen {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(android.graphics.Color.WHITE);
 
         ActionBar actionbar = getSupportActionBar();
-        actionbar.setTitle(R.string.toDoManagementActivityTitle);
+        actionbar.setTitle("");
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.whitesubject);
 
@@ -300,7 +294,6 @@ public class TodoManagementScreen extends HobbesScreen {
             @Override
             public void onClick(View v) {
                 tutorialBannerDialog.dismiss();
-                showTutorialSecondBanner();
             }
         });
         tutorialBannerDialog.show();

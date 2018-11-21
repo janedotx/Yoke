@@ -121,7 +121,7 @@ public class ManagerService extends Service {
 
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.placeholder)
+                .setSmallIcon(R.drawable.whitebow)
                 .setContentTitle("Hobbes is running")
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setWhen(System.currentTimeMillis()).build();

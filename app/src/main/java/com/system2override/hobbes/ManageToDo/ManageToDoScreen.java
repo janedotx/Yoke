@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,7 +47,12 @@ public class ManageToDoScreen extends HobbesScreen implements View.OnClickListen
         this.bus.register(this);
         this.usedSuggestion = null;
 
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         this.bar = getSupportActionBar();
+        this.bar.setDisplayHomeAsUpEnabled(true);
 
         List<Suggestion> suggestionList = MyApplication.getDb().suggestionDao().loadAllUnusedSuggestions();
         suggestionsView = (RecyclerView) findViewById(R.id.addSuggestionRecyclerView);

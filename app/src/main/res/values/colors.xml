@@ -31,4 +31,11 @@
     <color name="usage_bar_background">#a29a7d</color>
     <color name="total_usage_bar_background">#c0b797</color>
 
+    <color name="HobbesBackground">#f0ece0</color>
+    <color name="HobbesBackgroundDark">#3C341F</color>
+    <color name="HobbesBackgroundDarkLightFont">#CD803E</color>
+
+    <color name="HobbesText">#3C341F</color>
+
+
 </resources>

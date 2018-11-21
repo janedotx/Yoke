@@ -8,6 +8,7 @@
     android:background="@color/topBoxSepia"
     android:orientation="vertical"
     tools:context=".SetUsageLimitsScreen">
+    <include layout="@layout/toolbar"></include>
 
     <LinearLayout
         android:layout_marginTop="16dp"

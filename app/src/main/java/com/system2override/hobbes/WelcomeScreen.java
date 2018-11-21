@@ -13,7 +13,6 @@ public class WelcomeScreen extends OnboardingActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.bar.setTitle("Welcome");
         this.next.setOnClickListener(this);
         /*
         this.textView.setText("WELCOME\n\nAre you ready to reclaim your time from your phone?\n\nHobbes will help you spend your time the way you actually want to, and get more done in the real world.\n\nAll of your data remains on your phone and inaccessible to the Hobbes developers. Downtown L.A.  Noon on a hot summer day.  On an EXTREME LONG LENS the\n" +

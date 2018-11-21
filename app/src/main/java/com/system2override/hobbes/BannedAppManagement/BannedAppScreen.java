@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,11 +41,14 @@ public class BannedAppScreen extends HobbesScreen {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_banned_apps_screen);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         this.bar = getSupportActionBar();
         this.bar.setTitle(R.string.banned_app_screen_bar_header);
         this.bar.setDisplayHomeAsUpEnabled(true);
-
-        setContentView(R.layout.activity_banned_apps_screen);
 
         this.showSelectedAppIconsView = (RecyclerView) findViewById(R.id.bannedAppsIcons);
         LinearLayoutManager layoutManager
@@ -59,7 +63,8 @@ public class BannedAppScreen extends HobbesScreen {
         List<ApplicationInfo> applicationInfoList = RandomUtilities.getApplicationList(getPackageManager());
         Map<String, ApplicationInfo> applicationInfoMap = new HashMap<>();
         for (ApplicationInfo applicationInfo: applicationInfoList) {
-            if (applicationInfo != null) {
+            // filter out Hobbes itself
+            if (applicationInfo != null && !applicationInfo.packageName.equals(getApplicationContext().getPackageName())) {
                 applicationInfoMap.put(applicationInfo.packageName, applicationInfo);
             }
         }
@@ -84,6 +89,8 @@ public class BannedAppScreen extends HobbesScreen {
                     MyApplication.getOneTimeData().setHasDoneOnboardingKey(true);
                     Log.d(TAG, "onCreate: in tutorial, clicked, tutorial should be false now");
                     Intent i = new Intent(BannedAppScreen.this, TodoManagementScreen.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
                     startActivity(i);
                 }
             });

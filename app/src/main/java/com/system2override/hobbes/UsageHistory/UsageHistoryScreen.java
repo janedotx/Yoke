@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
@@ -47,6 +48,10 @@ public class UsageHistoryScreen extends HobbesScreen {
         super.onCreate(savedInstanceState);
         this.scale = this.getResources().getDisplayMetrics().density;
         setContentView(R.layout.activity_usage_history_screen);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         this.bar = getSupportActionBar();
         this.bar.setTitle("Usage history");
         this.bar.setDisplayHomeAsUpEnabled(true);

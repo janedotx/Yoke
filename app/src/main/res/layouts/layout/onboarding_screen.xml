@@ -3,66 +3,75 @@
 xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
-android:background="@color/topBoxSepia"
+android:orientation="vertical"
+android:background="@color/HobbesBackground"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".WelcomeScreen">
 
-<include layout="@layout/vertical_grampa" />
+    <include layout="@layout/toolbar"/>
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="@dimen/next_button_margin_right"
-        android:paddingLeft="15dp"
-        android:layout_marginTop="12dp"
-        android:orientation="vertical">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        <ScrollView
+        <include layout="@layout/vertical_grampa" />
 
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginStart="20dp"
-            android:padding="5dp"
-            android:fadeScrollbars="false"
-            android:scrollbarStyle="insideInset"
-            android:scrollbarThumbVertical="@drawable/scroll_thumb"
-            android:scrollbarTrackVertical="@drawable/scroll_vertical_track"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/next_button_margin_right"
+            android:paddingLeft="15dp"
             android:layout_marginTop="12dp"
-            android:scrollbarFadeDuration="0"
-            android:scrollbarAlwaysDrawVerticalTrack="true"
-            android:background="@color/HobbesPrimaryAccent"
-            app:layout_constraintBottom_toTopOf="@+id/include"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="vertical">
 
-            <TextView
-                android:includeFontPadding="true"
-                android:id="@+id/onboardingText"
-                android:layout_width="wrap_content"
+            <ScrollView
+
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_margin="15dp"
-                android:isScrollContainer="true"
-                android:padding="15dp"
-                android:scrollbars="vertical"
-                android:text="WELCOME"
-                android:textColor="@color/white"
-                android:textSize="18sp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="20dp"
+                android:padding="5dp"
+                android:fadeScrollbars="false"
+                android:scrollbarStyle="insideInset"
+                android:scrollbarThumbVertical="@drawable/scroll_thumb"
+                android:scrollbarTrackVertical="@drawable/scroll_vertical_track"
+                android:layout_marginTop="12dp"
+                android:scrollbarFadeDuration="0"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                android:background="@drawable/brown_rounded_corner_border"
                 app:layout_constraintBottom_toTopOf="@+id/include"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </ScrollView>
+                app:layout_constraintTop_toTopOf="parent">
 
-        <include
-            android:id="@+id/include"
-            layout="@layout/next_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="@dimen/next_button_margin_right"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+                <TextView
+                    android:includeFontPadding="true"
+                    android:id="@+id/onboardingText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_margin="15dp"
+                    android:isScrollContainer="true"
+                    android:padding="15dp"
+                    android:scrollbars="vertical"
+                    android:text="WELCOME"
+                    android:textColor="@color/HobbesText"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toTopOf="@+id/include"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </ScrollView>
+
+            <include
+                android:id="@+id/include"
+                layout="@layout/next_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="@dimen/next_button_margin_right"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 </LinearLayout>

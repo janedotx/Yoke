@@ -8,29 +8,36 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="FullscreenTheme" parent="AppTheme">
-        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:windowBackground">@null</item>
-        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
-        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    <style name="HobbesActionBarStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:background">@color/HobbesBackground</item>
+        <item name="android:tint">@color/HobbesText</item>
+        <item name="colorControlNormal">@color/HobbesText</item>
+        <item name="android:subtitleTextStyle">@style/Hobbes.ActionBar.CustomTitle</item>
+        <item name="android:titleTextStyle">@style/Hobbes.ActionBar.CustomTitle</item>
+        <item name="subtitleTextStyle">@style/Hobbes.ActionBar.CustomTitle</item>
+        <item name="titleTextStyle">@style/Hobbes.ActionBar.CustomTitle</item>
+        <item name="android:textColorPrimary">@color/HobbesText</item>
     </style>
 
-    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/black_overlay</item>
+
+    <!-- ActionBar title text -->
+    <style name="Hobbes.ActionBar.CustomTitle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:textColor">@color/HobbesText</item>
+        <!-- The textColor property is backward compatible with the Support Library -->
     </style>
 
-    <style name="HobbesActionBarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/tealBackground</item>
-    </style>
-
-    <style name="HobbesAppTheme" parent="AppTheme">
+    <style name="HobbesAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/HobbesActionBarStyle</item>
-        <item name="colorPrimary">@color/HobbesPrimaryAccent</item>
+        <item name="actionModeBackground">@color/HobbesBackground</item>
+        <item name="colorPrimary">@color/HobbesBackground</item>
         <item name="colorPrimaryDark">@color/black_overlay</item>
-        <item name="colorControlNormal">@color/HobbesPrimaryAccent</item>
-        <item name="colorControlActivated">@color/HobbesPrimaryAccent</item>
-        <item name="colorControlHighlight">@color/HobbesPrimaryAccent</item>
+        <item name="colorControlNormal">@color/HobbesBackground</item>
+        <item name="colorControlActivated">@color/HobbesBackground</item>
+        <item name="colorControlHighlight">@color/HobbesBackground</item>
+        <item name="colorAccent">@color/HobbesText</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
     </style>
 
     <style name="BaseToDoView">

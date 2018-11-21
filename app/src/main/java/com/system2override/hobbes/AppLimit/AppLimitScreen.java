@@ -28,10 +28,7 @@ import java.util.List;
 public class AppLimitScreen extends HobbesScreen {
     private static final String TAG = "AppLimitScreen";
 
-    private TableLayout table;
-
     private AppLimitTasks appLimitTasks;
-    private View goToApp;
 
     private RecyclerView toDoRecyclerView;
     private ToDoReminderAdapter adapter;
@@ -59,6 +56,8 @@ public class AppLimitScreen extends HobbesScreen {
                 setContentView(R.layout.incomplete_streak_screen);
                 break;
         }
+
+        getSupportActionBar().hide();
 
         Log.d(TAG, "onCreate: type is " + Integer.toString(this.appLimitTasks.getType()));
 

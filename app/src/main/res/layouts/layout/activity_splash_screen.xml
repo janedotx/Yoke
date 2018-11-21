@@ -5,36 +5,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@color/HobbesPrimaryAccent"
+    android:background="@color/HobbesBackground"
     tools:context=".SplashScreen">
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="219dp"
-            android:layout_height="wrap_content"
+            android:layout_width="160dp"
+            android:layout_height="164dp"
+            android:scaleType="fitCenter"
             android:src="@drawable/group_8" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hobbes"
+            android:text="HOBBES"
             android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="45sp" />
+            android:textColor="@color/black"
+            android:textSize="25sp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/getStarted"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:background="@color/HobbesBackgroundDark"
+        android:padding="15dp"
+        android:text="GET STARTED"
+        android:textAlignment="center"
+        android:textColor="@color/HobbesBackgroundDarkLightFont"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </android.support.constraint.ConstraintLayout>
