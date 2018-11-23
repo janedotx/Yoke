@@ -26,18 +26,18 @@
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="185dp"
-                android:background="@color/topBoxSepia">
+                android:background="@color/HobbesBackground">
 
                 <ImageView
                     android:id="@+id/button3"
-                    android:src="@drawable/grandpa_hobbes"
                     android:layout_width="wrap_content"
                     android:layout_height="160dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitCenter"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="16dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/grandpa_hobbes"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +50,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="22dp"
-                    android:background="@color/tealBackground"
+                    android:background="@drawable/brown_rounded_corner_border"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/button3"
                     app:layout_constraintTop_toTopOf="parent">
@@ -59,13 +59,13 @@
                         style="@style/toDoManagementInfoTableRow"
                         android:layout_width="match_parent"
                         android:layout_marginTop="12dp"
-                        android:background="@drawable/white_border_bottom">
+                        android:background="@drawable/brown_border_bottom">
 
                         <TextView
                             android:id="@+id/todoManagementRemainingTimeHeader"
                             android:layout_width="wrap_content"
                             android:text="@string/toDoManagementRemainingTimeHeader"
-                            android:textColor="@color/white"
+                            android:textColor="@color/HobbesText"
                             android:textSize="12sp"
                             tools:layout_editor_absoluteX="16dp"
                             tools:layout_editor_absoluteY="22dp" />
@@ -74,8 +74,9 @@
                             android:id="@+id/todoManagementAvailableTimeValue"
                             style="@style/toDoManagementInfoValues"
                             android:layout_width="wrap_content"
+                            android:background="@drawable/brown_border_bottom"
                             android:text="TextView"
-                            android:textColor="@color/white"
+                            android:textColor="@color/HobbesText"
                             android:textSize="12sp" />
                     </TableRow>
 
@@ -90,14 +91,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/current_streak_label_text"
-                            android:textColor="@color/white"
+                            android:textColor="@color/HobbesText"
                             android:textSize="12sp" />
 
                         <TextView
                             android:id="@+id/toDoManagementCurrentStreakValue"
                             style="@style/toDoManagementInfoValues"
                             android:text="TextView"
-                            android:textColor="@color/white"
+                            android:textColor="@color/HobbesText"
                             android:textSize="12sp" />
                     </TableRow>
 
@@ -111,7 +112,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/toDoManagementLongestStreakHeader"
-                            android:textColor="@color/white"
+                            android:textColor="@color/HobbesText"
                             android:textSize="12sp" />
 
                         <TextView
@@ -119,7 +120,7 @@
                             style="@style/toDoManagementInfoValues"
                             android:layout_width="wrap_content"
                             android:text="TextView"
-                            android:textColor="@color/white"
+                            android:textColor="@color/HobbesText"
                             android:textSize="12sp" />
                     </TableRow>
 
@@ -131,7 +132,7 @@
                             android:id="@+id/todoManagementEarnedTimeHeader"
                             android:layout_width="wrap_content"
                             android:text="@string/toDoManagementEarnedTimeHeader"
-                            android:textColor="@color/white"
+                            android:textColor="@color/HobbesText"
                             android:textSize="12sp"
                             tools:layout_editor_absoluteX="16dp"
                             tools:layout_editor_absoluteY="22dp" />
@@ -141,7 +142,7 @@
                             style="@style/toDoManagementInfoValues"
                             android:layout_width="wrap_content"
                             android:text="TextView"
-                            android:textColor="@color/white"
+                            android:textColor="@color/HobbesText"
                             android:textSize="12sp" />
                     </TableRow>
 
@@ -154,7 +155,7 @@
             <android.support.design.widget.CoordinatorLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/bottomBoxSepia"
+                android:background="@color/HobbesBackground"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <LinearLayout
@@ -189,6 +190,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|bottom|right"
                     android:layout_margin="16dp"
+                    android:tint="@color/HobbesDarkBlue"
+                    android:backgroundTint="@color/HobbesBlue"
                     android:src="@drawable/ic_round_add_24px"
                     app:layout_anchor="@id/toDoManagementPager"
                     app:layout_anchorGravity="bottom|right|end" />

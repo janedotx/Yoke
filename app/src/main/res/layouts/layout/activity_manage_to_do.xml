@@ -11,41 +11,41 @@
     <include layout="@layout/toolbar"></include>
 
     <LinearLayout
-        android:padding="19dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:padding="19dp">
 
         <LinearLayout
             android:id="@+id/makeDailyHabit"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
             <TextView
-                android:text="Make this a daily habit"
-                android:textColor="@color/black"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="Make this a daily habit"
+                android:textColor="@color/HobbesText" />
+
             <CheckBox
                 android:id="@+id/makeDailyHabitCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
-            <EditText
-                android:id="@+id/addToDoEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="19dp"
-                android:ems="10"
-                android:textSize="16sp"
-                android:inputType="textMultiLine"
-                android:background="@drawable/add_todo_edit_text_bottom_border"
-                android:maxLines="1"
-                android:paddingBottom="4dp"
-                android:hint="@string/addToDoHint"
-                 />
+
+        <EditText
+            android:id="@+id/addToDoEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:background="@drawable/add_todo_edit_text_bottom_border"
+            android:ems="10"
+            android:hint="@string/addToDoHint"
+            android:inputType="textMultiLine"
+            android:maxLines="1"
+            android:paddingBottom="4dp"
+            android:textSize="16sp" />
 
 
         <LinearLayout
@@ -58,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/addToDoSuggestionsLabel"
-                android:textColor="@color/HobbesPrimaryAccent"
+                android:textColor="@color/HobbesText"
                 android:textSize="16sp"></TextView>
 
             <android.support.v7.widget.RecyclerView
