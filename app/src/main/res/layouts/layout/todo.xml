@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/brown_rounded_corner_border"
+    android:layout_marginTop="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -11,7 +12,7 @@
         android:id="@+id/toDoViewGroup"
         android:layout_width="match_parent"
         android:layout_height="69dp"
-        android:background="@drawable/one_off_todo_coloring"
+        android:background="@drawable/todo_coloring"
         android:gravity="center_vertical">
 
 
@@ -38,7 +39,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="15dp"
             android:background="@color/HobbesBackground"
-            android:buttonTint="@color/white"
+            android:buttonTint="@color/HobbesText"
             app:layout_constraintBottom_toBottomOf="@+id/toDoDescription"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/toDoDescription"

@@ -1,17 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<item>
+    <shape xmlns:android="http://schemas.android.com/apk/res/android"
+        android:shape="rectangle">
+        <stroke android:width="1dp" android:color="#3C341F" />
+        <corners android:radius="10dp" />
+        <solid android:color="#F0ECE0" />
+    </shape>
+</item>
 
-
-    <item>
-        <shape android:shape="rectangle">
-            <corners android:radius="10dp" />
-            <solid android:color="@color/HobbesPink"/>
-        </shape>
-    </item>
-<item android:left="8dp">
+<item android:left="1dp" android:top="1dp" android:right="1dp" android:bottom="1dp">
     <shape android:shape="rectangle">
         <corners android:radius="10dp" />
-        <solid android:color="@color/HobbesBackground"/>
+        <solid android:color="@color/HobbesPink" />
+    </shape>
+</item>
+<item android:left="12dp" android:top="1dp" android:right="1dp" android:bottom="1dp">
+    <shape android:shape="rectangle">
+        <corners android:radius="10dp" />
+        <solid android:color="@color/HobbesBackground" />
     </shape>
 </item>
 

@@ -159,29 +159,41 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <LinearLayout
+                    android:id="@+id/bottomToDoManagement"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="9dp"
-                    android:layout_marginRight="9dp"
                     android:orientation="vertical">
 
-                    <android.support.design.widget.TabLayout
-                        android:id="@+id/toDoManagementTabs"
+                    <ImageView
+                        android:id="@+id/toDoShadowBorder"
                         android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:layout_marginBottom="15dp"
-                        app:tabGravity="center"
-                        app:tabIndicatorColor="@color/HobbesBlush"
-                        app:tabIndicatorHeight="2dp"
-                        app:tabMode="fixed"
-                        app:tabPaddingTop="15dp" />
+                        android:layout_height="6dp"
+                        android:background="@drawable/top_shadow" />
 
-                    <android.support.v4.view.ViewPager
-                        android:id="@+id/toDoManagementPager"
+                    <LinearLayout
+                        android:layout_marginLeft="9dp"
+                        android:layout_marginRight="9dp"
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
+                            <android.support.design.widget.TabLayout
+                                android:id="@+id/toDoManagementTabs"
+                                android:layout_width="match_parent"
+                                android:layout_height="64dp"
+                                android:layout_marginBottom="15dp"
+                                app:tabGravity="center"
+                                app:tabIndicatorColor="@color/HobbesBlue"
+                                app:tabIndicatorHeight="2dp"
+                                app:tabMode="fixed"
+                                app:tabPaddingTop="15dp" />
 
-                    </android.support.v4.view.ViewPager>
+                            <android.support.v4.view.ViewPager
+                                android:id="@+id/toDoManagementPager"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                            </android.support.v4.view.ViewPager>
+                        </LinearLayout>
                 </LinearLayout>
 
                 <android.support.design.widget.FloatingActionButton
