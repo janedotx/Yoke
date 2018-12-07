@@ -94,7 +94,11 @@ public class SelectedAppIconAdapter extends RecyclerView.Adapter<SelectedAppIcon
 
     @Subscribe
     public void onBannedAppChecked(BannedAppAdded event) {
-        Log.d(TAG, "onBannedAppChecked: event " + event.appInfo.packageName);
+        if (event.appInfo != null) {
+            Log.d(TAG, "onBannedAppChecked: event " + event.appInfo.packageName);
+        } else {
+            Log.d(TAG, "onBannedAppChecked: event inexplicably null");
+        }
         int firstNull = this.applications.indexOf(null);
         this.applications.set(firstNull, event.appInfo);
         notifyDataSetChanged();

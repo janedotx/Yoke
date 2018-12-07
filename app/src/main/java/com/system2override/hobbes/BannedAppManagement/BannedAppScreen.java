@@ -62,11 +62,10 @@ public class BannedAppScreen extends HobbesScreen {
 
         List<ApplicationInfo> applicationInfoList = RandomUtilities.getApplicationList(getPackageManager());
         Map<String, ApplicationInfo> applicationInfoMap = new HashMap<>();
+        Log.d(TAG, "onCreate: "  + getApplicationContext().getPackageName());
+        Log.d(TAG, "onCreate: "  + getApplicationContext().getPackageName());
         for (ApplicationInfo applicationInfo: applicationInfoList) {
-            // filter out Hobbes itself
-            if (applicationInfo != null && !applicationInfo.packageName.equals(getApplicationContext().getPackageName())) {
-                applicationInfoMap.put(applicationInfo.packageName, applicationInfo);
-            }
+            applicationInfoMap.put(applicationInfo.packageName, applicationInfo);
         }
 
         List<Map.Entry<Long, String>> appsTimeMap = UsageStatsHelper.convertSortedMapToList(

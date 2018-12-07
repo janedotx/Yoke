@@ -13,7 +13,7 @@
     <TextView
         android:id="@+id/nextButton"
         android:text="NEXT"
-        android:textColor="@color/HobbesPrimaryAccent"
+        android:textColor="@color/HobbesBackgroundDark"
         android:textSize="16sp"
         android:paddingBottom="40dp"
         android:layout_gravity="right"

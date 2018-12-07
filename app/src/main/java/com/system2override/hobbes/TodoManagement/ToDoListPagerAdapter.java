@@ -25,7 +25,7 @@ public class ToDoListPagerAdapter extends FragmentPagerAdapter {
         switch(position)
         {
             case ToDoListFragment.ALL_TODOS:
-                header = "ALL";
+                header = "ALL TASKS";
                 break;
             case ToDoListFragment.COMPLETED_TODOS:
                 header = "COMPLETED";

@@ -7,18 +7,10 @@ android:id="@+id/app_limit_screen"
 android:layout_width="match_parent"
 android:orientation="vertical"
 android:layout_height="match_parent"
-android:background="@color/bottomBoxSepia"
+android:background="@color/HobbesBackground"
     >
     <include layout="@layout/incomplete_streak_top_box"></include>
     <include layout="@layout/incomplete_streak_bottom_box"/>
-
-    <TextView
-        android:id="@+id/appLimitGoToApp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="GO TO APP"
-        android:textColor="@color/HobbesGray"
-        android:textSize="14sp"></TextView>
+    <include layout="@layout/go_to_app"/>
 
 </LinearLayout>

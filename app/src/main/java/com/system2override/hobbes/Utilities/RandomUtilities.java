@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.util.Log;
+
+import com.system2override.hobbes.MyApplication;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -80,12 +83,23 @@ public class RandomUtilities {
         List<ResolveInfo> resolveInfosList = pm.queryIntentActivities(intent, PackageManager.GET_META_DATA);
         List<ApplicationInfo> applicationInfoList = new ArrayList<>();
         // maybe this is too defensive but i don't wanna nab any Service by accident
+        Log.d("RandomUtilities", "getApplicationList: " + (MyApplication.packageName));
         for (int i = 0; i < resolveInfosList.size(); i ++) {
             ResolveInfo cur = resolveInfosList.get(i);
             if (cur.activityInfo != null) {
                 try {
                     ApplicationInfo appInfo = pm.getApplicationInfo(cur.activityInfo.packageName, 0);
-                    applicationInfoList.add(appInfo);
+                    if (appInfo != null &&
+                            !appInfo.packageName.equals(MyApplication.packageName) &&
+                            !pm.getApplicationLabel(appInfo).equals(MyApplication.packageName)) {
+                        /*
+                        Log.d("RandomUtilities", "getApplicationList: " + appInfo.packageName);
+                        Log.d("RandomUtilities", "getApplicationList label: " + pm.getApplicationLabel(appInfo));
+                        Log.d("RandomUtilities", "getApplicationList: " + appInfo.packageName.equals(MyApplication.packageName));
+                        Log.d("RandomUtilities", "getApplicationList: " + pm.getApplicationLabel(appInfo).equals(MyApplication.packageName));
+                        */
+                        applicationInfoList.add(appInfo);
+                    }
                 } catch (PackageManager.NameNotFoundException e) {
                     continue;
                 }

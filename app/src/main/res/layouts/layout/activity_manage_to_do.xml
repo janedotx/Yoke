@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/topBoxSepia"
+    android:background="@color/HobbesBackground"
     tools:context=".ManageToDo.ManageToDoScreen">
 
     <include layout="@layout/toolbar"></include>
@@ -29,6 +29,7 @@
 
             <CheckBox
                 android:id="@+id/makeDailyHabitCheckBox"
+                android:buttonTint="@color/HobbesText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

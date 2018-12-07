@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/topBoxSepia"
+    android:background="@color/HobbesBackground"
     tools:context="com.system2override.hobbes.UsageHistory.UsageHistoryScreen">
 
     <include layout="@layout/toolbar"></include>
@@ -27,14 +27,15 @@
             android:src="@drawable/grandpa_hobbes" />
 
         <LinearLayout
+            android:id="@+id/usageHistoryInfoBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="12dp"
-            android:background="@color/HobbesPrimaryAccent"
-            android:orientation="vertical"
+            android:background="@drawable/brown_rounded_corner_border"
             android:gravity="center_horizontal"
+            android:orientation="vertical"
             android:padding="15dp">
 
             <TextView
@@ -42,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Your average daily phone usage is "
-                android:textColor="@color/white"
+                android:textColor="@color/HobbesText"
                 android:textSize="14sp" />
 
 
@@ -50,7 +51,7 @@
                 android:layout_width="147dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/bottomBoxSepia">
+                android:background="@color/HobbesBrownAccent">
 
                 <View
                     android:id="@+id/totalUsageHistoryTopBar"
@@ -71,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="left"
                     android:text="0h"
-                    android:textColor="@color/white"
+                    android:textColor="@color/HobbesText"
                     android:textSize="8sp"></TextView>
 
                 <View
@@ -86,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="12h"
-                    android:textColor="@color/white"
+                    android:textColor="@color/HobbesText"
                     android:textSize="8sp"></TextView>
             </LinearLayout>
 
@@ -96,15 +97,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="Grandpa Hobbes recommends only two hours a day."
-                android:textColor="@color/white"
+                android:textColor="@color/HobbesText"
                 android:textSize="12sp"
                 android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/usageHistoryBottom"
                 android:layout_width="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
@@ -113,15 +114,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Your average daily phone usage since you installed Hobbes is"
-                    android:textColor="@color/white"
+                    android:textColor="@color/HobbesText"
                     android:textSize="14sp" />
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="147dp"
-                    android:layout_gravity="center_horizontal"
                     android:layout_height="20dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
-                    android:background="@color/bottomBoxSepia">
+                    android:background="@color/HobbesBrownAccent">
 
                     <View
                         android:id="@+id/totalUsageHistoryBottomBar"
@@ -138,8 +139,8 @@
 
     <TextView
         android:layout_marginTop="24dp"
-        android:background="@color/bottomBoxSepia"
-        android:textColor="@color/white"
+        android:background="@color/HobbesBrownAccent"
+        android:textColor="@color/HobbesText"
         android:textSize="16sp"
         android:text="AVERAGE DAILY USAGE PER APP"
         android:paddingTop="12dp"

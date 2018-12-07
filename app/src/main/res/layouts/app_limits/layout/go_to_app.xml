@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="GO TO APP"
-        android:textColor="@color/HobbesGray"
+        android:textColor="@color/HobbesBackgroundDarkLightFont"
         android:textSize="14sp"></TextView>
 
 </LinearLayout>

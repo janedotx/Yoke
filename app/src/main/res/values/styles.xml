@@ -71,13 +71,13 @@
     </style>
 
     <style name="topBox">
-        <item name="android:background">@color/topBoxSepia</item>
+        <item name="android:background">@color/HobbesBackground</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">120dp</item>
     </style>
 
     <style name="expositoryText">
-        <item name="android:textColor">@color/HobbesPrimaryAccent</item>
+        <item name="android:textColor">@color/HobbesText</item>
         <item name="android:textSize">14sp</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_marginLeft">12dp</item>
@@ -86,7 +86,7 @@
     </style>
 
     <style name="bottomBox">
-        <item name="android:background">@color/bottomBoxSepia</item>
+        <item name="android:background">@color/HobbesBackground</item>
 
     </style>
 

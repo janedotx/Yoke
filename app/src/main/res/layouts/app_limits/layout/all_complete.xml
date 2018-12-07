@@ -5,9 +5,10 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:id="@+id/app_limit_screen"
 android:layout_width="match_parent"
+android:gravity="center_vertical"
 android:orientation="vertical"
 android:layout_height="match_parent"
-android:background="@color/bottomBoxSepia"
+android:background="@color/HobbesBackground"
     >
 
     <LinearLayout
@@ -74,7 +75,7 @@ android:background="@color/bottomBoxSepia"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="Time remaining till reset: "
-            android:textColor="@color/HobbesPrimaryAccent"
+            android:textColor="@color/HobbesText"
             android:textSize="14sp"></TextView>
 
         <TextView
@@ -83,7 +84,7 @@ android:background="@color/bottomBoxSepia"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text=""
-            android:textColor="@color/HobbesPrimaryAccent"
+            android:textColor="@color/HobbesText"
             android:textSize="14sp"></TextView>
         <TextView
             android:id="@+id/timeRemainingTillResetString"
@@ -92,10 +93,10 @@ android:background="@color/bottomBoxSepia"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text=""
-            android:textColor="@color/HobbesPrimaryAccent"
+            android:textColor="@color/HobbesText"
             android:textSize="14sp"></TextView>
         </LinearLayout>
-
+    <include layout="@layout/productive"/>
     <TextView
         android:id="@+id/appLimitGoToApp"
         android:layout_marginTop="40dp"
@@ -103,7 +104,7 @@ android:background="@color/bottomBoxSepia"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="GO TO APP"
-        android:textColor="@color/HobbesGray"
+        android:textColor="@color/HobbesBackgroundDarkLightFont"
         android:textSize="14sp"></TextView>
 
 </LinearLayout>

@@ -29,9 +29,9 @@ public class ToDoListFragment extends Fragment {
     private RecyclerView toDoListView;
     private ToDoListAdapter adapter;
     public static String TAB_NUMBER = "tab_number";
-    public static final int ALL_TODOS = 0;
+    public static final int ALL_TODOS = 2;
     public static final int COMPLETED_TODOS = 1;
-    public static final int INCOMPLETE_TODOS = 2;
+    public static final int INCOMPLETE_TODOS = 0;
 
     public ToDoListFragment() {}
 
@@ -46,21 +46,27 @@ public class ToDoListFragment extends Fragment {
 
     private List<ToDoInterface> getToDoItems(int tab, HarnessDatabase db) {
         List<ToDoInterface> items = new ArrayList<>();
+        List<Habit> incompleteHabits = db.habitDao().loadAllIncompleteHabits();
+        List<Habit> completedHabits = db.habitDao().loadAllCompleteHabits();
+        List<Habit> incompleteOneOffs = db.habitDao().loadAllIncompleteOneOffs();
+        List<Habit> completedOneOffs = db.habitDao().loadAllCompleteOneOffs();
         switch(tab) {
             // all
-            case 0:
-                List<Habit> habits = db.habitDao().loadAllHabits();
-                List<Habit> oneOffs = db.habitDao().loadAllOneOffs();
-                for (Habit h: habits) {
+            case ALL_TODOS:
+                for (Habit h: incompleteHabits) {
                     items.add((ToDoInterface) h);
                 }
-                for (Habit h: oneOffs) {
+                for (Habit h: completedHabits) {
+                    items.add((ToDoInterface) h);
+                }
+                for (Habit h: incompleteOneOffs) {
+                    items.add((ToDoInterface) h);
+                }
+                for (Habit h: completedOneOffs) {
                     items.add((ToDoInterface) h);
                 }
                 break;
-            case 1:
-                List<Habit> completedHabits = db.habitDao().loadAllCompleteHabits();
-                List<Habit> completedOneOffs = db.habitDao().loadAllCompleteOneOffs();
+            case COMPLETED_TODOS:
                 for (Habit h: completedHabits) {
                     items.add((ToDoInterface) h);
                 }
@@ -69,9 +75,7 @@ public class ToDoListFragment extends Fragment {
                 }
 
                 break;
-            case 2:
-                List<Habit> incompleteHabits = db.habitDao().loadAllIncompleteHabits();
-                List<Habit> incompleteOneOffs = db.habitDao().loadAllIncompleteOneOffs();
+            case INCOMPLETE_TODOS:
                 for (Habit h: incompleteHabits) {
                     items.add((ToDoInterface) h);
                 }

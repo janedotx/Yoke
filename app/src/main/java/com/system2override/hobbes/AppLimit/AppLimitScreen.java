@@ -57,7 +57,6 @@ public class AppLimitScreen extends HobbesScreen {
                 break;
         }
 
-        getSupportActionBar().hide();
 
         Log.d(TAG, "onCreate: type is " + Integer.toString(this.appLimitTasks.getType()));
 
@@ -88,6 +87,17 @@ public class AppLimitScreen extends HobbesScreen {
                 Intent i = new Intent(AppLimitScreen.this, TodoManagementScreen.class);
                 startActivity(i);
                 finish();
+            }
+        });
+
+        findViewById(R.id.productiveButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                Intent homeIntent = new Intent(Intent.ACTION_MAIN, null);
+                homeIntent.addCategory(Intent.CATEGORY_HOME);
+                homeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                startActivity(homeIntent);
             }
         });
 

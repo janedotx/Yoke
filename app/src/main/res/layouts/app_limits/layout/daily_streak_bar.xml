@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="24dp"
-    android:background="@color/HobbesPrimaryAccent"
+    android:background="@color/HobbesBackgroundDark"
     android:gravity="center">
 
     <LinearLayout
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:text="DAILY STREAK"
-            android:textColor="@color/HobbesPink"
+            android:textColor="@color/HobbesOrange"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"></TextView>
@@ -41,7 +41,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
             android:text="0"
-            android:textColor="@color/HobbesPink"
+            android:textColor="@color/HobbesOrange"
             android:textSize="16sp"
             tools:layout_editor_absoluteY="16dp" />
     </LinearLayout>

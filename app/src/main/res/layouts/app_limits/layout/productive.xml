@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/app_limit_screen"
+android:layout_width="match_parent"
+android:orientation="vertical"
+android:layout_height="wrap_content"
+android:background="@color/HobbesBackground"
+    >
+    <TextView
+        android:id="@+id/productiveButton"
+        android:text="OK, I'LL BE PRODUCTIVE"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:background="@color/HobbesBlue"
+        android:paddingRight="17dp"
+        android:paddingLeft="17dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        ></TextView>
+
+</LinearLayout>

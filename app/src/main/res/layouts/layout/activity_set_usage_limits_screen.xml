@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/topBoxSepia"
+    android:background="@color/HobbesBackground"
     android:orientation="vertical"
     tools:context=".SetUsageLimitsScreen">
     <include layout="@layout/toolbar"></include>
@@ -25,43 +25,47 @@
             android:scaleType="fitCenter"
             android:src="@drawable/grandpa_hobbes"
             ></ImageView>
+
         <LinearLayout
-            android:orientation="vertical"
-            android:background="@color/HobbesPrimaryAccent"
-            android:padding="12dp"
-            android:layout_marginLeft="24dp"
+            android:id="@+id/usageLimitsInfoBox"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:background="@drawable/brown_rounded_corner_border"
+            android:orientation="vertical"
+            android:padding="12dp">
+
             <TextView
-                android:textColor="@color/white"
-                android:textSize="20sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Customize your daily time limit"
-                />
+                android:textColor="@color/HobbesText"
+                android:textSize="20sp" />
+
             <TextView
-                android:textColor="@color/white"
-                android:layout_marginTop="8dp"
-                android:textSize="12sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="You can choose how much time you're allowed to spend each day on time-wasting apps, before you'll be required to finish a todo."
-                />
+                android:textColor="@color/HobbesText"
+                android:textSize="12sp" />
         </LinearLayout>
 
 
     </LinearLayout>
+
     <TextView
+        android:id="@+id/customizeUsageLimitsHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:background="@color/bottomBoxSepia"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:text="CUSTOMIZE YOUR USAGE LIMIT"
-        android:paddingTop="12dp"
+        android:background="@color/HobbesBrownAccent"
         android:paddingBottom="12dp"
         android:paddingLeft="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:paddingTop="12dp"
+        android:text="CUSTOMIZE YOUR USAGE LIMIT"
+        android:textColor="@color/HobbesText"
+        android:textSize="16sp" />
     <LinearLayout
         android:layout_marginTop="24dp"
         android:layout_marginLeft="20dp"

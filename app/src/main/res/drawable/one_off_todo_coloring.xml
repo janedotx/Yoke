@@ -5,7 +5,7 @@
             android:shape="rectangle">
 
             <stroke android:width="1dp" android:color="#3C341F" />
-            <corners android:radius="10dp" />
+            <corners android:radius="8dp" />
             <solid android:color="#F0ECE0" />
 
         </shape>
@@ -13,13 +13,17 @@
 
     <item android:left="1dp" android:top="1dp" android:right="1dp" android:bottom="1dp">
         <shape android:shape="rectangle">
-            <corners android:radius="10dp" />
+            <corners android:radius="8dp" />
             <solid android:color="@color/HobbesLightGreen" />
         </shape>
     </item>
-    <item android:left="12dp" android:top="1dp" android:right="1dp" android:bottom="1dp">
+    <item android:left="13dp" android:top="1dp" android:right="1dp" android:bottom="1dp">
         <shape android:shape="rectangle">
-            <corners android:radius="10dp" />
+            <corners android:bottomLeftRadius="0dp"
+                android:bottomRightRadius="8dp"
+                android:topLeftRadius="0dp"
+                android:topRightRadius="8dp"
+                />
             <solid android:color="@color/HobbesBackground" />
         </shape>
     </item>

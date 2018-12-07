@@ -8,6 +8,8 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import com.system2override.hobbes.MyApplication;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,6 +49,9 @@ public class UsageStatsHelper {
                 Map<String, Long> packageTimesMap = new HashMap<String, Long>();
                 for (UsageStats usageStats : appList) {
                     String packageName = usageStats.getPackageName();
+                    if (packageName.equals(MyApplication.packageName)) {
+                        continue;
+                    }
                     Long curValue = packageTimesMap.get(packageName);
                     long timeInForeground = usageStats.getTotalTimeInForeground();
                     if (curValue == null) {

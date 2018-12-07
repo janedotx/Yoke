@@ -25,15 +25,7 @@
         android:layout_gravity="center_horizontal"></android.support.v7.widget.RecyclerView>
 
     <include layout="@layout/daily_streak_bar"/>
-    <TextView
-        android:text="OK, I'LL BE PRODUCTIVE"
-        android:textColor="@color/HobbesFaintTeal"
-        android:textSize="14sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="12dp"
-        ></TextView>
+    <include layout="@layout/productive"/>
 
 
 
