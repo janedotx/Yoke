@@ -46,7 +46,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
 
     public ToDoListAdapter(Context context, List<ToDoInterface> toDoList, int tab) {
         this.toDoList = toDoList;
-        if (this.toDoList.size() == 0 && tab == ToDoListFragment.ALL_TODOS) {
+        if (this.toDoList.size() == 0 && tab != ToDoListFragment.COMPLETED_TODOS) {
             Habit placeHolder = new Habit();
             placeHolder.description = PLACEHOLDER_TODO_DESC;
             this.toDoList.add((ToDoInterface)placeHolder);

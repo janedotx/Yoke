@@ -58,7 +58,8 @@ public class SetUsageLimitsScreen extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+                MyApplication.getTimeBank().setInitialTime(progress * 60 * 1000);
+                setUsageLimitMinutes.setText(Integer.toString(progress));
             }
 
             @Override
@@ -72,6 +73,7 @@ public class SetUsageLimitsScreen extends AppCompatActivity {
                 MyApplication.getTimeBank().setInitialTime(progress * 60 * 1000);
                 setUsageLimitMinutes.setText(Integer.toString(progress));
             }
+
         });
     }
 

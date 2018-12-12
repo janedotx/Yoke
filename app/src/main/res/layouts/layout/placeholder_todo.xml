@@ -22,7 +22,7 @@ android:layout_width="match_parent">
             android:layout_marginEnd="24dp"
             android:left="28dp"
             android:text="+"
-            android:textColor="@color/HobbesPrimaryAccent"
+            android:textColor="@color/HobbesPink"
             android:textSize="18dp" />
 
         <TextView
@@ -32,8 +32,8 @@ android:layout_width="match_parent">
 
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:text="ADD YOUR FIRST TODO"
-            android:textColor="@color/HobbesPrimaryAccent"
+            android:text="ADD A TODO"
+            android:textColor="@color/HobbesPink"
 
             />
     </LinearLayout>

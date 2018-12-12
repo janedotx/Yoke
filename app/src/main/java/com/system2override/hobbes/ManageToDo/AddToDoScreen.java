@@ -17,6 +17,7 @@ public class AddToDoScreen extends ManageToDoScreen {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.bar.setTitle(R.string.addToDoHeader);
+        dailyHabitCheckBox.setChecked(true);
     }
 
     @Override

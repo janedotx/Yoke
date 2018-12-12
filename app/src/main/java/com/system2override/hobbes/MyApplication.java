@@ -96,40 +96,21 @@ public class MyApplication extends Application {
             }
     }
 
-    private void setupDB() {
+    private void setupTodos() {
 
         HarnessDatabase db = MyApplication.getDb();
 
         //       /*
-        Habit newHabit1 = new Habit();
-        newHabit1.description = "do pushups";
-        newHabit1.isDailyHabit = true;
+        Habit newHabit = new Habit();
+        newHabit.description = "This is an example todo to get you started. Pink ones, like this one, recur daily!";
+        newHabit.isDailyHabit = true;
 
-        Habit newHabit2 = new Habit();
-        newHabit2.description = "stretch";
-        newHabit2.isDailyHabit = true;
-
-        Habit newHabit3 = new Habit();
-        newHabit3.description = "do yoga";
-
-        Habit newHabit4 = new Habit();
-        newHabit4.description = "sketch something";
-
-        Habit newHabit5 = new Habit();
-        newHabit5.description = "longlonglonglonglonglong";
-
-        db.habitDao().insert(newHabit1, newHabit2, newHabit3, newHabit4, newHabit5);
-
-        /*
-        for (int i = 0; i < 300;  i++) {
-            Habit brandNewHabit = new Habit();
-            brandNewHabit.description = "brandNewHabit " + Integer.toString(i);
-            db.habitDao().insert(brandNewHabit);
-        }
-        */
+        Habit oneOff = new Habit();
+        oneOff.description = "This is an example todo to get you started. Green todos, like this one, are one-offs.";
+        oneOff.isDailyHabit = false;
 
 
-        GeneralDebugging.printDb(db);
+        db.habitDao().insert(newHabit, oneOff);
 
     }
 
@@ -149,7 +130,7 @@ public class MyApplication extends Application {
         suggestion4.text = "Walk the dog";
 
         Suggestion suggestion5 = new Suggestion();
-        suggestion5.text = "Get groceries";
+        suggestion5.text = "Clean the kitchen";
 
         db.suggestionDao().insert(suggestion1, suggestion2, suggestion3, suggestion4, suggestion5);
 
@@ -173,6 +154,7 @@ public class MyApplication extends Application {
     public void firstTimeSetup() {
         if (oneTimeData.getTimeOfHobbesInstall() == 0) {
             setUpSuggestions();
+            setupTodos();
             oneTimeData.setTimeOfHobbesInstall(System.currentTimeMillis());
             // set the time to be backdated 24 hours from the actual time of install, for testing purposes
 //            oneTimeData.setTimeOfHobbesInstall(System.currentTimeMillis() - UsageStatsHelper.DAY_IN_MS - 1);

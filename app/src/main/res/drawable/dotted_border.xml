@@ -2,10 +2,10 @@
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid
-        android:color="@color/topBoxSepia"/>
+        android:color="@color/HobbesBackground"/>
 <stroke
     android:width="2dp"
-    android:color="@color/HobbesPrimaryAccent"
+    android:color="@color/HobbesText"
     android:dashWidth="10dp"
     android:dashGap="6dp"/>
 <padding android:left="7dp" android:top="7dp"
