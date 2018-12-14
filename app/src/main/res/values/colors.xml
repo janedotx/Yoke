@@ -12,7 +12,6 @@
     <color name="bottomBoxSepia">#cdc39f</color>
     <color name="topBoxSepia">#dcd2ac</color>
     <color name="HobbesBlush">#f094c2</color>
-    <color name="HobbesBannerGreen">#98cc72</color>
     <color name="HobbesBannerBorder">#81ae61</color>
     <color name="HobbesPrimaryAccent">#2c6f8e</color>
     <color name="HobbesDarkTealAccent">#22576f</color>
@@ -39,6 +38,8 @@
     <color name="HobbesPink">#DD89B3</color>
     <color name="HobbesLightGreen">#BBBC54</color>
     <color name="HobbesBrownAccent">#DEDBCA</color>
+    <color name="HobbesBannerGreen">#98cc72</color>
+    <color name="HobbesDarkGreen">#88B765</color>
 
 
 </resources>

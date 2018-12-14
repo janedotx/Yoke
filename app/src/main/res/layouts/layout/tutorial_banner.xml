@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:background="@color/HobbesBannerGreen"
     android:paddingStart="18dp"
     android:paddingEnd="18dp"

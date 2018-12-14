@@ -13,6 +13,8 @@ public class OneTimeData extends SharedPreferencesModel{
     private final String TIME_INSTALLED_KEY = "TIME_INSTALLED_KEY";
     private final String AVERAGE_DAILY_USE = "AVERAGE_DAILY_USE";
     private final String FIRST_INSTALL_COMPLETE = "FIRST_INSTALL_COMPLETE";
+    private final String FIRST_DAILY_COMPLETED = "FIRST_DAILY_COMPLETED";
+    private final String FIRST_RECURRING_COMPLETED = "FIRST_RECURRING_COMPLETED";
 
     public OneTimeData(Context context) {
         super(context);
@@ -63,6 +65,24 @@ public class OneTimeData extends SharedPreferencesModel{
 
     public void setFirstInstallIncomplete(boolean b) {
         this.editor.putBoolean(FIRST_INSTALL_COMPLETE, b);
+        this.editor.apply();
+    }
+
+    public boolean getFirstDailyCompleted() {
+        return this.prefs.getBoolean(FIRST_DAILY_COMPLETED, false);
+    }
+
+    public void setFirstDailyCompleted(boolean b) {
+        this.editor.putBoolean(FIRST_DAILY_COMPLETED, b);
+        this.editor.apply();
+    }
+
+    public boolean getFirstRecurringCompleted() {
+        return this.prefs.getBoolean(FIRST_RECURRING_COMPLETED, false);
+    }
+
+    public void setFirstRecurringCompleted(boolean b) {
+        this.editor.putBoolean(FIRST_RECURRING_COMPLETED, b);
         this.editor.apply();
     }
 }

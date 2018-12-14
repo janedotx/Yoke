@@ -16,7 +16,7 @@
         android:layout_marginTop="16dp"
         android:gravity="center_vertical"
         android:left="8dp"
-        android:text="TextView" />
+        android:text="I am a sample todo" />
     <!--
     android:buttonTint="#ffffff"
     <!-->

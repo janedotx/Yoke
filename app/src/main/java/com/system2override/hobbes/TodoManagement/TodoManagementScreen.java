@@ -269,16 +269,15 @@ public class TodoManagementScreen extends HobbesScreen {
     }
 
     private void showTutorialFirstBanner() {
-        String explanation = "Hobbes supports two kinds of todos. The first is meant for building daily habits.\n\n" +
-                "When you check off every single daily habit, your streak number goes up for the day. " +
-                "If you don't finish all your daily habits, your streak number will reset to zero.\n\n" +
-                "For each daily habit you check off, you earn 15 more minutes of time.\n\n" +
-                "You can have at most five daily habits.";
+        String header = "DAILY HABIT";
         String buttonText = "NEXT";
+        String explanation = "A daily habit repeats daily. You can have at most five.\n\n" +
+                "For every daily habit completed, you earn 15 minutes. Completing all of your daily habits makes your streak go up. Failure to do them all resets your streak to 0.";
         LayoutInflater inflater = LayoutInflater.from(this);
-        final View tutorialBannerView = inflater.inflate(R.layout.tutorial_banner, null);
-        ((TextView) tutorialBannerView.findViewById(R.id.tutorialText)).setText(explanation);
-        ((TextView) tutorialBannerView.findViewById(R.id.tutorialButton)).setText(buttonText);
+        final View tutorialBannerView = inflater.inflate(R.layout.newtorial, null);
+        ((TextView) tutorialBannerView.findViewById(R.id.tutorialHeading)).setText(header);
+        ((TextView) tutorialBannerView.findViewById(R.id.tutorialNextButton)).setText(buttonText);
+        ((TextView) tutorialBannerView.findViewById(R.id.tutorialExplanation)).setText(explanation);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -290,7 +289,7 @@ public class TodoManagementScreen extends HobbesScreen {
         final AlertDialog tutorialBannerDialog = builder.create();
         tutorialBannerDialog.setView(tutorialBannerView);
 
-        tutorialBannerView.findViewById(R.id.tutorialButton).setOnClickListener(new View.OnClickListener() {
+        tutorialBannerView.findViewById(R.id.tutorialNextButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 tutorialBannerDialog.dismiss();
