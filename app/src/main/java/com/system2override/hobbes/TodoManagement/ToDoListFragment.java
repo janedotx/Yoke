@@ -29,8 +29,8 @@ public class ToDoListFragment extends Fragment {
     private RecyclerView toDoListView;
     private ToDoListAdapter adapter;
     public static String TAB_NUMBER = "tab_number";
-    public static final int ALL_TODOS = 2;
-    public static final int COMPLETED_TODOS = 1;
+    public static final int ALL_TODOS = 1;
+    public static final int COMPLETED_TODOS = 2;
     public static final int INCOMPLETE_TODOS = 0;
 
     public ToDoListFragment() {}

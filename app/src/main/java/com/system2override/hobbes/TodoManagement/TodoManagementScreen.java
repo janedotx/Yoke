@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 import com.system2override.hobbes.BannedAppManagement.BannedAppScreen;
+import com.system2override.hobbes.FirstTimeCompletionDialog.HabitDialog;
 import com.system2override.hobbes.HobbesScreen;
 import com.system2override.hobbes.ManageToDo.AddToDoScreen;
 import com.system2override.hobbes.ManageToDo.ManageToDoScreen;
@@ -35,12 +36,16 @@ import com.system2override.hobbes.OttoMessages.MidnightResetEvent;
 import com.system2override.hobbes.OttoMessages.StreakUpdateEvent;
 import com.system2override.hobbes.OttoMessages.TimeBankEarnedTime;
 import com.system2override.hobbes.OttoMessages.TimeBankUnearnedTime;
+import com.system2override.hobbes.OttoMessages.ToDoCompletedEvent;
 import com.system2override.hobbes.R;
 import com.system2override.hobbes.SetUsageLimitsScreen;
 import com.system2override.hobbes.SplashScreen;
 import com.system2override.hobbes.UsageHistory.UsageHistoryScreen;
 import com.system2override.hobbes.Utilities.RandomUtilities;
 import com.system2override.hobbes.Utilities.UsageStatsHelper;
+import com.system2override.hobbes.Models.RoomModels.Habit;
+import com.system2override.hobbes.Models.RoomModels.LocalTask;
+import com.system2override.hobbes.FirstTimeCompletionDialog.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +102,7 @@ public class TodoManagementScreen extends HobbesScreen {
         this.viewPager = (ViewPager) findViewById(R.id.toDoManagementPager);
         this.toDoListPagerAdapter = new ToDoListPagerAdapter(getSupportFragmentManager());
         this.viewPager.setAdapter(this.toDoListPagerAdapter);
+        this.viewPager.setCurrentItem(1);
         this.tabs.setupWithViewPager(this.viewPager);
 
         setFABcolor();
@@ -235,17 +241,23 @@ public class TodoManagementScreen extends HobbesScreen {
     }
 
 
-    private void showTutorialSecondBanner() {
-        String explanation = "The second kind of todo is meant for one-time tasks.\n\n" +
-                "Finishing a one-time task does not affect your streak number.\n\n" +
-                "For each one-time task you check off, you earn 5 more minutes of time.\n\n" +
-                "You can have as many one-time tasks as you want.";
 
+    private void showTutorialSecondBanner() {
+        String header = "ONE-OFF";
         String buttonText = "DONE";
+        String explanation = "A one-off is for one-time todos. You can have as many as you want.\n\n" +
+                "For every one-off you complete, you earn five more minutes of time on the apps you have limited.";
         LayoutInflater inflater = LayoutInflater.from(this);
-        final View tutorialBannerView = inflater.inflate(R.layout.tutorial_banner, null);
-        ((TextView) tutorialBannerView.findViewById(R.id.tutorialText)).setText(explanation);
-        ((TextView) tutorialBannerView.findViewById(R.id.tutorialButton)).setText(buttonText);
+        final View tutorialBannerView = inflater.inflate(R.layout.newtorial, null);
+        ((TextView) tutorialBannerView.findViewById(R.id.tutorialHeading)).setText(header);
+        ((TextView) tutorialBannerView.findViewById(R.id.tutorialNextButton)).setText(buttonText);
+        ((TextView) tutorialBannerView.findViewById(R.id.tutorialExplanation)).setText(explanation);
+
+        tutorialBannerView.findViewById(R.id.toDoViewGroup).setBackground(ContextCompat.getDrawable(this, R.drawable.one_off_todo_coloring));
+        ((TextView) tutorialBannerView.findViewById(R.id.toDoDescription)).setText("I am a sample one-off.");
+        ((TextView) tutorialBannerView.findViewById(R.id.tutorialNumber)).setText("2/2");
+//        holder.toDoViewGroup.setBackground();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -258,7 +270,7 @@ public class TodoManagementScreen extends HobbesScreen {
         final AlertDialog tutorialBannerDialog = builder.create();
         tutorialBannerDialog.setView(tutorialBannerView);
 
-        tutorialBannerView.findViewById(R.id.tutorialButton).setOnClickListener(new View.OnClickListener(){
+        tutorialBannerView.findViewById(R.id.tutorialNextButton).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 tutorialBannerDialog.dismiss();
@@ -278,6 +290,7 @@ public class TodoManagementScreen extends HobbesScreen {
         ((TextView) tutorialBannerView.findViewById(R.id.tutorialHeading)).setText(header);
         ((TextView) tutorialBannerView.findViewById(R.id.tutorialNextButton)).setText(buttonText);
         ((TextView) tutorialBannerView.findViewById(R.id.tutorialExplanation)).setText(explanation);
+        ((TextView) tutorialBannerView.findViewById(R.id.toDoDescription)).setText("I am a sample daily habit.");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -329,5 +342,7 @@ public class TodoManagementScreen extends HobbesScreen {
         MyApplication.getOneTimeData().setHasDoneTutorialKey(false);
         showTutorialFirstBanner();
     }
+
+
 
 }

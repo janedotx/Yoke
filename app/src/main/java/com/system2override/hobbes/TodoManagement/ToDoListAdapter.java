@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
+import com.system2override.hobbes.FirstTimeCompletionDialog.HabitDialog;
+import com.system2override.hobbes.FirstTimeCompletionDialog.LocalTaskDialog;
 import com.system2override.hobbes.ManageToDo.AddToDoScreen;
 import com.system2override.hobbes.ManageToDo.EditToDoScreen;
 import com.system2override.hobbes.ManageToDo.ManageToDoScreen;
@@ -31,6 +34,7 @@ import com.system2override.hobbes.OttoMessages.ToDoDeleted;
 import com.system2override.hobbes.OttoMessages.ToDoEdited;
 import com.system2override.hobbes.OttoMessages.ToDoUncheckedEvent;
 import com.system2override.hobbes.R;
+import com.system2override.hobbes.FirstTimeCompletionDialog.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +50,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
 
     public ToDoListAdapter(Context context, List<ToDoInterface> toDoList, int tab) {
         this.toDoList = toDoList;
+        Log.d(TAG, "ToDoListAdapter: tab " + Integer.toString(tab));
         if (this.toDoList.size() == 0 && tab != ToDoListFragment.COMPLETED_TODOS) {
             Habit placeHolder = new Habit();
             placeHolder.description = PLACEHOLDER_TODO_DESC;
@@ -67,6 +72,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
         if (!isPlaceholderToDo(this.toDoList.get(0))) {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.todo, parent, false);
             return new ToDoViewHolder(v, this.context, new ToDoViewHolder.IToDoViewHolderClicks() {
+
                 @Override
                 public void onTextClick(View v, int position) {
                     ToDoInterface t = toDoList.get(position);
@@ -88,12 +94,21 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
                     if (b.isChecked()) {
                         toDo.setCompleted(true);
                         Log.d(TAG, "onCheckBoxClick: set completed worked? " + Boolean.toString(toDo.isCompleted()));
+                        Log.d(TAG, "onCheckBoxClick: set completed worked? " + Integer.toString(position));
+                        Log.d(TAG, "onCheckBoxClick: this is the tab " + Integer.toString(ToDoListAdapter.this.tab));
                         // this would be a great place to use RxJava, set up this object as an observable
                         // and have the TimeBank subscribe to its changes but I don't know how to make
                         // that work and I don't feel inclined to learn at the moment
                         timeBank.earnTime(toDo);
                         if (ToDoListAdapter.this.tab == ToDoListFragment.INCOMPLETE_TODOS) {
                             toDoList.remove(position);
+                        }
+                        Log.d(TAG, "onCheckBoxClick: " + toDo.getToDoType());
+                        if (toDo.getToDoType().equals(Habit.TAG)) {
+                            showFirstTimeCompletionDialog(new HabitDialog());
+                        } else {
+                            // launch that other dialog
+                            showFirstTimeCompletionDialog(new LocalTaskDialog());
                         }
                         MyApplication.getBus().post(new ToDoCompletedEvent(toDo));
                     } else {
@@ -192,8 +207,36 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
             // oddly, these logging statements never appear, but if i comment out the post
             // events, then the tabs fail to update properly
             Log.d(TAG, "updateAdaptersOnToDoCompletion: " + e.toDo.getDescription());
-            notifyDataSetChanged();
         }
+
+        // this case is for if the todo is checked off while in the ALL tabs
+        if (this.tab == ToDoListFragment.INCOMPLETE_TODOS) {
+            for (int i = 0; i < this.toDoList.size(); i++) {
+                if (this.toDoList.get(i).getId() == e.toDo.getId()) {
+                    this.toDoList.remove(i);
+                }
+            }
+            // oddly, these logging statements never appear, but if i comment out the post
+            // events, then the tabs fail to update properly
+            Log.d(TAG, "updateAdaptersOnToDoCompletion: " + e.toDo.getDescription());
+        }
+
+        if (this.tab == ToDoListFragment.ALL_TODOS) {
+            Log.d(TAG, "updateAdaptersOnToDoCompletion: all todos adapter got the message");
+            int id = e.toDo.getId();
+            ToDoInterface todo = (ToDoInterface) MyApplication.getDb().habitDao().getById(id);
+            todo.setCompleted(true);
+            Log.d(TAG, "updateAdaptersOnToDoCompletion: fresh from db todo is done " + Boolean.toString(todo.isCompleted()));
+            for (int i = 0; i < this.toDoList.size(); i++) {
+                if (this.toDoList.get(i).getId() == id) {
+                    this.toDoList.add(i, todo);
+                    break;
+                }
+            }
+            notifyDataSetChanged();
+
+        }
+        notifyDataSetChanged();
     }
 
     @Subscribe
@@ -210,6 +253,23 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
                     break;
                 }
             }
+        }
+
+        if (this.tab == ToDoListFragment.ALL_TODOS) {
+            Log.d(TAG, "updateAdaptersOnToDoCompletion: all todos adapter got the message");
+            int id = e.toDo.getId();
+            ToDoInterface todo = (ToDoInterface) MyApplication.getDb().habitDao().getById(id);
+            todo.setCompleted(false);
+            Log.d(TAG, "updateAdaptersOnToDoCompletion: fresh from db todo is done " + Boolean.toString(todo.isCompleted()));
+            for (int i = 0; i < this.toDoList.size(); i++) {
+                if (this.toDoList.get(i).getId() == id) {
+                    this.toDoList.add(i, todo);
+
+                    break;
+                }
+            }
+            notifyDataSetChanged();
+
         }
         notifyDataSetChanged();
     }
@@ -256,12 +316,55 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
 
     @Subscribe
     public void onToDoCreation(ToDoCreated e) {
-        /*
+        // KILL THE PLACEHOLDER
         if (isPlaceholderToDo(this.toDoList.get(0))) {
             this.toDoList.remove(0);
             notifyDataSetChanged();
         }
-        //*/
+    }
+    /*
+    @Subscribe
+    public void launchFirstTimeCompletionDialogs(ToDoCompletedEvent event) {
+        /// since all three adapters are subscribed for this event, and i
+        // can't think of a better place to put this for now (an exception is thrown for some reason
+        // if i stick it into the todomanagementscreen--bizarre, since an instance of it should exist)
+        // anyway there seem to be multiple instances of each adapter, judging by how despite the
+        // hacky if statement, the dialog still shows up multiple times
+        // so using otto is bad
+
+        if (this.tab == ToDoListFragment.ALL_TODOS) {
+            ToDoInterface todo = event.toDo;
+            if (todo.getToDoType().equals(Habit.TAG)) {
+                showFirstTimeCompletionDialog(new HabitDialog());
+            } else {
+                // launch that other dialog
+                showFirstTimeCompletionDialog(new LocalTaskDialog());
+            }
+        }
+    }
+    */
+
+    private void showFirstTimeCompletionDialog(Data d) {
+        LayoutInflater inflater = LayoutInflater.from(this.context);
+        final View firstTimeView = inflater.inflate(R.layout.first_time_completion_dialog, null);
+        ((TextView) firstTimeView.findViewById(R.id.firstTimeCompletionDialogDescription)).setText(d.getDescription());
+        ((TextView) firstTimeView.findViewById(R.id.firstTimeCompletionRewardMessage)).setText(d.getRewardMessage());
+
+        firstTimeView.findViewById(R.id.firstTimeCompletionImage).setBackground(ContextCompat.getDrawable(this.context, d.getDrawable()));
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+
+        final AlertDialog firstTimeDialog = builder.create();
+        firstTimeDialog.setView(firstTimeView);
+        firstTimeView.findViewById(R.id.firstTimeDialogDismiss).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                firstTimeDialog.dismiss();
+            }
+        });
+
+        firstTimeDialog.show();
+
     }
 //    */
 

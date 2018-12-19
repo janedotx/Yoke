@@ -37,6 +37,7 @@ android {
             res.srcDirs =
                     [
                             'src/main/res/layouts/app_limits',
+                            'src/main/res/layouts/first_time_completion_dialogs',
                             'src/main/res/layouts/banned_apps',
                             'src/main/res/layouts',
                             'src/main/res'

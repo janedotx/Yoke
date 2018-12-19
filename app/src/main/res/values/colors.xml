@@ -20,9 +20,9 @@
     <color name="HobbesCardinal">#c41e3a</color>
 
 
-    <color name="seek_bar_background">#cdc39f</color>
-    <color name="seek_bar_progress">#2c6f8e</color>
-    <color name="seek_bar_secondary_progress">#2c6f8e</color>
+    <color name="seek_bar_background">#DEDBCA</color>
+    <color name="seek_bar_progress">#3C341F</color>
+    <color name="seek_bar_secondary_progress">#3C341F</color>
 
     <color name="usage_bar_background">#a29a7d</color>
     <color name="total_usage_bar_background">#c0b797</color>
@@ -33,6 +33,7 @@
     <color name="HobbesBackgroundDark">#3C341F</color>
     <color name="HobbesBackgroundDarkLightFont">#CD803E</color>
     <color name="HobbesText">#3C341F</color>
+    <color name="HobbesHeadingText">#524B38</color>
     <color name="HobbesBlue">#25C3DD</color>
     <color name="HobbesDarkBlue">#2C6F8E</color>
     <color name="HobbesPink">#DD89B3</color>

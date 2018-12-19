@@ -14,7 +14,7 @@ import java.util.List;
 
 @Entity(tableName = "Habits")
 public class Habit implements ToDoInterface {
-    private static final String TAG = "Habit";
+    public static final String TAG = "Habit";
     @PrimaryKey(autoGenerate = true)
     public int id;
 
@@ -101,7 +101,7 @@ public class Habit implements ToDoInterface {
 
     //ToDoInterface
     @Override
-    public String getToDoType() { return this.getClass().getSimpleName(); }
+    public String getToDoType() { return TAG; }
 
     public static String convertMSToYYMMDD(long ms) {
         Calendar todayCalObj = new GregorianCalendar();

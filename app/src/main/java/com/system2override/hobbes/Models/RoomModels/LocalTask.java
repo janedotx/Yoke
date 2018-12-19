@@ -11,6 +11,8 @@ import com.system2override.hobbes.Models.ToDoInterface;
 
 @Entity(tableName = "LocalTasks")
 public class LocalTask  {
+    public static final String TAG = "LocalTask";
+
     @PrimaryKey(autoGenerate = true)
     public int id;
 
@@ -82,7 +84,7 @@ public class LocalTask  {
         return description;
     }
 
-    public String getToDoType() { return this.getClass().getSimpleName(); }
+    public String getToDoType() { return TAG; }
 
     public void setDescription(String description) {
         this.description = description;
