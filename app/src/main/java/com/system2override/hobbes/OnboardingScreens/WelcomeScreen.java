@@ -1,12 +1,12 @@
-package com.system2override.hobbes;
+package com.system2override.hobbes.OnboardingScreens;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+
+import com.system2override.hobbes.OnboardingScreens.HowToScreen;
+import com.system2override.hobbes.OnboardingScreens.OnboardingActivity;
 
 public class WelcomeScreen extends OnboardingActivity implements View.OnClickListener {
     @Override

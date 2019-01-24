@@ -7,7 +7,7 @@ android:orientation="vertical"
 android:background="@color/HobbesBackground"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context=".WelcomeScreen">
+tools:context=".OnboardingScreens.WelcomeScreen">
 
     <include layout="@layout/toolbar"/>
 
@@ -48,7 +48,7 @@ tools:context=".WelcomeScreen">
 
                 <TextView
                     android:includeFontPadding="true"
-                    android:id="@+id/onboardingText"
+                    android:id="@+id/onboardingTextHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_margin="15dp"
@@ -57,7 +57,7 @@ tools:context=".WelcomeScreen">
                     android:scrollbars="vertical"
                     android:text="WELCOME"
                     android:textColor="@color/HobbesText"
-                    android:textSize="18sp"
+                    android:textSize="22sp"
                     app:layout_constraintBottom_toTopOf="@+id/include"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

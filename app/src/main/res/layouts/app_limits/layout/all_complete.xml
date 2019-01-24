@@ -54,7 +54,7 @@ android:background="@color/HobbesBackground"
                 android:scaleType="fitStart"
                 android:layout_gravity="center"
                 android:layout_marginTop="12dp"
-                android:src="@drawable/heart" />
+                android:src="@drawable/heart_one" />
 
             </LinearLayout>
 

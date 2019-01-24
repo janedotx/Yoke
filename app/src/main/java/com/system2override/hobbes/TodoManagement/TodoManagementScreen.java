@@ -1,6 +1,7 @@
 package com.system2override.hobbes.TodoManagement;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import com.squareup.otto.Subscribe;
 import com.system2override.hobbes.BannedAppManagement.BannedAppScreen;
 import com.system2override.hobbes.FirstTimeCompletionDialog.HabitDialog;
+import com.system2override.hobbes.FirstTimeCompletionDialog.StreakDialog;
 import com.system2override.hobbes.HobbesScreen;
 import com.system2override.hobbes.ManageToDo.AddToDoScreen;
 import com.system2override.hobbes.ManageToDo.ManageToDoScreen;
@@ -315,6 +317,33 @@ public class TodoManagementScreen extends HobbesScreen {
     public void updateStreak(StreakUpdateEvent event) {
         updateStreakValues();
     }
+
+    @Subscribe
+    public void showStreakDialog(StreakUpdateEvent event) {
+        if (MyApplication.getStreaks().getCurrentStreak() != 0 && !((Activity) this).isFinishing()) {
+            Data d = new StreakDialog();
+            LayoutInflater inflater = LayoutInflater.from(this);
+            final View dialogView = inflater.inflate(R.layout.first_time_completion_dialog, null);
+            ((TextView) dialogView.findViewById(R.id.firstTimeCompletionDialogDescription)).setText(d.getDescription());
+            ((TextView) dialogView.findViewById(R.id.firstTimeCompletionRewardMessage)).setText(d.getRewardMessage());
+
+            dialogView.findViewById(R.id.firstTimeCompletionImage).setBackground(ContextCompat.getDrawable(this, d.getDrawable()));
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            final AlertDialog dialog = builder.create();
+            dialog.setView(dialogView);
+            dialogView.findViewById(R.id.firstTimeDialogDismiss).setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+        }
+    }
+
 
     @Subscribe
     public void updateInfoViewValues(MidnightResetEvent e) {

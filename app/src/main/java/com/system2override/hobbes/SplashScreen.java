@@ -1,12 +1,10 @@
 package com.system2override.hobbes;
 
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.system2override.hobbes.TodoManagement.TodoManagementScreen;
+import com.system2override.hobbes.OnboardingScreens.WelcomeScreen;
 
 public class SplashScreen extends HobbesScreen implements View.OnClickListener {
 

@@ -229,7 +229,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
             Log.d(TAG, "updateAdaptersOnToDoCompletion: fresh from db todo is done " + Boolean.toString(todo.isCompleted()));
             for (int i = 0; i < this.toDoList.size(); i++) {
                 if (this.toDoList.get(i).getId() == id) {
-                    this.toDoList.add(i, todo);
+                    this.toDoList.set(i, todo);
                     break;
                 }
             }
@@ -263,7 +263,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
             Log.d(TAG, "updateAdaptersOnToDoCompletion: fresh from db todo is done " + Boolean.toString(todo.isCompleted()));
             for (int i = 0; i < this.toDoList.size(); i++) {
                 if (this.toDoList.get(i).getId() == id) {
-                    this.toDoList.add(i, todo);
+                    this.toDoList.set(i, todo);
 
                     break;
                 }

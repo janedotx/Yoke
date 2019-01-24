@@ -1,4 +1,4 @@
-package com.system2override.hobbes;
+package com.system2override.hobbes.OnboardingScreens;
 
 import android.app.AppOpsManager;
 import android.content.Context;
@@ -13,6 +13,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import com.system2override.hobbes.HobbesScreen;
+import com.system2override.hobbes.MyApplication;
+import com.system2override.hobbes.R;
 
 import static android.app.AppOpsManager.OPSTR_GET_USAGE_STATS;
 import static android.support.v4.app.AppOpsManagerCompat.MODE_ALLOWED;

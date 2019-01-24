@@ -34,7 +34,7 @@
         <ImageView
             android:id="@+id/firstTimeCompletionImage"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/heart"
+            android:background="@drawable/heart_one"
             android:layout_marginBottom="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

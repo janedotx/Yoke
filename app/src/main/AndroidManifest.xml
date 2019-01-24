@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
@@ -97,10 +98,10 @@
 
         </activity>
         <activity
-            android:name=".WelcomeScreen"
+            android:name=".OnboardingScreens.WelcomeScreen"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HowToScreen"
+            android:name=".OnboardingScreens.HowToScreen"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.system2override.hobbes.HowToScreen" />
@@ -114,7 +115,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AfterHowToScreen"
+            android:name=".OnboardingScreens.AfterHowToScreen"
             android:screenOrientation="portrait" />
         <activity android:name="com.system2override.yoke.SplashScreen" />
         <activity android:name=".HobbesScreen"></activity>

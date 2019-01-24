@@ -22,7 +22,7 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/appUsageHistoryBarLabel"
-            android:textColor="@color/HobbesPrimaryAccent"
+            android:textColor="@color/HobbesText"
             android:text="I am an app"
             android:textSize="12sp"
             android:layout_marginBottom="12dp"
@@ -32,11 +32,11 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="@dimen/usage_history_bar_width"
             android:layout_height="20dp"
-            android:background="@color/usage_bar_background"
+            android:background="@color/HobbesBrownAccent"
             >
 
             <View
-                android:background="@color/HobbesPrimaryAccent"
+                android:background="@color/HobbesBackgroundDark"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:id="@+id/singleAppUsageHistoryBar">

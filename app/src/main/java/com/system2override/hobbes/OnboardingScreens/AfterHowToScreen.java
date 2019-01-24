@@ -1,16 +1,11 @@
-package com.system2override.hobbes;
+package com.system2override.hobbes.OnboardingScreens;
 
 import android.content.Intent;
 import android.provider.Settings;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.system2override.hobbes.UsageHistory.UsageHistoryScreen;
-
-import org.junit.After;
 
 public class AfterHowToScreen extends OnboardingActivity {
     @Override

@@ -57,7 +57,7 @@
                     android:id="@+id/totalUsageHistoryTopBar"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@color/HobbesCardinal">
+                    android:background="@color/HobbesBlue">
 
                 </View>
             </LinearLayout>
@@ -128,7 +128,7 @@
                         android:id="@+id/totalUsageHistoryBottomBar"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:background="@color/HobbesCardinal">
+                        android:background="@color/HobbesBlue">
 
                     </View>
                 </LinearLayout>

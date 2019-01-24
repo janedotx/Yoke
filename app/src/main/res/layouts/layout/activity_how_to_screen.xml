@@ -6,7 +6,7 @@
     android:background="@color/topBoxSepia"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WelcomeScreen">
+    tools:context=".OnboardingScreens.WelcomeScreen">
 
     <include layout="@layout/vertical_grampa" />
     <LinearLayout

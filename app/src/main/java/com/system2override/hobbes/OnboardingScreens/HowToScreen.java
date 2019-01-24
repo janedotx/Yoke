@@ -1,4 +1,4 @@
-package com.system2override.hobbes;
+package com.system2override.hobbes.OnboardingScreens;
 
 import android.app.AppOpsManager;
 import static android.support.v4.app.AppOpsManagerCompat.MODE_ALLOWED;
@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.system2override.hobbes.R;
 import com.system2override.hobbes.TodoManagement.TodoManagementScreen;
 import com.system2override.hobbes.UsageHistory.UsageHistoryScreen;
 
