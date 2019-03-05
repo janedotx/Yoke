@@ -5,35 +5,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/HobbesBackground"
+    android:background="@color/HobbesNewLightBackground"
     android:orientation="vertical"
-    tools:context=".SetUsageLimitsScreen">
+    tools:context=".ConfigScreens.SetUsageLimitsScreen">
     <include layout="@layout/toolbar"></include>
 
     <LinearLayout
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="9dp"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="12dp"
-        android:layout_marginLeft="12dp"
         android:layout_marginBottom="12dp"
         >
-        <ImageView
-            android:layout_height="match_parent"
-            android:layout_width="66dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/grandpa_hobbes"
-            ></ImageView>
 
         <LinearLayout
             android:id="@+id/usageLimitsInfoBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
-            android:background="@drawable/brown_rounded_corner_border"
             android:orientation="vertical"
-            android:padding="12dp">
+            android:layout_marginLeft="19dp"
+            android:layout_marginRight="23dp"
+            android:layout_marginBottom="49dp"
+            >
 
             <TextView
                 android:layout_width="match_parent"
@@ -46,80 +39,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="You can choose how much time you're allowed to spend each day on time-wasting apps, before you'll be required to finish a todo."
+                android:text="Choose how many minutes you're allowed to spend each day on less healthy apps, before you'll be required to finish a todo."
                 android:textColor="@color/HobbesText"
                 android:textSize="12sp" />
         </LinearLayout>
 
+        <com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar
+            android:layout_gravity="center_horizontal"
+            android:layout_centerInParent="true"
+            android:id="@+id/picker"
+            android:layout_width="245dp"
+            android:layout_height="245dp"
+            app:max="120"
+            app:pointer_color="@color/HobbesBlue"
+            app:pointer_halo_color="@color/HobbesBlue"
+            app:pointer_size="18dp"
+            app:text_color="@color/HobbesText"
+            app:text_size="65sp"
+            app:wheel_active_color="@color/HobbesBlue"
+            app:wheel_unactive_color="@color/HobbesDarkerBackground"/>
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/customizeUsageLimitsHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@color/HobbesBrownAccent"
-        android:paddingBottom="12dp"
-        android:paddingLeft="20dp"
-        android:paddingTop="12dp"
-        android:text="CUSTOMIZE YOUR USAGE LIMIT"
-        android:textColor="@color/HobbesText"
-        android:textSize="16sp" />
-    <LinearLayout
-        android:layout_marginTop="24dp"
-        android:layout_marginLeft="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/setUsageLimitMinutes"
-            android:textColor="@color/HobbesText"
-            android:textSize="14sp"
-            android:text="30"
-            android:paddingBottom="12dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:paddingBottom="12dp"
-            android:textColor="@color/HobbesText"
-            android:textSize="12sp"
-            android:text=" m"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <SeekBar
-        android:id="@+id/setInitialTimeSeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:max="60"
-        android:progress="30"
-        android:progressDrawable="@drawable/seek_bar"
-        android:thumb="@drawable/seek_thumb" />
-        <TextView
-            android:paddingTop="12dp"
-            android:textColor="@color/HobbesText"
-            android:textSize="12sp"
-            android:text="max 60 minutes"
-            android:layout_marginEnd="20dp"
-            android:textAlignment="textEnd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
     <View
-        android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_weight="1"
         />
-    <LinearLayout
-        android:gravity="bottom"
-        android:id="@+id/nextBar"
-        android:layout_marginRight="@dimen/next_button_margin_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <include
-            layout="@layout/next_button"/>
-    </LinearLayout>
+
+    <include
+        layout="@layout/next_button"/>
 
 </LinearLayout>

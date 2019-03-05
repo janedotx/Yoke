@@ -1,10 +1,8 @@
 package com.system2override.hobbes.UsageHistory;
 
-import android.app.usage.UsageStatsManager;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,20 +13,17 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.system2override.hobbes.HobbesScreen;
-import com.system2override.hobbes.Models.BeforeHobbesAppData;
 import com.system2override.hobbes.Models.OneTimeData;
 import com.system2override.hobbes.MyApplication;
 import com.system2override.hobbes.R;
-import com.system2override.hobbes.SetUsageLimitsScreen;
+import com.system2override.hobbes.ConfigScreens.SetUsageLimitsScreen;
 import com.system2override.hobbes.Utilities.RandomUtilities;
 import com.system2override.hobbes.Utilities.UsageStatsHelper;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 

@@ -14,29 +14,8 @@ public class WelcomeScreen extends OnboardingActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
 
         this.next.setOnClickListener(this);
-        /*
-        this.textView.setText("WELCOME\n\nAre you ready to reclaim your time from your phone?\n\nHobbes will help you spend your time the way you actually want to, and get more done in the real world.\n\nAll of your data remains on your phone and inaccessible to the Hobbes developers. Downtown L.A.  Noon on a hot summer day.  On an EXTREME LONG LENS the\n" +
-                "lunchtime crowd stacks up into a wall of humanity.  In SLOW MOTION\n" +
-                "they move in herds among the glittering rows of cars jammed bumper to\n" +
-                "bumper.  Heat ripples distort the torrent of faces.  The image is\n" +
-                "surreal, dreamy... and like a dream it begins very slowly to\n" +
-                "\n" +
-                "\t\t\t\t\t\tDISSOLVE TO:\n" +
-                "\n" +
-                "2\tEXT. CITY RUINS - NIGHT\n" +
-                "\n" +
-                "Same spot as the last shot, but now it is a landscape in Hell.  The\n" +
-                "cars are stopped in rusted rows, still bumper to bumper.  The\n" +
-                "skyline of buildings beyond has been shattered by some\n" +
-                "unimaginable force like a row of kicked-down sandcastles.\n" +
-                "Wind blows through the desolation, keening with the sound of ten\n" +
-                "million dead souls.  It scurries the ashes into drifts, stark\n" +
-                "white in the moonlight against the charred rubble.\n" +
-                "A TITLE CARD FADES IN:\n\n");
- //       */
-        this.textView.setText("WELCOME\n\nAre you ready to reclaim your time from your phone?\n\n" +
-                "Hobbes will help you spend your time the way you actually want to, by helping you get more done in the real world.\n\n"
-                + "All of your data remains on your phone and will always be inaccessible to the Hobbes developers. Your privacy is guaranteed.\n\n");
+        this.onboardingTextHeader.setText("WELCOME");
+        this.onboardingTextBody.setText("Hobbes is a todo list that will both help you control your phone usage, and get more done in the real world.");
         this.bar.setDisplayHomeAsUpEnabled(false);
 
     }

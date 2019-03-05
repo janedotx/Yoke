@@ -1,9 +1,8 @@
-package com.system2override.hobbes.BannedAppManagement;
+package com.system2override.hobbes.ConfigScreens.BannedAppManagement;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,7 +13,6 @@ import android.widget.ImageView;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
-import com.system2override.hobbes.MyApplication;
 import com.system2override.hobbes.OttoMessages.BannedAppAdded;
 import com.system2override.hobbes.OttoMessages.BannedAppRemoved;
 import com.system2override.hobbes.R;

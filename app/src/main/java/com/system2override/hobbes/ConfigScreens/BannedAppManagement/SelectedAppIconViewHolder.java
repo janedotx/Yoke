@@ -1,4 +1,4 @@
-package com.system2override.hobbes.BannedAppManagement;
+package com.system2override.hobbes.ConfigScreens.BannedAppManagement;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

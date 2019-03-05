@@ -13,7 +13,8 @@ public class AfterHowToScreen extends OnboardingActivity {
         super.onCreate(savedInstanceState);
 
         if (!hasNoUsageStatsPermission(this)) {
-            this.textView.setText("Now that you granted Hobbes permission to access usage stats, he will show you what your current phone usage habits are. After that, you will configure how much time you want to start each day with, and which apps you want to limit time on. Finally, you will create some todos.\n\n");
+            this.onboardingTextHeader.setText("LET'S CONFIGURE HOBBES");
+            this.onboardingTextBody.setText("Set your daily usage limit, choose apps to limit your time on, and make some todos.");
             this.next.setOnClickListener(new View.OnClickListener() {
                                              @Override
                                              public void onClick(View v) {

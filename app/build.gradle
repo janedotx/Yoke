@@ -7,8 +7,8 @@ android {
         applicationId "com.system2override.yoke"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 2
-        versionName "1.01"
+        versionCode 3
+        versionName "1.02"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true
@@ -130,4 +130,6 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
+
+    implementation 'com.github.JesusM:HoloCircleSeekBar:v2.2.2'
 }

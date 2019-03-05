@@ -1,4 +1,4 @@
-package com.system2override.hobbes.BannedAppManagement;
+package com.system2override.hobbes.ConfigScreens.BannedAppManagement;
 
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -7,7 +7,6 @@ import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -78,7 +77,7 @@ public class BannedAppScreen extends HobbesScreen {
         this.showAppsAdapter = new ShowAppsAdapter(this, appsTimeMap, applicationInfoMap, MyApplication.getBus());
         this.showAppsRecyclerView.setAdapter(this.showAppsAdapter);
 
-        View next = findViewById(R.id.nextBar);
+        View next = findViewById(R.id.nextButton);
         if (MyApplication.inTutorial()) {
             Log.d(TAG, "onCreate: in tutorial");
             next.setVisibility(View.VISIBLE);

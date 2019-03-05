@@ -1,4 +1,4 @@
-package com.system2override.hobbes.BannedAppManagement;
+package com.system2override.hobbes.ConfigScreens.BannedAppManagement;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.system2override.hobbes.R;
 

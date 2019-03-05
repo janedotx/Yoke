@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.databinding.DataBindingUtil;
-import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -16,57 +14,30 @@ import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.app.AppOpsManager.OPSTR_GET_USAGE_STATS;
 import static android.support.v4.app.AppOpsManagerCompat.MODE_ALLOWED;
 
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
-import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
-
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.ExponentialBackOff;
 
 
 import com.google.api.services.tasks.TasksScopes;
-import com.google.api.services.tasks.model.*;
 import com.squareup.otto.Subscribe;
-import com.system2override.hobbes.BannedAppManagement.BannedAppScreen;
-import com.system2override.hobbes.Models.BannedApps;
-import com.system2override.hobbes.Models.RoomModels.Habit;
+import com.system2override.hobbes.ConfigScreens.BannedAppManagement.BannedAppScreen;
+import com.system2override.hobbes.ConfigScreens.SetUsageLimitsScreen;
 import com.system2override.hobbes.Models.Streaks;
 import com.system2override.hobbes.Models.TimeBank;
 import com.system2override.hobbes.OttoMessages.TimeBankEarnedTime;
 import com.system2override.hobbes.TodoManagement.TodoManagementScreen;
 
-import android.Manifest;
-import android.accounts.AccountManager;
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.util.List;
-
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
 
 
 public class MainActivity extends AppCompatActivity  {

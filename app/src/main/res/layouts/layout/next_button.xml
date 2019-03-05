@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginTop="10dp"
-    android:layout_marginRight="@dimen/next_button_margin_right"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        />
-    <TextView
-        android:id="@+id/nextButton"
-        android:text="NEXT"
-        android:textColor="@color/HobbesBackgroundDark"
-        android:textSize="16sp"
-        android:paddingBottom="40dp"
-        android:layout_gravity="right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="54dp"
+    android:layout_gravity="bottom"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/backButton"
+            android:text="Back"
+            android:background="@color/HobbesBackground"
+            android:textColor="@color/HobbesBackgroundDark"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/nextButton"
+            android:text="NEXT"
+            android:textColor="@color/HobbesOrange"
+            android:background="@color/HobbesBackgroundDark"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
+    </LinearLayout>
 </LinearLayout>

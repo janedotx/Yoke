@@ -25,7 +25,8 @@ public class OnboardingActivity extends HobbesScreen {
     private static final String TAG = "OnboardingActivity";
     public ActionBar bar;
     public View next;
-    public TextView textView;
+    public TextView onboardingTextHeader;
+    public TextView onboardingTextBody;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +41,8 @@ public class OnboardingActivity extends HobbesScreen {
         this.bar.setDisplayHomeAsUpEnabled(true);
 
         this.next = findViewById(R.id.nextButton);
-        this.textView = (TextView) findViewById(R.id.onboardingText);
-        this.textView.setMovementMethod(new ScrollingMovementMethod());
+        this.onboardingTextHeader = (TextView) findViewById(R.id.onboardingTextHeader);
+        this.onboardingTextBody = (TextView) findViewById(R.id.onboardingTextBody);
     }
 
     @Override

@@ -23,8 +23,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
-import com.system2override.hobbes.BannedAppManagement.BannedAppScreen;
-import com.system2override.hobbes.FirstTimeCompletionDialog.HabitDialog;
+import com.system2override.hobbes.ConfigScreens.BannedAppManagement.BannedAppScreen;
 import com.system2override.hobbes.FirstTimeCompletionDialog.StreakDialog;
 import com.system2override.hobbes.HobbesScreen;
 import com.system2override.hobbes.ManageToDo.AddToDoScreen;
@@ -38,15 +37,12 @@ import com.system2override.hobbes.OttoMessages.MidnightResetEvent;
 import com.system2override.hobbes.OttoMessages.StreakUpdateEvent;
 import com.system2override.hobbes.OttoMessages.TimeBankEarnedTime;
 import com.system2override.hobbes.OttoMessages.TimeBankUnearnedTime;
-import com.system2override.hobbes.OttoMessages.ToDoCompletedEvent;
 import com.system2override.hobbes.R;
-import com.system2override.hobbes.SetUsageLimitsScreen;
+import com.system2override.hobbes.ConfigScreens.SetUsageLimitsScreen;
 import com.system2override.hobbes.SplashScreen;
 import com.system2override.hobbes.UsageHistory.UsageHistoryScreen;
 import com.system2override.hobbes.Utilities.RandomUtilities;
 import com.system2override.hobbes.Utilities.UsageStatsHelper;
-import com.system2override.hobbes.Models.RoomModels.Habit;
-import com.system2override.hobbes.Models.RoomModels.LocalTask;
 import com.system2override.hobbes.FirstTimeCompletionDialog.Data;
 
 import java.util.ArrayList;

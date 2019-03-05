@@ -1,4 +1,4 @@
-package com.system2override.hobbes.BannedAppManagement;
+package com.system2override.hobbes.ConfigScreens.BannedAppManagement;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.Toast;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -21,10 +20,8 @@ import com.system2override.hobbes.OttoMessages.BannedAppAdded;
 import com.system2override.hobbes.OttoMessages.BannedAppRemoved;
 import com.system2override.hobbes.R;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class ShowAppsAdapter extends RecyclerView.Adapter<ShowAppsViewHolder>{
     private static final String TAG = "ShowAppsAdapter";
