@@ -11,6 +11,7 @@ import com.system2override.hobbes.R;
 
 public class ConfigScreen extends HobbesScreen implements View.OnClickListener {
     Class nextClass;
+    View bottomNavButtons;
     View next;
     View back;
     final ConfigScreen thisInstance = this;
@@ -18,12 +19,12 @@ public class ConfigScreen extends HobbesScreen implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bottomNavButtons = findViewById(R.id.bottomNavButtons);
         next = findViewById(R.id.nextButton);
         back = findViewById(R.id.backButton);
 
         if (MyApplication.inTutorial()) {
-            next.setVisibility(View.VISIBLE);
-            back.setVisibility(View.VISIBLE);
+            bottomNavButtons.setVisibility(View.VISIBLE);
             next.setOnClickListener(this);
             back.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -34,8 +35,7 @@ public class ConfigScreen extends HobbesScreen implements View.OnClickListener {
 
             });
         } else {
-            next.setVisibility(View.GONE);
-            back.setVisibility(View.GONE);
+            bottomNavButtons.setVisibility(View.GONE);
         }
     }
 

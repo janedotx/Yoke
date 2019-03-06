@@ -1,8 +1,6 @@
 package com.system2override.hobbes.ConfigScreens;
 
-import android.content.Intent;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -10,11 +8,12 @@ import android.view.View;
 
 import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 import com.system2override.hobbes.ConfigScreens.BannedAppManagement.BannedAppScreen;
+import com.system2override.hobbes.DefaultUncaughtExceptionHandler;
 import com.system2override.hobbes.Models.TimeBank;
 import com.system2override.hobbes.MyApplication;
 import com.system2override.hobbes.R;
 
-public class SetUsageLimitsScreen extends ConfigScreen {
+public class SetUsageLimitsScreen extends DefaultUncaughtExceptionHandler.ConfigScreen {
     ActionBar bar;
 
     @Override

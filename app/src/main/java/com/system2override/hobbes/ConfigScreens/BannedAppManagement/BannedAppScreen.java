@@ -15,7 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.system2override.hobbes.HobbesScreen;
+import com.system2override.hobbes.DefaultUncaughtExceptionHandler;
 import com.system2override.hobbes.MyApplication;
 import com.system2override.hobbes.R;
 import com.system2override.hobbes.TodoManagement.TodoManagementScreen;
@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BannedAppScreen extends HobbesScreen {
+public class BannedAppScreen extends DefaultUncaughtExceptionHandler.ConfigScreen {
     private static final String TAG = "BannedAppScreen";
     private ShowAppsAdapter showAppsAdapter;
     private SelectedAppIconAdapter selectedAppIconAdapter;
@@ -39,9 +39,8 @@ public class BannedAppScreen extends HobbesScreen {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_banned_apps_screen);
+        super.onCreate(savedInstanceState);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,26 +76,18 @@ public class BannedAppScreen extends HobbesScreen {
         this.showAppsAdapter = new ShowAppsAdapter(this, appsTimeMap, applicationInfoMap, MyApplication.getBus());
         this.showAppsRecyclerView.setAdapter(this.showAppsAdapter);
 
-        View next = findViewById(R.id.nextButton);
-        if (MyApplication.inTutorial()) {
-            Log.d(TAG, "onCreate: in tutorial");
-            next.setVisibility(View.VISIBLE);
-            next.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MyApplication.getOneTimeData().setHasDoneOnboardingKey(true);
-                    Log.d(TAG, "onCreate: in tutorial, clicked, tutorial should be false now");
-                    Intent i = new Intent(BannedAppScreen.this, TodoManagementScreen.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-                    startActivity(i);
-                }
-            });
-        } else {
-            Log.d(TAG, "onCreate: in tutorial");
-            next.setVisibility(View.GONE);
-        }
+    }
 
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        MyApplication.getOneTimeData().setHasDoneOnboardingKey(true);
+        Log.d(TAG, "onCreate: in tutorial, clicked, tutorial should be false now");
+        Intent i = new Intent(BannedAppScreen.this, TodoManagementScreen.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        startActivity(i);
     }
 
     @Override
