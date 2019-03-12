@@ -101,6 +101,13 @@
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingTop">15dp</item>
         <item name="android:textColor">@color/HobbesText</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="progressDot">
+        <item name="android:src">@drawable/pale_progress_dot</item>
+        <item name="android:layout_marginLeft">12dp</item>
+        <item name="android:layout_marginRight">12dp</item>
     </style>
 
 

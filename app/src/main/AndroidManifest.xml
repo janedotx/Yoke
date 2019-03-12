@@ -116,7 +116,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".OnboardingScreens.HowToScreenThree"
+            android:name=".OnboardingScreens.PrivacyScreen"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.system2override.hobbes.HowToScreenThree" />

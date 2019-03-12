@@ -160,12 +160,6 @@
         android:layout_weight="1"
          />
 
-    <LinearLayout
-        android:id="@+id/nextBar"
-        android:layout_marginRight="31dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
         <include
             layout="@layout/next_button"/>
-    </LinearLayout>
 </LinearLayout>

@@ -5,15 +5,19 @@ import android.view.View;
 import android.content.Intent;
 import android.provider.Settings;
 
-public class HowToScreenThree  extends OnboardingActivity implements View.OnClickListener {
+import com.system2override.hobbes.R;
+
+public class PrivacyScreen extends OnboardingActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.onboardingTextHeaderString = "HOBBES IS COMPLETELY PRIVATE";
+        this.onboardingTextBodyString = "Your data never leaves your phone. But we do need access to your usage settings permission to help monitor your app usage.";
+        this.progressDotID = R.id.thirdProgressDot;
+        this.drawableId = R.drawable.privacy_grandpa;
         super.onCreate(savedInstanceState);
 
         this.next.setOnClickListener(this);
-        this.onboardingTextHeader.setText("HOBBES IS COMPLETELY PRIVATE");
-        this.onboardingTextBody.setText("Your data never leaves your phone. But we do need access to your usage settings permission to help monitor your app usage.");
 
     }
 

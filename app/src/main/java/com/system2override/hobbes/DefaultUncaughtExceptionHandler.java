@@ -43,42 +43,4 @@ public class DefaultUncaughtExceptionHandler implements Thread.UncaughtException
         defaultExceptionHandler.uncaughtException(t, e);
     }
 
-    public static class ConfigScreen extends HobbesScreen implements View.OnClickListener {
-        public Class nextClass;
-        public View next;
-        public View back;
-        public View bottomNavButtons;
-        public final ConfigScreen thisInstance = this;
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-
-            next = findViewById(R.id.nextButton);
-            back = findViewById(R.id.backButton);
-            bottomNavButtons = findViewById(R.id.bottomNavButtons);
-
-            if (MyApplication.inTutorial()) {
-                bottomNavButtons.setVisibility(View.VISIBLE);
-                next.setOnClickListener(this);
-                back.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                    }
-
-                });
-            } else {
-                bottomNavButtons.setVisibility(View.GONE);
-            }
-        }
-
-        @Override
-        public void onClick(View v) {
-            Intent i = new Intent(this, BannedAppScreen.class);
-
-            startActivity(i);
-        }
-
-    }
 }

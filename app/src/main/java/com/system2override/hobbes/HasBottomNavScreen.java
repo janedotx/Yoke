@@ -1,23 +1,23 @@
-package com.system2override.hobbes.ConfigScreens;
+package com.system2override.hobbes;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.system2override.hobbes.ConfigScreens.BannedAppManagement.BannedAppScreen;
-import com.system2override.hobbes.HobbesScreen;
-import com.system2override.hobbes.MyApplication;
-import com.system2override.hobbes.R;
 
-public class ConfigScreen extends HobbesScreen implements View.OnClickListener {
-    Class nextClass;
-    View bottomNavButtons;
-    View next;
-    View back;
-    final ConfigScreen thisInstance = this;
+public class HasBottomNavScreen extends HobbesScreen implements View.OnClickListener {
+    private static final String TAG = "HasBottomNavScreen";
+    public Class nextClass;
+    public View bottomNavButtons;
+    public View next;
+    public View back;
+    final HasBottomNavScreen thisInstance = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         bottomNavButtons = findViewById(R.id.bottomNavButtons);
         next = findViewById(R.id.nextButton);
@@ -46,7 +46,4 @@ public class ConfigScreen extends HobbesScreen implements View.OnClickListener {
         startActivity(i);
     }
 
-    private ConfigScreen returnThisInstance () {
-        return thisInstance;
-    }
 }

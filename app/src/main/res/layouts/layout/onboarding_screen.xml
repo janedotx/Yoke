@@ -12,66 +12,88 @@ tools:context=".OnboardingScreens.WelcomeScreen">
     <include layout="@layout/toolbar"/>
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <include layout="@layout/vertical_grampa" />
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/next_button_margin_right"
-            android:paddingLeft="15dp"
+        <LinearLayout
             android:layout_marginTop="12dp"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:gravity="center"
+            >
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginStart="20dp"
-                android:padding="5dp"
-                android:layout_marginTop="12dp"
-                android:scrollbarFadeDuration="0"
-                android:scrollbarAlwaysDrawVerticalTrack="true"
-                android:background="@drawable/brown_rounded_corner_border"
-                app:layout_constraintBottom_toTopOf="@+id/include"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+            <ImageView
+                android:id="@+id/onboardingImage"
+                android:layout_width="290dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/grandpa_raised_arms"></ImageView>
+        </LinearLayout>
 
-                <TextView
-                    android:includeFontPadding="true"
-                    android:id="@+id/onboardingTextHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/onboardingText"
-                    android:text="WELCOME"
-                    android:textStyle="bold"
-                    android:textSize="22sp"/>
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_marginTop="37dp"
+            android:layout_marginBottom="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/firstProgressDot"
+                style="@style/progressDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/onboardingTextBody"
-                    style="@style/onboardingText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:includeFontPadding="true"
-                    android:text="WELCOME"
-                    android:textSize="18sp" />
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/secondProgressDot"
+                style="@style/progressDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-            <include
-                android:id="@+id/include"
-                layout="@layout/next_button"
+            <ImageView
+                android:id="@+id/thirdProgressDot"
+                style="@style/progressDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/onboardingTextHeader"
+                style="@style/onboardingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="@dimen/next_button_margin_right"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-        </android.support.constraint.ConstraintLayout>
+                android:includeFontPadding="true"
+                android:text="WELCOME"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/onboardingTextBody"
+                style="@style/onboardingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="true"
+                android:text="WELCOME"
+                android:textSize="18sp" />
+        </LinearLayout>
     </LinearLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+    <include
+        layout="@layout/next_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </LinearLayout>

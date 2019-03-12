@@ -9,11 +9,12 @@ import android.view.View;
 import com.jesusm.holocircleseekbar.lib.HoloCircleSeekBar;
 import com.system2override.hobbes.ConfigScreens.BannedAppManagement.BannedAppScreen;
 import com.system2override.hobbes.DefaultUncaughtExceptionHandler;
+import com.system2override.hobbes.HasBottomNavScreen;
 import com.system2override.hobbes.Models.TimeBank;
 import com.system2override.hobbes.MyApplication;
 import com.system2override.hobbes.R;
 
-public class SetUsageLimitsScreen extends DefaultUncaughtExceptionHandler.ConfigScreen {
+public class SetUsageLimitsScreen extends HasBottomNavScreen {
     ActionBar bar;
 
     @Override

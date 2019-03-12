@@ -5,16 +5,18 @@ import android.provider.Settings;
 import android.os.Bundle;
 import android.view.View;
 
+import com.system2override.hobbes.R;
 import com.system2override.hobbes.UsageHistory.UsageHistoryScreen;
 
 public class AfterHowToScreen extends OnboardingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.onboardingTextHeaderString = "LET'S CONFIGURE HOBBES";
+        this.onboardingTextBodyString = "Set your daily usage limit, choose apps to limit your time on, and make some todos.";
+        this.progressDotID = R.id.thirdProgressDot;
         super.onCreate(savedInstanceState);
 
         if (!hasNoUsageStatsPermission(this)) {
-            this.onboardingTextHeader.setText("LET'S CONFIGURE HOBBES");
-            this.onboardingTextBody.setText("Set your daily usage limit, choose apps to limit your time on, and make some todos.");
             this.next.setOnClickListener(new View.OnClickListener() {
                                              @Override
                                              public void onClick(View v) {

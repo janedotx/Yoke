@@ -12,8 +12,10 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.system2override.hobbes.HasBottomNavScreen;
 import com.system2override.hobbes.HobbesScreen;
 import com.system2override.hobbes.MyApplication;
 import com.system2override.hobbes.R;
@@ -21,18 +23,20 @@ import com.system2override.hobbes.R;
 import static android.app.AppOpsManager.OPSTR_GET_USAGE_STATS;
 import static android.support.v4.app.AppOpsManagerCompat.MODE_ALLOWED;
 
-public class OnboardingActivity extends HobbesScreen {
+public class OnboardingActivity extends HasBottomNavScreen {
     private static final String TAG = "OnboardingActivity";
-    public ActionBar bar;
-    public View next;
-    public TextView onboardingTextHeader;
-    public TextView onboardingTextBody;
+    protected ActionBar bar;
+    protected TextView onboardingTextHeaderView;
+    protected TextView onboardingTextBodyView;
+    protected String onboardingTextHeaderString;
+    protected String onboardingTextBodyString;
+    protected int progressDotID;
+    protected int drawableId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         setContentView(R.layout.onboarding_screen);
+        super.onCreate(savedInstanceState);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -40,9 +44,12 @@ public class OnboardingActivity extends HobbesScreen {
         this.bar.setTitle("Hobbes");
         this.bar.setDisplayHomeAsUpEnabled(true);
 
-        this.next = findViewById(R.id.nextButton);
-        this.onboardingTextHeader = (TextView) findViewById(R.id.onboardingTextHeader);
-        this.onboardingTextBody = (TextView) findViewById(R.id.onboardingTextBody);
+        this.onboardingTextHeaderView = (TextView) findViewById(R.id.onboardingTextHeader);
+        this.onboardingTextBodyView = (TextView) findViewById(R.id.onboardingTextBody);
+        this.onboardingTextHeaderView.setText(this.onboardingTextHeaderString);
+        this.onboardingTextBodyView.setText(this.onboardingTextBodyString);
+        ((ImageView) findViewById(progressDotID)).setImageResource(R.drawable.brown_progress_dot);
+        ((ImageView) findViewById(R.id.onboardingImage)).setImageResource(drawableId);
     }
 
     @Override
@@ -68,5 +75,7 @@ public class OnboardingActivity extends HobbesScreen {
             return false;
         }
     }
+
+
 
 }

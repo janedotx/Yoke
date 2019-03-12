@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.system2override.hobbes.HasBottomNavScreen;
 import com.system2override.hobbes.HobbesScreen;
 import com.system2override.hobbes.Models.OneTimeData;
 import com.system2override.hobbes.MyApplication;
@@ -27,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UsageHistoryScreen extends HobbesScreen {
+public class UsageHistoryScreen extends HasBottomNavScreen implements  View.OnClickListener {
     private static final String TAG = "UsageHistoryScreen";
     private final int INSUFFICIENT_TIME = 1;
     private final int LESS_THAN_A_WEEK = 2;
@@ -40,9 +41,10 @@ public class UsageHistoryScreen extends HobbesScreen {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        nextClass = SetUsageLimitsScreen.class;
+        setContentView(R.layout.activity_usage_history_screen);
         super.onCreate(savedInstanceState);
         this.scale = this.getResources().getDisplayMetrics().density;
-        setContentView(R.layout.activity_usage_history_screen);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,19 +81,11 @@ public class UsageHistoryScreen extends HobbesScreen {
 
         setUpTotalAverageTimeBox();
 
-        View next = findViewById(R.id.nextBar);
-        if (MyApplication.inTutorial()) {
-            next.setVisibility(View.VISIBLE);
-            next.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(UsageHistoryScreen.this, SetUsageLimitsScreen.class);
-                    startActivity(i);
-                }
-            });
-        } else {
-            next.setVisibility(View.GONE);
-        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
     }
 
     private int getAppBarLength(long time) {

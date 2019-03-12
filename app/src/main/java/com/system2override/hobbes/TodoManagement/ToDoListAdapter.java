@@ -314,14 +314,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoViewHolder> {
 
     }
 
-    @Subscribe
-    public void onToDoCreation(ToDoCreated e) {
-        // KILL THE PLACEHOLDER
-        if (isPlaceholderToDo(this.toDoList.get(0))) {
-            this.toDoList.remove(0);
-            notifyDataSetChanged();
-        }
-    }
     /*
     @Subscribe
     public void launchFirstTimeCompletionDialogs(ToDoCompletedEvent event) {

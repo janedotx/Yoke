@@ -15,7 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.system2override.hobbes.DefaultUncaughtExceptionHandler;
+import com.system2override.hobbes.HasBottomNavScreen;
 import com.system2override.hobbes.MyApplication;
 import com.system2override.hobbes.R;
 import com.system2override.hobbes.TodoManagement.TodoManagementScreen;
@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BannedAppScreen extends DefaultUncaughtExceptionHandler.ConfigScreen {
+public class BannedAppScreen extends HasBottomNavScreen {
     private static final String TAG = "BannedAppScreen";
     private ShowAppsAdapter showAppsAdapter;
     private SelectedAppIconAdapter selectedAppIconAdapter;

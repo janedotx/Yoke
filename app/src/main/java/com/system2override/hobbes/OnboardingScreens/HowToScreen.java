@@ -6,23 +6,27 @@ import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.view.View;
 
+import com.system2override.hobbes.R;
+
 
 public class HowToScreen extends OnboardingActivity implements View.OnClickListener {
     private static final String TAG = "HowToScreen";
-    private ActionBar bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.onboardingTextHeaderString = "EARN PHONE TIME BY COMPLETING TODOS";
+        this.onboardingTextBodyString = "Whenever you run out of time on your phone, you'll have " +
+                "to do something in the real world.";
+        this.progressDotID = R.id.secondProgressDot;
+        this.drawableId = R.drawable.how_it_works_grandpa;
         super.onCreate(savedInstanceState);
 
         this.next.setOnClickListener(this);
-        this.onboardingTextHeader.setText("NEVER FORGET A TODO AGAIN");
-        this.onboardingTextBody.setText("Whenever you run out of time on an addictive app, your todo list shows up.");
 
     }
 
     @Override
     public void onClick(View v) {
-        startActivity(new Intent(this, HowToScreenTwo.class));
+        startActivity(new Intent(this, PrivacyScreen.class));
     }
 }

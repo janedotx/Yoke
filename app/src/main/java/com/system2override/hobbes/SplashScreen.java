@@ -16,23 +16,11 @@ public class SplashScreen extends HobbesScreen implements View.OnClickListener {
         View getStarted = findViewById(R.id.getStarted);
         getStarted.setOnClickListener(this);
 
-        /*
-        new Handler().postDelayed(new Runnable(){
-            @Override
-            public void run() {
-
-                Intent mainIntent = new Intent(SplashScreen.this, WelcomeScreen.class);
-                SplashScreen.this.startActivity(mainIntent);
-                SplashScreen.this.finish();
-            }
-        }, 2500);
-//        */
 
     }
 
     @Override
     public void onClick(View v) {
-        finish();
         startActivity(new Intent(SplashScreen.this, WelcomeScreen.class));
     }
 
