@@ -89,7 +89,8 @@ public class UsageHistoryScreen extends HasBottomNavScreen implements  View.OnCl
     }
 
     private int getAppBarLength(long time) {
-        int appBarLength = (int) (this.topBarLength * ((double) time / (double) UsageStatsHelper.TWELVE_HOURS_IN_MS));
+        int appBarLength = (int) (this.topBarLength * ((double) time / (double) UsageStatsHelper
+                .TWENTY_FOUR_HOURS_IN_MS));
         if (appBarLength > this.topBarLength) {
             appBarLength = this.topBarLength;
         }

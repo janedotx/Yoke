@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/HobbesBackground"
+    android:orientation="vertical"
     tools:context="com.system2override.hobbes.UsageHistory.UsageHistoryScreen">
 
     <include layout="@layout/toolbar"></include>
@@ -16,24 +15,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="65dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="22dp"
-            android:layout_marginTop="12dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitStart"
-            android:src="@drawable/grandpa_hobbes" />
-
         <LinearLayout
             android:id="@+id/usageHistoryInfoBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/brown_rounded_corner_border"
+            android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:padding="15dp">
@@ -44,12 +32,12 @@
                 android:layout_height="wrap_content"
                 android:text="Your average daily phone usage is "
                 android:textColor="@color/HobbesText"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="147dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/usage_history_bar_width"
+                android:layout_height="6dp"
                 android:layout_marginTop="10dp"
                 android:background="@color/HobbesBrownAccent">
 
@@ -63,7 +51,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="147dp"
+                android:layout_width="@dimen/usage_history_bar_width"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp">
 
@@ -86,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:text="12h"
+                    android:text="24h"
                     android:textColor="@color/HobbesText"
                     android:textSize="8sp"></TextView>
             </LinearLayout>
@@ -118,8 +106,8 @@
                     android:textSize="14sp" />
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="147dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/usage_history_bar_width"
+                    android:layout_height="6dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
                     android:background="@color/HobbesBrownAccent">
@@ -137,29 +125,40 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:layout_marginTop="24dp"
-        android:background="@color/HobbesBrownAccent"
-        android:textColor="@color/HobbesText"
-        android:textSize="16sp"
-        android:text="AVERAGE DAILY USAGE PER APP"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:paddingLeft="20dp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/appUsageHistory"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-         />
+        android:weightSum="1"
+        android:background="@color/HobbesDarkishBackground"
+        android:orientation="vertical">
 
-        <include
-            layout="@layout/next_button"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="20dp"
+            android:text="AVERAGE DAILY USAGE PER APP"
+            android:textColor="@color/HobbesHeadingText"
+            android:textSize="16sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/appUsageHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="8dp"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:paddingTop="10dp" />
+        <View
+            android:background="@color/HobbesDarkishBackground"
+            android:id="@+id/spacerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+        <include layout="@layout/next_button" />
+    </LinearLayout>
+
+
 </LinearLayout>

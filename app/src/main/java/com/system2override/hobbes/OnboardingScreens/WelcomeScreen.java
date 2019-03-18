@@ -19,7 +19,7 @@ public class WelcomeScreen extends OnboardingActivity implements View.OnClickLis
         this.onboardingTextHeaderString = "WELCOME.\nNEVER FORGET A TODO AGAIN";
         this.onboardingTextBodyString = "Hobbes is a todo list that will both help you control your phone usage, and get more done in the real world.";
         this.progressDotID = R.id.firstProgressDot;
-        this.drawableId = R.drawable.welcome_grandpa;
+        this.drawableId = R.drawable.onboarding_grandpa_1;
         Log.d(TAG, "onCreate: ");
         Log.d(TAG, "onCreate: about to super.onCreate for OnboardingActivity");
         super.onCreate(savedInstanceState);

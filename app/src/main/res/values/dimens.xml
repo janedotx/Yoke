@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="usage_history_bar_width">220dp</dimen>
+    <dimen name="usage_history_bar_width">330dp</dimen>
     <dimen name="usage_history_bar_time_width">50dp</dimen>
     <dimen name="next_button_margin_right">20dp</dimen>
 </resources>

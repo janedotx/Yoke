@@ -3,12 +3,12 @@
     android:layout_width="330dp"
     android:layout_height="222dp"
     android:id="@+id/tutorial"
+    android:background="@color/HobbesBlue"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="178dp"
-        android:background="@color/HobbesBannerGreen"
         android:orientation="vertical"
         android:padding="15dp">
 
@@ -43,7 +43,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:background="@color/HobbesDarkGreen"
+        android:background="@color/HobbesDarkBlue"
         android:paddingTop="14dp">
 
         <TextView

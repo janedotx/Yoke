@@ -63,18 +63,6 @@ public class OnboardingActivity extends HasBottomNavScreen {
         return super.onOptionsItemSelected(item);
     }
 
-    public boolean hasNoUsageStatsPermission(Context context) {
-        try {
-            PackageManager packageManager = context.getPackageManager();
-            ApplicationInfo appInfo = packageManager.getApplicationInfo(MyApplication.packageName, 0);
-            AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-            int mode = appOps.checkOpNoThrow(OPSTR_GET_USAGE_STATS, appInfo.uid, context.getPackageName());
-            return mode != MODE_ALLOWED;
-        }  catch (PackageManager.NameNotFoundException e ) {
-            Log.d(TAG, "checkForUsageStatsPermission: oops wrong package name");
-            return false;
-        }
-    }
 
 
 

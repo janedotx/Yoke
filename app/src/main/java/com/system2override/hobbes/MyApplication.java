@@ -132,6 +132,12 @@ public class MyApplication extends Application {
         Suggestion suggestion5 = new Suggestion();
         suggestion5.text = "Clean the kitchen";
 
+        Suggestion suggestion6 = new Suggestion();
+        suggestion6.text = "Go outside";
+
+        Suggestion suggestion7 = new Suggestion();
+        suggestion7.text = "Do some pushups";
+
         db.suggestionDao().insert(suggestion1, suggestion2, suggestion3, suggestion4, suggestion5);
 
     }

@@ -23,6 +23,7 @@ public class UsageStatsHelper {
     public static final long WEEK_IN_MS = 604800000;
     public static final long DAY_IN_MS = 86400000;
     public static final long TWELVE_HOURS_IN_MS = 1000 * 60 * 60 * 12;
+    public static final long TWENTY_FOUR_HOURS_IN_MS = 1000 * 60 * 60 * 24;
     public static final long EIGHT_HOURS_IN_MS = 1000 * 60 * 60 * 8;
     public static final long SIX_HOURS_IN_MS = 1000 * 60 * 60 * 6;
 

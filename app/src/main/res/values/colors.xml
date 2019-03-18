@@ -44,6 +44,6 @@
     <color name="HobbesBrownAccent">#DEDBCA</color>
     <color name="HobbesBannerGreen">#98cc72</color>
     <color name="HobbesDarkGreen">#88B765</color>
-
+    <color name="HobbesDarkishBackground">#E0DDCC</color>
 
 </resources>
