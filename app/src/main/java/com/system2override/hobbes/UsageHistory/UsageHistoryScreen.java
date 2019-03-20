@@ -35,7 +35,7 @@ public class UsageHistoryScreen extends HasBottomNavScreen implements  View.OnCl
     private final int A_WEEK_PLUS = 3;
     private ActionBar bar;
     private float scale;
-    private int topBarLength = 147;
+    private float topBarLength;
     private RecyclerView recyclerView;
     private AppsUsageAdapter adapter;
 
@@ -45,6 +45,7 @@ public class UsageHistoryScreen extends HasBottomNavScreen implements  View.OnCl
         setContentView(R.layout.activity_usage_history_screen);
         super.onCreate(savedInstanceState);
         this.scale = this.getResources().getDisplayMetrics().density;
+        this.topBarLength  = getResources().getDimensionPixelSize(R.dimen.usage_history_bar_width);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -89,11 +90,16 @@ public class UsageHistoryScreen extends HasBottomNavScreen implements  View.OnCl
     }
 
     private int getAppBarLength(long time) {
+        Log.d(TAG, "getAppBarLength: time " + Long.toString(time));
+        Log.d(TAG, "getAppBarLength: topBarLength  " + Float.toString(this.topBarLength));
+        Log.d(TAG, "getAppBarLength: fraction " + Double.toString(((double) time / (double) UsageStatsHelper
+                .TWENTY_FOUR_HOURS_IN_MS)));
         int appBarLength = (int) (this.topBarLength * ((double) time / (double) UsageStatsHelper
                 .TWENTY_FOUR_HOURS_IN_MS));
         if (appBarLength > this.topBarLength) {
-            appBarLength = this.topBarLength;
+            appBarLength = (int) this.topBarLength;
         }
+        Log.d(TAG, "getAppBarLength: appBarLength " + Integer.toString(appBarLength));
         return appBarLength;
     }
 
@@ -101,7 +107,10 @@ public class UsageHistoryScreen extends HasBottomNavScreen implements  View.OnCl
         int appBarLength = getAppBarLength(time);
 
         ViewGroup.LayoutParams params = v.getLayoutParams();
-        params.width = (int) (appBarLength * scale + 0.5f);
+        // dp to px converter formula, unnecessary if using getResources().getDimensionPixelSize
+        // (R.dimen.<BLAH>);
+//        params.width = (int) (appBarLength * scale + 0.5f);
+        params.width = appBarLength;
         v.setLayoutParams(params);
     }
 

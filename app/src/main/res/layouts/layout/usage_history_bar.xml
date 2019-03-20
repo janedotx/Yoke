@@ -16,47 +16,61 @@
         android:src="@drawable/placeholder"
         android:layout_marginRight="41dp"
  />
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/appUsageHistoryBarLabel"
-            android:textColor="@color/HobbesText"
-            android:text="I am an app"
-            android:textSize="12sp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_marginBottom="12dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="@dimen/usage_history_bar_width"
-            android:layout_height="20dp"
-            android:background="@color/HobbesBrownAccent"
-            >
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/appUsageHistoryBarLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I am an app"
+                android:textColor="@color/HobbesText"
+                android:textSize="12sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textColor="@color/HobbesText"
+                android:textSize="12sp" />
 
-            <View
-                android:background="@color/HobbesBackgroundDark"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:id="@+id/singleAppUsageHistoryBar">
-
-            </View>
-            <View
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                />
             <TextView
                 android:id="@+id/appUsageHistoryBarTime"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="right"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                android:text="24h 15m"
                 android:paddingRight="5dp"
-                android:paddingTop="5dp"
-                android:layout_width="@dimen/usage_history_bar_time_width"
-                android:layout_height="match_parent" />
-            </LinearLayout>
+                android:paddingLeft="5dp"
+                android:text="24h 15m"
+                android:textColor="@color/HobbesText"
+                android:textSize="12sp" />
         </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="@dimen/app_usage_history_bar_width"
+            android:layout_height="20dp"
+            android:background="@color/HobbesBrownAccent">
+
+            <View
+                android:id="@+id/singleAppUsageHistoryBar"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@color/HobbesBackgroundDark">
+
+            </View>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
