@@ -15,7 +15,6 @@ public class PrivacyScreen extends OnboardingActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         this.onboardingTextHeaderString = "HOBBES IS COMPLETELY PRIVATE";
         this.onboardingTextBodyString = "Your data never leaves your phone. But we do need access to your usage settings permission to help monitor your app usage.";
-        this.progressDotID = R.id.thirdProgressDot;
         this.drawableId = R.drawable.onboarding_grandpa_3;
         super.onCreate(savedInstanceState);
 

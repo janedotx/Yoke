@@ -14,10 +14,6 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.system2override.hobbes.HobbesScreen;
-import com.system2override.hobbes.MainActivity;
-import com.system2override.hobbes.Models.RoomModels.Suggestion;
-import com.system2override.hobbes.Models.Streaks;
-import com.system2override.hobbes.Models.ToDoInterface;
 import com.system2override.hobbes.MyApplication;
 import com.system2override.hobbes.R;
 import com.system2override.hobbes.TodoManagement.TodoManagementScreen;

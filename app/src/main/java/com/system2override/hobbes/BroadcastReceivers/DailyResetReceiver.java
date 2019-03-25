@@ -30,9 +30,11 @@ public class DailyResetReceiver extends BroadcastReceiver{
             }
             db.habitDao().updateHabits(habits);
             timeBank.resetTime();
+            timeBank.addTimeSavedToday();
             streak.endStreakDay();
 
             MyApplication.getBus().post(new MidnightResetEvent());
+
         }
     }
 }

@@ -45,5 +45,8 @@
     <color name="HobbesBannerGreen">#98cc72</color>
     <color name="HobbesDarkGreen">#88B765</color>
     <color name="HobbesDarkishBackground">#E0DDCC</color>
+    <color name="HobbesBurntOrange">#CC782f</color>
+    <color name="HobbesBurntOrangeText">#B27138</color>
+    <color name="HobbesDarkBrown">#252013</color>
 
 </resources>

@@ -17,7 +17,6 @@ public class HowToScreen extends OnboardingActivity implements View.OnClickListe
         this.onboardingTextHeaderString = "EARN PHONE TIME BY COMPLETING TODOS";
         this.onboardingTextBodyString = "Whenever you run out of time on your phone, you'll have " +
                 "to do something in the real world.";
-        this.progressDotID = R.id.secondProgressDot;
         this.drawableId = R.drawable.onboarding_grandpa_2;
         super.onCreate(savedInstanceState);
 

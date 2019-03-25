@@ -11,7 +11,7 @@ public class OneTimeData extends SharedPreferencesModel{
     private final String HAS_DONE_ONBOARDING_KEY = "HAS_DONE_ONBOARDING_KEY";
     private final String HAS_DONE_TUTORIAL_KEY = "HAS_DONE_TUTORIAL_KEY";
     private final String TIME_INSTALLED_KEY = "TIME_INSTALLED_KEY";
-    private final String AVERAGE_DAILY_USE = "AVERAGE_DAILY_USE";
+    private final String AVERAGE_DAILY_USE_BEFORE_INSTALL = "AVERAGE_DAILY_USE_BEFORE_INSTALL";
     private final String FIRST_INSTALL_COMPLETE = "FIRST_INSTALL_COMPLETE";
     private final String FIRST_DAILY_COMPLETED = "FIRST_DAILY_COMPLETED";
     private final String FIRST_RECURRING_COMPLETED = "FIRST_RECURRING_COMPLETED";
@@ -45,14 +45,14 @@ public class OneTimeData extends SharedPreferencesModel{
         this.editor.apply();
     }
 
-    public void setAverageDailyUsageOverall(long time) {
+    public void setAverageDailyUsageBeforeHobbes(long time) {
         Log.d(TAG, "setAverageDailyUsageOverall: time " + Long.toString(time));
-        this.editor.putLong(AVERAGE_DAILY_USE, time);
+        this.editor.putLong(AVERAGE_DAILY_USE_BEFORE_INSTALL, time);
         this.editor.apply();
     }
 
-    public long getAverageDailyUsageOverall() {
-        return this.prefs.getLong(AVERAGE_DAILY_USE, 0);
+    public long getAverageDailyUsageBeforeHobbes() {
+        return this.prefs.getLong(AVERAGE_DAILY_USE_BEFORE_INSTALL, 0);
     }
 
     public long getTimeOfHobbesInstall() {

@@ -4,7 +4,7 @@ android:shape="rectangle">
 
 // The width and color of the border
     <stroke
-        android:width="3dp"
+        android:width="@dimen/todo_border_width"
         android:color="#3C341F" />
 
     // The desired corner radius. reduce it to keep it less rounded
@@ -12,5 +12,10 @@ android:shape="rectangle">
     <solid
         android:color="#F0ECE0"
         />
+    <padding
+        android:left="@dimen/todo_border_width"
+        android:bottom="@dimen/todo_border_width"
+        android:right="@dimen/todo_border_width"
+        android:top="@dimen/todo_border_width"/>
 
 </shape>

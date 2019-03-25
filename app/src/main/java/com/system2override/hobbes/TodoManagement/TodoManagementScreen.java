@@ -19,7 +19,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
@@ -46,8 +45,10 @@ import com.system2override.hobbes.Utilities.UsageStatsHelper;
 import com.system2override.hobbes.FirstTimeCompletionDialog.Data;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class TodoManagementScreen extends HobbesScreen {
     private static final String TAG = "TodoManagementScreen";
@@ -55,11 +56,11 @@ public class TodoManagementScreen extends HobbesScreen {
     private List<ToDoInterface> incompletes = new ArrayList<>();
     private List<ToDoInterface> completed;
 
-    private TextView earnedTimeValueView;
+    private TextView timeSavedView;
+    private TextView dateInstalledView;
     private TextView remainingTimeValueView;
     private TextView currentStreakValueView;
-    private TextView longestStreakValueView;
-    private Button goAddToDoButton;
+    private TextView streakDateView;
     private FloatingActionButton addNewToDo;
 
     private TabLayout tabs;
@@ -73,15 +74,15 @@ public class TodoManagementScreen extends HobbesScreen {
         super.onCreate(savedInstanceState);
         MyApplication.getBus().register(this);
         setContentView(R.layout.activity_todo_management);
-//        /*
-        if (MyApplication.getOneTimeData().getAverageDailyUsageOverall() == 0L) {
+
+        // Set usage before Hobbes
+        if (MyApplication.getOneTimeData().getAverageDailyUsageBeforeHobbes() == 0L) {
             Map<String, Long> map = UsageStatsHelper.getAppsByTotalTime(this, UsageStatsHelper.WEEK_IN_MS, System.currentTimeMillis());
             long totalTime = UsageStatsHelper.sumTotalTimeOverInterval(map);
             Log.d(TAG, "firstTimeSetup: totaltime " + totalTime);
-            MyApplication.getOneTimeData().setAverageDailyUsageOverall(totalTime / 7);
-            Log.d(TAG, "firstTimeSetup: daily average over last week is " + Long.toString(MyApplication.getOneTimeData().getAverageDailyUsageOverall()));
+            MyApplication.getOneTimeData().setAverageDailyUsageBeforeHobbes(totalTime / 7);
+            Log.d(TAG, "firstTimeSetup: daily average over last week is " + Long.toString(MyApplication.getOneTimeData().getAverageDailyUsageBeforeHobbes()));
         }
-//        */
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -149,16 +150,22 @@ public class TodoManagementScreen extends HobbesScreen {
 
     private void initializeValueViews() {
 
-        this.earnedTimeValueView = findViewById(R.id.todoManagementEarnedTimeValue);
-        this.remainingTimeValueView = findViewById(R.id.todoManagementAvailableTimeValue);
+        this.remainingTimeValueView = findViewById(R.id.todoManagementTimeRemainingValue);
         TimeBank timeBank = MyApplication.getTimeBank();
-        this.earnedTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(timeBank.getEarnedTime()));
         long remainingTime = timeBank.getTimeRemaining();
         if (remainingTime < 0L) { remainingTime = 0; }
         this.remainingTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(remainingTime));
 
-        this.currentStreakValueView = findViewById(R.id.toDoManagementCurrentStreakValue);
-        this.longestStreakValueView = findViewById(R.id.toDoManagementLongestStreakValue);
+        this.dateInstalledView = findViewById(R.id.todoManagementDateInstalled);
+        this.dateInstalledView.setText(String.format("since %s", RandomUtilities.formatMSToDate
+                (MyApplication.getOneTimeData().getTimeOfHobbesInstall())));
+
+        this.timeSavedView = findViewById(R.id.todoManagementTimeSavedValue);
+        String timeSaved = RandomUtilities.formatMillisecondsToHHMM(timeBank.getTimeSaved());
+        this.timeSavedView.setText(String.format("%s", timeSaved));
+
+        this.currentStreakValueView = findViewById(R.id.todoManagementCurrentStreakValue);
+        this.streakDateView = findViewById(R.id.todoManagementDateStreakStarted);
 
         updateStreakValues();
     }
@@ -167,7 +174,13 @@ public class TodoManagementScreen extends HobbesScreen {
     private void updateStreakValues() {
         Streaks streak = MyApplication.getStreaks();
         this.currentStreakValueView.setText(Integer.toString(streak.getCurrentStreak()));
-        this.longestStreakValueView.setText(Integer.toString(streak.getLongestStreak()));
+
+        long dateInMS = streak.getStreakDateInMS();
+
+        this.streakDateView.setText(String.format("since %s", RandomUtilities.formatMSToDate(dateInMS)));
+
+
+//        this.longestStreakValueView.setText(Integer.toString(streak.getLongestStreak()));
 
     }
 
@@ -220,17 +233,15 @@ public class TodoManagementScreen extends HobbesScreen {
     }
 
     @Subscribe
-    public void addEarnedTimeView(TimeBankEarnedTime event) {
+    public void addEarnedTimeViewUpdate(TimeBankEarnedTime event) {
         Log.d(TAG, "makeTimeAvailableChanges: ");
         TimeBank timeBank = MyApplication.getTimeBank();
-        this.earnedTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(timeBank.getEarnedTime()));
         this.remainingTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(timeBank.getTimeRemaining()));
     }
 
     @Subscribe
-    public void subtractEarnedTimeView(TimeBankUnearnedTime event) {
+    public void subtractEarnedTimeViewUpdate(TimeBankUnearnedTime event) {
         TimeBank timeBank = MyApplication.getTimeBank();
-        this.earnedTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(timeBank.getEarnedTime()));
         long timeRemaining = timeBank.getTimeRemaining();
         if (timeRemaining < 0L) {
             timeRemaining = 0L;
@@ -254,7 +265,6 @@ public class TodoManagementScreen extends HobbesScreen {
         tutorialBannerView.findViewById(R.id.toDoViewGroup).setBackground(ContextCompat.getDrawable(this, R.drawable.one_off_todo_coloring));
         ((TextView) tutorialBannerView.findViewById(R.id.toDoDescription)).setText("I am a sample one-off.");
         ((TextView) tutorialBannerView.findViewById(R.id.tutorialNumber)).setText("2/2");
-//        holder.toDoViewGroup.setBackground();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -343,8 +353,10 @@ public class TodoManagementScreen extends HobbesScreen {
 
     @Subscribe
     public void updateInfoViewValues(MidnightResetEvent e) {
-        this.earnedTimeValueView.setText("0 m");
         this.remainingTimeValueView.setText(RandomUtilities.formatMillisecondsToMinutes(MyApplication.getTimeBank().getInitialTime()));
+        String timeSaved = RandomUtilities.formatMillisecondsToHHMM(MyApplication.getTimeBank()
+                .getTimeSaved());
+        this.timeSavedView.setText(String.format("%s", timeSaved));
         updateStreakValues();
     }
 

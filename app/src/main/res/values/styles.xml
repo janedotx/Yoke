@@ -110,5 +110,20 @@
         <item name="android:layout_marginRight">12dp</item>
     </style>
 
+    <style name="todoInfoBoxSectionHolder">
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="todoInfoBoxImage">
+        <item name="android:layout_height">@dimen/todo_icon_height</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
 
 </resources>

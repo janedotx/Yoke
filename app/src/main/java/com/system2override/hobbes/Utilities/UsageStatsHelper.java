@@ -126,4 +126,10 @@ public class UsageStatsHelper {
         return list;
     }
 
+    public static long getAverageTotalTimeOver(Context context, long interval, long end, int base) {
+        Map<String, Long> map = UsageStatsHelper.getAppsByTotalTime(context, interval, end);
+        long totalTime = UsageStatsHelper.sumTotalTimeOverInterval(map);
+        return totalTime/base;
+    }
+
 }

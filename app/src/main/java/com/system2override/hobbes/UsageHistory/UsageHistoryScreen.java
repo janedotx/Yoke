@@ -1,6 +1,5 @@
 package com.system2override.hobbes.UsageHistory;
 
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.system2override.hobbes.HasBottomNavScreen;
-import com.system2override.hobbes.HobbesScreen;
 import com.system2override.hobbes.Models.OneTimeData;
 import com.system2override.hobbes.MyApplication;
 import com.system2override.hobbes.R;
@@ -127,7 +125,7 @@ public class UsageHistoryScreen extends HasBottomNavScreen implements  View.OnCl
             if (interval > UsageStatsHelper.WEEK_IN_MS) {
                 interval = UsageStatsHelper.WEEK_IN_MS;
             }
-            long averageTimeLastWeek = getAverageTotalTimeOver(interval,
+            long averageTimeLastWeek = UsageStatsHelper.getAverageTotalTimeOver(this, interval,
                     System.currentTimeMillis(),
                     (int) ((double) interval / (double) UsageStatsHelper.DAY_IN_MS));
             topText.setText("Your average daily phone usage after installing Hobbes is " + RandomUtilities.formatMillisecondsToHHMM(averageTimeLastWeek));
@@ -135,7 +133,7 @@ public class UsageHistoryScreen extends HasBottomNavScreen implements  View.OnCl
             setLengthOfBar(averageTimeLastWeek, topBar);
 
             View bottomBar = findViewById(R.id.totalUsageHistoryBottomBar);
-            long averageTimeBeforeHobbes = MyApplication.getOneTimeData().getAverageDailyUsageOverall();
+            long averageTimeBeforeHobbes = MyApplication.getOneTimeData().getAverageDailyUsageBeforeHobbes();
             bottomText.setText("Your average daily phone usage before installing Hobbes was " + RandomUtilities.formatMillisecondsToHHMM(averageTimeBeforeHobbes));
             bottomText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
             setLengthOfBar(averageTimeBeforeHobbes, bottomBar);
@@ -145,7 +143,7 @@ public class UsageHistoryScreen extends HasBottomNavScreen implements  View.OnCl
             findViewById(R.id.usageHistoryBottom).setVisibility(View.GONE);
 
             View topBar = findViewById(R.id.totalUsageHistoryTopBar);
-            long averageTimeBeforeHobbes = MyApplication.getOneTimeData().getAverageDailyUsageOverall();
+            long averageTimeBeforeHobbes = MyApplication.getOneTimeData().getAverageDailyUsageBeforeHobbes();
             topText.setText("Your average daily phone usage is " + RandomUtilities.formatMillisecondsToHHMM(averageTimeBeforeHobbes));
             topText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             setLengthOfBar(averageTimeBeforeHobbes, topBar);
@@ -176,16 +174,13 @@ public class UsageHistoryScreen extends HasBottomNavScreen implements  View.OnCl
         }
     }
 
-    private long getAverageTotalTimeOver(long interval, long end, int base) {
-        Map<String, Long> map = UsageStatsHelper.getAppsByTotalTime(this, interval, end);
-        long totalTime = UsageStatsHelper.sumTotalTimeOverInterval(map);
-        return totalTime/base;
-    }
-
     private void setBeforeHobbesUsage() {
         OneTimeData oneTimeData = MyApplication.getOneTimeData();
         long installTime = oneTimeData.getTimeOfHobbesInstall();
-        oneTimeData.setAverageDailyUsageOverall(getAverageTotalTimeOver(UsageStatsHelper.WEEK_IN_MS, installTime, 7));
+        oneTimeData.setAverageDailyUsageBeforeHobbes(UsageStatsHelper.getAverageTotalTimeOver
+                (this, UsageStatsHelper
+                        .WEEK_IN_MS,
+                installTime, 7));
 
     }
 }

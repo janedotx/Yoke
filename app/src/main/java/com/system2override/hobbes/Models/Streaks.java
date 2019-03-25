@@ -2,6 +2,7 @@ package com.system2override.hobbes.Models;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -21,10 +22,12 @@ import java.util.List;
 // i hate this.
 // i do not understand why the banned apps stuff wasn't working properly.
 public class Streaks extends SharedPreferencesModel {
+    private static final String TAG = "Streaks";
     private static final String FILE = "STREAKS_FILE";
     private static final String CURRENT_STREAKS_KEY = "CURRENT_STREAKS_KEY";
     private static final String LONGEST_STREAKS_KEY = "LONGEST_STREAKS_KEY";
     private static final String STREAK_COMPLETED_TODAY = "STREAK_COMPLETED_TODAY";
+    private static final String STREAK_STARTED_DATE = "STREAK_STARTED_DATE";
     private Bus bus;
 
     public Streaks(Context c, Bus bus) {
@@ -85,6 +88,15 @@ public class Streaks extends SharedPreferencesModel {
         this.editor.apply();
     }
 
+    public void setStreakDateInMS() {
+        this.editor.putLong(STREAK_STARTED_DATE, System.currentTimeMillis());
+        this.editor.apply();
+    }
+
+    public long getStreakDateInMS() {
+        return this.prefs.getLong(STREAK_STARTED_DATE, System.currentTimeMillis());
+    }
+
     public void updateStreakInformation(List<Habit> habits) {
         int currentStreak = getCurrentStreak();
         int longestStreak = getLongestStreak();
@@ -94,9 +106,12 @@ public class Streaks extends SharedPreferencesModel {
             setCurrentStreak(currentStreak);
             setStreakCompletedToday(true);
 
+            if (currentStreak == 1) {
+                setStreakDateInMS();
+            }
+
             if (currentStreak > longestStreak) {
                 setLongestStreak(currentStreak);
-
             }
         } else {
             // this case is for when the user checks off all their dailies, and then unchecks one or more
@@ -115,6 +130,9 @@ public class Streaks extends SharedPreferencesModel {
         boolean streakCompletedToday = getStreakCompletedToday();
 
         if (!streakCompletedToday) {
+            if (getCurrentStreak() != 0) {
+                setStreakDateInMS();
+            }
             setCurrentStreak(0);
         } else {
             setStreakCompletedToday(false);

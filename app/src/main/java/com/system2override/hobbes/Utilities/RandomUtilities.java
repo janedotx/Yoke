@@ -55,6 +55,17 @@ public class RandomUtilities {
                 getHourField(millis), getMinuteField(millis), getSecondsField(millis));
     }
 
+    public static String formatMSToDate(long ms) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(ms);
+
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int year = calendar.get(Calendar.YEAR);
+
+        return String.format("%d-%d-%d", month, day, year);
+    }
+
     public static long getNextMidnight() {
         Calendar calendar = Calendar.getInstance();
         long time = System.currentTimeMillis();
@@ -92,12 +103,6 @@ public class RandomUtilities {
                     if (appInfo != null &&
                             !appInfo.packageName.equals(MyApplication.packageName) &&
                             !pm.getApplicationLabel(appInfo).equals(MyApplication.packageName)) {
-                        /*
-                        Log.d("RandomUtilities", "getApplicationList: " + appInfo.packageName);
-                        Log.d("RandomUtilities", "getApplicationList label: " + pm.getApplicationLabel(appInfo));
-                        Log.d("RandomUtilities", "getApplicationList: " + appInfo.packageName.equals(MyApplication.packageName));
-                        Log.d("RandomUtilities", "getApplicationList: " + pm.getApplicationLabel(appInfo).equals(MyApplication.packageName));
-                        */
                         applicationInfoList.add(appInfo);
                     }
                 } catch (PackageManager.NameNotFoundException e) {

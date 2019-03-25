@@ -4,4 +4,7 @@
     <dimen name="app_usage_history_bar_width">280dp</dimen>
     <dimen name="usage_history_bar_time_width">50dp</dimen>
     <dimen name="next_button_margin_right">20dp</dimen>
+    <dimen name="navigation_chevron_padding">35dp</dimen>
+    <dimen name="todo_border_width">1dp</dimen>
+    <dimen name="todo_icon_height">20dp</dimen>
 </resources>

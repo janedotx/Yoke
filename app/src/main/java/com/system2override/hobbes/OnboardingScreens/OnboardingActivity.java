@@ -30,7 +30,6 @@ public class OnboardingActivity extends HasBottomNavScreen {
     protected TextView onboardingTextBodyView;
     protected String onboardingTextHeaderString;
     protected String onboardingTextBodyString;
-    protected int progressDotID;
     protected int drawableId;
 
     @Override
@@ -48,7 +47,6 @@ public class OnboardingActivity extends HasBottomNavScreen {
         this.onboardingTextBodyView = (TextView) findViewById(R.id.onboardingTextBody);
         this.onboardingTextHeaderView.setText(this.onboardingTextHeaderString);
         this.onboardingTextBodyView.setText(this.onboardingTextBodyString);
-        ((ImageView) findViewById(progressDotID)).setImageResource(R.drawable.brown_progress_dot);
         ((ImageView) findViewById(R.id.onboardingImage)).setImageResource(drawableId);
     }
 
@@ -62,8 +60,5 @@ public class OnboardingActivity extends HasBottomNavScreen {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
 
 }

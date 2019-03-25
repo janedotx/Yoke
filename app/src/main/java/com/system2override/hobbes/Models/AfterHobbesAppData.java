@@ -16,4 +16,5 @@ public class AfterHobbesAppData extends SharedPreferencesModel {
     public void setTimeForApp(String appName, long time) {
         this.editor.putLong(appName, time);
     }
+
 }

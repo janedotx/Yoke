@@ -32,31 +32,40 @@ tools:context=".OnboardingScreens.WelcomeScreen">
         </LinearLayout>
 
         <LinearLayout
-            android:gravity="center_horizontal"
             android:orientation="horizontal"
-            android:layout_marginTop="37dp"
+            android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:weightSum="3"
+            android:layout_height="30dp">
 
             <ImageView
-                android:id="@+id/firstProgressDot"
-                style="@style/progressDot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:id="@+id/backButton"
+                android:scaleType="fitStart"
+                android:src="@drawable/left_chevron"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:paddingLeft="@dimen/navigation_chevron_padding"
+                android:paddingRight="@dimen/navigation_chevron_padding"
+                />`
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:layout_weight="1" />
 
             <ImageView
-                android:id="@+id/secondProgressDot"
-                style="@style/progressDot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <ImageView
-                android:id="@+id/thirdProgressDot"
-                style="@style/progressDot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
+                android:id="@+id/nextButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:paddingLeft="@dimen/navigation_chevron_padding"
+                android:paddingRight="@dimen/navigation_chevron_padding"
+                android:scaleType="fitEnd"
+                android:src="@drawable/right_chevron" />`
         </LinearLayout>
 
         <LinearLayout
@@ -86,14 +95,4 @@ tools:context=".OnboardingScreens.WelcomeScreen">
         </LinearLayout>
     </LinearLayout>
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        />
-
-    <include
-        layout="@layout/next_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 </LinearLayout>

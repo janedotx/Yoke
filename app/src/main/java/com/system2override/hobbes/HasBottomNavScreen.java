@@ -24,7 +24,11 @@ public class HasBottomNavScreen extends HobbesScreen implements View.OnClickList
         back = findViewById(R.id.backButton);
 
         if (MyApplication.inTutorial()) {
-            bottomNavButtons.setVisibility(View.VISIBLE);
+            if (bottomNavButtons != null) {
+                bottomNavButtons.setVisibility(View.VISIBLE);
+            }
+            next.setVisibility(View.VISIBLE);
+            back.setVisibility(View.VISIBLE);
             next.setOnClickListener(this);
             back.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -35,7 +39,9 @@ public class HasBottomNavScreen extends HobbesScreen implements View.OnClickList
 
             });
         } else {
-            bottomNavButtons.setVisibility(View.GONE);
+            if (bottomNavButtons != null) {
+                bottomNavButtons.setVisibility(View.GONE);
+            }
         }
     }
 

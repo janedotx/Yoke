@@ -6,6 +6,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -36,6 +37,7 @@ import com.system2override.hobbes.BroadcastReceivers.DailyResetReceiver;
 import com.system2override.hobbes.BroadcastReceivers.PhoneScreenOffReceiver;
 import com.system2override.hobbes.BroadcastReceivers.PhoneScreenOnReceiver;
 import com.system2override.hobbes.Models.TimeBank;
+import com.system2override.hobbes.TodoManagement.TodoManagementScreen;
 import com.system2override.hobbes.Utilities.RandomUtilities;
 
 public class ManagerService extends Service {
@@ -119,12 +121,20 @@ public class ManagerService extends Service {
 
         ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
 
+        Intent todoIntent = new Intent(this, TodoManagementScreen.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntentWithParentStack(todoIntent);
+
+        PendingIntent pendingIntent =
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.whitebow)
                 .setContentTitle("Hobbes is running")
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setWhen(System.currentTimeMillis()).build();
+                .setWhen(System.currentTimeMillis())
+                .setContentIntent(pendingIntent)
+                .build();
 
         startForeground(MANAGER_SERVICE_ID, notification);
 

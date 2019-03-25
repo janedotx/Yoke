@@ -8,6 +8,7 @@ import com.squareup.otto.Bus;
 import com.system2override.hobbes.MyApplication;
 import com.system2override.hobbes.OttoMessages.TimeBankEarnedTime;
 import com.system2override.hobbes.OttoMessages.TimeBankUnearnedTime;
+import com.system2override.hobbes.Utilities.UsageStatsHelper;
 
 public class TimeBank extends SharedPreferencesModel {
     private static final String TAG = "TimeBank";
@@ -24,6 +25,7 @@ public class TimeBank extends SharedPreferencesModel {
     private final String ONEOFF_GRANT_TIME_KEY = "ONEOFF_GRANT_TIME_KEY";
     private final String TIME_SPENT_KEY = "TIME_SPENT_BANNED_APPS_KEY";
     private final String TIME_EARNED_KEY = "TIME_EARNED_KEY";
+    private final String TIME_SAVED_KEY = "TIME_SAVED_KEY";
     public final String FILE = "TIME";
 
     private Bus bus;
@@ -97,7 +99,6 @@ public class TimeBank extends SharedPreferencesModel {
         this.editor.putLong(TIME_EARNED_KEY, 0);
         this.editor.apply();
 
-
     }
 
     public void setInitialTime(long initialTime) {
@@ -139,5 +140,20 @@ public class TimeBank extends SharedPreferencesModel {
     public long getTotalTimeForToday() {
         return getEarnedTime() + getInitialTime();
     }
+
+    public void addTimeSavedToday() {
+        long beforeHobbesTime = MyApplication.getOneTimeData().getAverageDailyUsageBeforeHobbes();
+        long timeSpentToday = UsageStatsHelper.getAverageTotalTimeOver(
+                this.context, UsageStatsHelper.DAY_IN_MS, System.currentTimeMillis(), 1);
+        long currentTimeSaved = getTimeSaved();
+
+        long timeSaved = beforeHobbesTime - timeSpentToday;
+        if (timeSaved < 0) { timeSaved = 0; }
+
+        this.editor.putLong(TIME_SAVED_KEY, currentTimeSaved + timeSaved);
+        this.editor.apply();
+    }
+
+    public long getTimeSaved() { return this.prefs.getLong(TIME_SAVED_KEY, 0L); }
 
 }

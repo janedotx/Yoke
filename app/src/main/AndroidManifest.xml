@@ -22,7 +22,6 @@
         android:supportsRtl="true"
         tools:replace="android:allowBackup"
         android:theme="@style/HobbesAppTheme">
-        <activity android:name=".MainActivity" />
         <activity
             android:name=".AppLimit.AppLimitScreen"
             android:screenOrientation="portrait">
@@ -43,6 +42,7 @@
         </activity>
         <activity
             android:name=".ConfigScreens.BannedAppManagement.BannedAppScreen"
+            android:parentActivityName=".TodoManagement.TodoManagementScreen"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.system2override.hobbes.BANNED_APP_SCREEN" />
@@ -83,6 +83,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ConfigScreens.SetUsageLimitsScreen"
+            android:parentActivityName=".TodoManagement.TodoManagementScreen"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.system2override.hobbes.SetUsageLimitsScreen" />
@@ -100,7 +101,12 @@
         </activity>
         <activity
             android:name=".OnboardingScreens.WelcomeScreen"
-            android:screenOrientation="portrait" />
+            android:parentActivityName=".SplashScreen"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.system2override.hobbes.OnboardingScreens.WelcomeScreen" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".OnboardingScreens.HowToScreen"
             android:screenOrientation="portrait">
@@ -109,21 +115,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".OnboardingScreens.HowToScreenTwo"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="com.system2override.hobbes.HowToScreenTwo" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".OnboardingScreens.PrivacyScreen"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="com.system2override.hobbes.HowToScreenThree" />
+                <action android:name="com.system2override.hobbes.PrivacyScreen" />
             </intent-filter>
         </activity>
         <activity
             android:name=".UsageHistory.UsageHistoryScreen"
+            android:parentActivityName=".TodoManagement.TodoManagementScreen"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.system2override.hobbes.UsageHistoryScreen" />
