@@ -12,6 +12,6 @@ public class LocalTaskDialog implements Data {
     }
 
     public String getRewardMessage() {
-        return "You have earned 15 minutes of time.";
+        return "You have earned 5 minutes of time.";
     }
 }

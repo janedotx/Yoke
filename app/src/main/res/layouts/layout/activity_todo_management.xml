@@ -63,19 +63,17 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
                             android:layout_marginTop="3dp"
                             android:text="Time remaining"
-                            android:textColor="@color/HobbesBurntOrangeText"
-                            android:textSize="10sp" />
+                            style="@style/todoInfoBoxText"
+                             />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
                             android:text="today"
-                            android:textColor="@color/HobbesBurntOrangeText"
-                            android:textSize="8sp" />
+                            style="@style/todoInfoBoxText"
+                             />
 
                     </LinearLayout>
 
@@ -108,20 +106,18 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
+                            style="@style/todoInfoBoxText"
                             android:layout_marginTop="3dp"
                             android:text="Time saved"
-                            android:textColor="@color/HobbesBurntOrangeText"
-                            android:textSize="10sp" />
+ />
 
                         <TextView
                             android:id="@+id/todoManagementDateInstalled"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
                             android:text="mm/dd/yy"
-                            android:textColor="@color/HobbesBurntOrangeText"
-                            android:textSize="8sp" />
+                            style="@style/todoInfoBoxText"
+ />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -152,11 +148,10 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
                             android:layout_marginTop="3dp"
                             android:text="Current streak"
-                            android:textColor="@color/HobbesBurntOrangeText"
-                            android:textSize="10sp" />
+                            style="@style/todoInfoBoxText"
+                             />
 
                         <TextView
                             android:id="@+id/todoManagementDateStreakStarted"
@@ -165,7 +160,7 @@
                             android:gravity="center_horizontal"
                             android:text="mm/dd/yy"
                             android:textColor="@color/HobbesBurntOrangeText"
-                            android:textSize="8sp" />
+                            android:textSize="10sp" />
                     </LinearLayout>
 
                 </LinearLayout>
